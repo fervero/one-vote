@@ -1,34 +1,43 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
+import * as dhondt from 'dhondt';
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1),
-  },
-  input: {
-    display: 'none',
-  },
-}));
+export class ResultsRow extends React.Component {
+  foo = () => {
+    const votes = this.props.row.slice(2).map(stupidString => {
+      const saneString = stupidString.replace(' ', '');
+      return parseInt(saneString, 10);
+    });
 
-const lastRow = () => (
-  <TableCell>
-    <Button size="small" color="primary">
-      Count
-    </Button>
-  </TableCell>
-);
+    const seats = this.props.seats;
+    console.log(seats);
+    console.log(dhondt.compute(votes, seats));
+  };
 
-const renderRow = (row, withButton) => [
-  ...row.map(x => <TableCell>{x}</TableCell>),
-  withButton ? lastRow() : <TableCell />,
-];
+  lastRow = row => (
+    <TableCell>
+      <Button size="small" color="primary" onClick={this.foo}>
+        Count
+      </Button>
+    </TableCell>
+  );
 
-export const ResultsRow = ({ row, withButton }) => (
-  <TableRow>{renderRow(row, withButton)}</TableRow>
-);
+  renderRow = (row, withButton) => [
+    ...row.map(x => <TableCell>{x}</TableCell>),
+    withButton ? this.lastRow(row) : <TableCell />,
+  ];
+
+  render() {
+    return (
+      <TableRow>
+        {this.renderRow(this.props.row, this.props.withButton)}
+      </TableRow>
+    );
+  }
+}
+
+// export const ResultsRow = ({ row, withButton }) => (
+//   <TableRow>{renderRow(row, withButton)}</TableRow>
+// );
