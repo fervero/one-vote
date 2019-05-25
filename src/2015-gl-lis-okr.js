@@ -1,4 +1,48 @@
-export const results = `Nr okr.;Siedziba OKW;L. obw.;Liczba wyborców;Otrzymane karty;Niewykorzystane karty;Wydane karty;Liczba wyborców głosujących przez pełnomocnika;Liczba wyborców głosujących na podstawie zaświadczenia;Pakiety wyborcze;Koperty zwrotne;Koperty  bez oświadczenia;Niepodpisane oświadczenie;Koperty zwrotne bez koperty na kartę do głosowania;Niezaklejona koperta na kartę do głosowania;Koperty na kartę do głosowania wrzucone do urny;Karty wyjęte z urny;Karty wyjęte z kopert na karty do głosowania;Karty nieważne;Karty ważne;Głosy nieważne;w tym: z powodu postawienia znaku X obok nazwiska dwóch lub większej liczby kandydatów z różnych list;w tym: z powodu niepostawienia znaku X obok nazwiska żadnego kandydata;w tym: z powodu postawienia znaku X wyłącznie obok nazwiska kandydata z listy, której rejestracja została unieważniona;Głosy ważne;1 - Komitet Wyborczy Prawo i Sprawiedliwość;2 - Komitet Wyborczy Platforma Obywatelska RP;3 - Komitet Wyborczy Partia Razem;4 - Komitet Wyborczy KORWiN;5 - Komitet Wyborczy Polskie Stronnictwo Ludowe;6 - Koalicyjny Komitet Wyborczy Zjednoczona Lewica SLD+TR+PPS+UP+Zieloni;7 - Komitet Wyborczy Wyborców Kukiz'15;8 - Komitet Wyborczy Nowoczesna Ryszarda Petru;9 - Komitet Wyborczy Wyborców JOW Bezpartyjni;10 - Komitet Wyborczy Wyborców Zbigniewa Stonogi;11 - Komitet Wyborczy Wyborców  Ruch Społeczny Rzeczypospolitej Polskiej;12 - Komitet Wyborczy Wyborców Zjednoczeni dla Śląska;13 - Komitet Wyborczy Samoobrona;14 - Komitet Wyborczy Wyborców Grzegorza Brauna Szczęść Boże!;15 - Komitet Wyborczy Kongres Nowej Prawicy;16 - Komitet Wyborczy Wyborców Mniejszość Niemiecka;16 - Komitet Wyborczy Wyborców Obywatele do Parlamentu
+export const districtsArray = [
+  'Legnica',
+  'Wałbrzych',
+  'Wrocław',
+  'Bydgoszcz',
+  'Toruń',
+  'Lublin',
+  'Chełm',
+  'Zielona Góra',
+  'Łódź',
+  'Piotrków Trybunalski',
+  'Sieradz',
+  'Kraków I (południe)',
+  'Kraków II (północ)',
+  'Nowy Sącz',
+  'Tarnów',
+  'Płock',
+  'Radom',
+  'Siedlce',
+  'Warszawa I (miasto)',
+  'Warszawa II (okręg)',
+  'Opole',
+  'Krosno',
+  'Rzeszów',
+  'Białystok',
+  'Gdańsk',
+  'Gdynia',
+  'Bielsko-Biała',
+  'Częstochowa',
+  'Gliwice',
+  'Rybnik',
+  'Katowice',
+  'Sosnowiec',
+  'Kielce',
+  'Elbląg',
+  'Olsztyn',
+  'Kalisz',
+  'Konin',
+  'Piła',
+  'Poznań',
+  'Koszalin',
+  'Szczecin',
+];
+
+export const electionResults = `Nr okr.;Siedziba OKW;L. obw.;Liczba wyborców;Otrzymane karty;Niewykorzystane karty;Wydane karty;Liczba wyborców głosujących przez pełnomocnika;Liczba wyborców głosujących na podstawie zaświadczenia;Pakiety wyborcze;Koperty zwrotne;Koperty  bez oświadczenia;Niepodpisane oświadczenie;Koperty zwrotne bez koperty na kartę do głosowania;Niezaklejona koperta na kartę do głosowania;Koperty na kartę do głosowania wrzucone do urny;Karty wyjęte z urny;Karty wyjęte z kopert na karty do głosowania;Karty nieważne;Karty ważne;Głosy nieważne;w tym: z powodu postawienia znaku X obok nazwiska dwóch lub większej liczby kandydatów z różnych list;w tym: z powodu niepostawienia znaku X obok nazwiska żadnego kandydata;w tym: z powodu postawienia znaku X wyłącznie obok nazwiska kandydata z listy, której rejestracja została unieważniona;Głosy ważne;1 - Komitet Wyborczy Prawo i Sprawiedliwość;2 - Komitet Wyborczy Platforma Obywatelska RP;3 - Komitet Wyborczy Partia Razem;4 - Komitet Wyborczy KORWiN;5 - Komitet Wyborczy Polskie Stronnictwo Ludowe;6 - Koalicyjny Komitet Wyborczy Zjednoczona Lewica SLD+TR+PPS+UP+Zieloni;7 - Komitet Wyborczy Wyborców Kukiz'15;8 - Komitet Wyborczy Nowoczesna Ryszarda Petru;9 - Komitet Wyborczy Wyborców JOW Bezpartyjni;10 - Komitet Wyborczy Wyborców Zbigniewa Stonogi;11 - Komitet Wyborczy Wyborców  Ruch Społeczny Rzeczypospolitej Polskiej;12 - Komitet Wyborczy Wyborców Zjednoczeni dla Śląska;13 - Komitet Wyborczy Samoobrona;14 - Komitet Wyborczy Wyborców Grzegorza Brauna Szczęść Boże!;15 - Komitet Wyborczy Kongres Nowej Prawicy;16 - Komitet Wyborczy Wyborców Mniejszość Niemiecka;16 - Komitet Wyborczy Wyborców Obywatele do Parlamentu
 1;Legnica;723;787 416;604 430;236 726;367 699;181;2 862;185;178;3;-;-;-;175;367 811;175;15;367 796;11 017;8 057;2 740;-;356 779;127 370;90 060;13 003;15 427;13 886;37 298;34 229;25 506;;;;;;;;;
 2;Wałbrzych;535;539 545;412 999;171 140;241 857;212;2 695;131;124;5;1;2;-;116;241 935;116;75;241 860;7 765;5 550;1 855;-;234 095;72 929;76 424;7 984;10 075;7 448;20 517;20 634;15 544;2 540;;;;;;;;
 3;Wrocław;713;988 061;747 929;213 715;534 226;251;7 658;477;458;15;-;-;-;443;534 492;443;119;534 373;11 002;7 316;3 423;-;523 371;163 323;159 582;22 059;27 341;13 604;31 932;45 726;55 756;;2 779;;;;1 269;;;
@@ -40,3 +84,14 @@ export const results = `Nr okr.;Siedziba OKW;L. obw.;Liczba wyborców;Otrzymane 
 39;Poznań;476;692 746;532 389;115 266;417 078;171;6 380;464;424;12;-;-;4;408;417 260;408;50;417 210;7 324;4 923;2 145;-;409 886;97 975;146 141;18 854;19 548;7 809;33 080;24 825;59 387;2 267;;;;;;;;
 40;Koszalin;469;515 403;394 987;170 152;224 830;136;4 258;172;154;15;-;-;-;139;224 913;139;29;224 884;7 867;5 969;1 738;-;217 017;62 032;65 262;8 466;9 672;8 972;24 697;20 428;17 488;;;;;;;;;
 41;Szczecin;657;826 850;628 823;238 025;390 770;229;4 204;321;302;10;-;-;-;292;390 912;292;27;390 885;10 386;7 200;2 947;-;380 499;110 697;121 479;15 678;20 291;14 776;32 584;32 030;32 964;;;;;;;;;`;
+
+export const parties = [
+  'PiS',
+  'PO',
+  'Razem',
+  'KORWiN',
+  'PSL',
+  'ZLew',
+  "Kukiz'15",
+  '.N',
+];

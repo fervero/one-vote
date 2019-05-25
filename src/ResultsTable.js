@@ -1,0 +1,34 @@
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import { ResultsRow } from './ResultsRow';
+import { parties } from './2015-gl-lis-okr.js';
+
+const renderTable = rows =>
+  rows.map(x => <ResultsRow row={x} key={x[1]} withButton={true} />);
+
+const renderHead = row => {
+  const replacedRow = [...row.splice(0, 2), ...parties];
+  return <ResultsRow row={replacedRow} withButton={false} />;
+};
+
+const wrapTable = rows => (
+  <Table size="small">
+    <TableHead>{renderHead(rows[0])}</TableHead>
+    <TableBody>{renderTable(rows.splice(1))}</TableBody>
+  </Table>
+);
+
+export function ResultsTable(props) {
+  if (props) {
+    //  console.table(props.results);
+  }
+
+  return props && props.results && props.results.length ? (
+    wrapTable(props.results)
+  ) : (
+    <span>no data</span>
+  );
+}

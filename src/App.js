@@ -2,39 +2,40 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import * as Papa from 'papaparse';
-import { results } from './2015-gl-lis-okr.js';
+import { electionResults, parties } from './2015-gl-lis-okr.js';
+import { ResultsTable } from './ResultsTable';
 
-const parser = csvString =>
+const parse = csvString =>
   new Promise(resolve => {
-    Papa.parse(results, {
+    Papa.parse(csvString, {
       complete: parsed => {
-        const relevant = parsed.data.map(row => row.slice(25));
+        const relevant = parsed.data.map(row => [
+          ...row.slice(0, 2),
+          ...row.slice(25, 33),
+        ]);
+
         resolve(relevant);
       },
     });
   });
 
-parser(results).then(console.table);
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {};
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    parse(electionResults).then(parsedElectionResults =>
+      this.setState({ parsedElectionResults })
+    );
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <ResultsTable results={this.state.parsedElectionResults} />
+      </div>
+    );
+  }
 }
 
 export default App;
