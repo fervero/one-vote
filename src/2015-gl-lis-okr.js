@@ -132,10 +132,10 @@ export const electionResults = `Nr okr.;Siedziba OKW;L. obw.;Liczba wyborców;Ot
 export const parties = [
   'PiS',
   'PO',
-  'Razem',
-  'KORWiN',
+  // 'Razem',
+  // 'KORWiN',
   'PSL',
-  'ZLew',
+  // 'ZLew',
   "Kukiz'15",
   '.N',
 ];

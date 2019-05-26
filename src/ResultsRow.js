@@ -37,7 +37,3 @@ export class ResultsRow extends React.Component {
     );
   }
 }
-
-// export const ResultsRow = ({ row, withButton }) => (
-//   <TableRow>{renderRow(row, withButton)}</TableRow>
-// );

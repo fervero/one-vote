@@ -12,8 +12,7 @@ const renderTable = rows =>
   ));
 
 const renderHead = row => {
-  const replacedRow = [...row.splice(0, 2), ...parties];
-  return <ResultsRow row={replacedRow} withButton={false} />;
+  return <ResultsRow row={row} withButton={false} />;
 };
 
 const wrapTable = rows => (
