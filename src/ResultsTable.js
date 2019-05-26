@@ -3,7 +3,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import { ResultsRow } from './ResultsRow';
-import { seatsArray } from './2015-gl-lis-okr.js';
+import { seatsArray } from './2011-kandydaci-sejm';
 
 const renderTable = rows =>
   rows.map((x, i) => (
@@ -22,10 +22,6 @@ const wrapTable = rows => (
 );
 
 export function ResultsTable(props) {
-  if (props) {
-    //  console.table(props.results);
-  }
-
   return props && props.results && props.results.length ? (
     wrapTable(props.results)
   ) : (

@@ -1,8 +1,10 @@
 import React from 'react';
 import './App.css';
-import { electionResults } from './2015-gl-lis-okr.js';
 import { ResultsTable } from './ResultsTable';
-import { parse } from './resultsHelpers.js';
+// import { parse } from './resultsHelpers';
+// import { electionResults } from './2015-gl-lis-okr';
+import { parse } from './resultsHelpers.2011.js';
+import { electionResults } from './2011-kandydaci-sejm';
 
 class App extends React.Component {
   constructor() {

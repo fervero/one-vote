@@ -1,5 +1,5 @@
 import * as dhondt from 'dhondt';
-import { parties } from './2015-gl-lis-okr';
+import { partiesShort } from './2011-kandydaci-sejm.js';
 
 // 2015, okręg z OKW w Rzeszowie - 54 głosy więcej na PSL = 1 mandat więcej na PSL
 const bisectAddingVotesOnPosition = (votes, seats, position) => {
@@ -26,12 +26,17 @@ const bisectAddingVotesOnPosition = (votes, seats, position) => {
     }
   }
 
-  votesCopy[position] = lowerLimit;
+  const returnValue =
+    dhondt.compute(votesCopy, seats)[position] === seatsActuallyGot
+      ? upperLimit - votes[position]
+      : lowerLimit - votes[position];
 
-  return dhondt.compute(votesCopy, seats)[position] === seatsActuallyGot
-    ? upperLimit - votes[position]
-    : lowerLimit - votes[position];
+  return returnValue;
 };
+
+// 2015, okręg z OKW w Olsztynie: 128 głosów dla .N mniej = jeden mandat mniej
+// tenże rok, .N, Konin - 210 głosów
+// 2011, Siedlce, Ruch Palikota - 169
 
 const bisectSubtractVotesOnPosition = (votes, seats, position) => {
   const votesCopy = [...votes];
@@ -68,19 +73,19 @@ const bisectSubtractVotesOnPosition = (votes, seats, position) => {
     : lowerLimit - votes[position];
 };
 
-// 2015, okręg z OKW w Olsztynie: 128 głosów dla .N mniej = jeden mandat mniej
-// tenże rok, .N, Konin - 210 głosów
-
 export const addVotes = (votes, seats) => {
   console.log('Minimum votes added to change the outcome:');
   for (let i = 0, len = votes.length; i < len; i++) {
-    console.log(parties[i], bisectAddingVotesOnPosition(votes, seats, i));
+    console.log(partiesShort[i], bisectAddingVotesOnPosition(votes, seats, i));
   }
 };
 
 export const subtractVotes = (votes, seats) => {
   console.log('Minimum votes subtracted to change the outcome:');
   for (let i = 0, len = votes.length; i < len; i++) {
-    console.log(parties[i], bisectSubtractVotesOnPosition(votes, seats, i));
+    console.log(
+      partiesShort[i],
+      bisectSubtractVotesOnPosition(votes, seats, i)
+    );
   }
 };

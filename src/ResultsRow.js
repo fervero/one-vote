@@ -4,39 +4,35 @@ import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
 import { addVotes, subtractVotes } from './dhondt-helpers';
 
-export class ResultsRow extends React.Component {
-  count = () => {
-    const votes = this.props.row.slice(2).map(stupidString => {
-      const saneString = stupidString.replace(' ', '');
-      return parseInt(saneString, 10);
-    });
+const cleanString = stupidString => ('' + stupidString).replace(' ', '');
 
-    const seats = this.props.seats;
+const string2Number = stupidString => {
+  const saneString = cleanString(stupidString);
+  return parseInt(saneString, 10);
+};
 
-    console.time('calculation');
+export const ResultsRow = ({ row, seats, withButton }) => {
+  const count = () => {
+    const votes = row.slice(2).map(string2Number);
+
+    console.clear();
+    console.log(row[1]);
     addVotes(votes, seats);
     subtractVotes(votes, seats);
-    console.timeEnd('calculation');
   };
 
-  lastRow = row => (
+  const lastRow = row => (
     <TableCell key={999}>
-      <Button size="small" color="primary" onClick={this.count}>
-        Count
+      <Button size="small" color="primary" onClick={count}>
+        Przelicz
       </Button>
     </TableCell>
   );
 
-  renderRow = (row, withButton) => [
+  const renderRow = (row, withButton) => [
     ...row.map((x, i) => <TableCell key={i}>{x}</TableCell>),
-    withButton ? this.lastRow(row) : <TableCell key={999} />,
+    withButton ? lastRow(row) : <TableCell key={999} />,
   ];
 
-  render() {
-    return (
-      <TableRow>
-        {this.renderRow(this.props.row, this.props.withButton)}
-      </TableRow>
-    );
-  }
-}
+  return <TableRow>{renderRow(row, withButton)}</TableRow>;
+};
