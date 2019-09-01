@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { ResultsTable } from './ResultsTable';
+import { ResultsTable } from './ResultsTable.jsx';
 // import { parse } from './resultsHelpers';
 // import { electionResults } from './2015-gl-lis-okr';
 import { parse } from './resultsHelpers.2011.js';
