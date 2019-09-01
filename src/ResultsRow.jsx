@@ -1,9 +1,9 @@
 import React, { useState, Fragment } from 'react';
-import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { addVotes, subtractVotes } from './dhondt-helpers';
 import { TopResultsRow } from './TopResultsRow.jsx';
 import { BottomResultsRow } from './BottomResultsRow.jsx';
+import { MiddleResultsRow } from './MiddleResultsRow.jsx';
 
 const string2Number = stupidString => {
   const saneString = ('' + stupidString).replace(' ', '');
@@ -31,6 +31,9 @@ export const ResultsRow = ({ row, seats, withButton }) => {
           withButton={withButton}
           count={count}
         ></TopResultsRow>
+      </TableRow>
+      <TableRow>
+        <MiddleResultsRow row={row} seats={seats}></MiddleResultsRow>
       </TableRow>
       {expanded ? <BottomResultsRow row={row}></BottomResultsRow> : null}
     </Fragment>

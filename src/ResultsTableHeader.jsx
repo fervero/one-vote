@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { makeStyles } from '@material-ui/styles';
 
@@ -8,18 +9,20 @@ const useStyles = makeStyles({
     textAlign: 'right',
   },
   name: { maxWidth: '12rem' },
+  buttonColumn: { maxWidth: '4rem' },
 });
 
 export const ResultsTableHeader = ({ row, count }) => {
   const classes = useStyles();
 
   return (
-    <Fragment>
+    <TableRow>
       {row.map((x, i) => (
         <TableCell key={i} className={i === 1 ? classes.name : classes.numeric}>
           {x}
         </TableCell>
       ))}
-    </Fragment>
+      <TableCell className={classes.buttonColumn}></TableCell>
+    </TableRow>
   );
 };

@@ -1,22 +1,52 @@
 import React, { Fragment } from 'react';
 import TableCell from '@material-ui/core/TableCell';
-import Button from '@material-ui/core/Button';
+import * as dhondt from 'dhondt';
 
-export const MiddleResultsRow = ({ row, withButton, count }) => {
+import { makeStyles } from '@material-ui/styles';
+
+const useStyles = makeStyles({
+  numeric: {
+    maxWidth: '1.25rem',
+    textAlign: 'right',
+  },
+  unpadded: {
+    paddingTop: '0',
+  },
+  unit: { fontSize: '80%', opacity: '.8', borderBottom: '0' },
+});
+
+const seatsLabel = n => {
+  switch (n) {
+    case 1: {
+      return '\xa0mandat';
+    }
+    case 2:
+    case 3:
+    case 4: {
+      return '\xa0mandaty';
+    }
+    default: {
+      return '\xa0mandatów';
+    }
+  }
+};
+
+export const MiddleResultsRow = ({ row, seats }) => {
+  const classes = useStyles();
+  const electionResults = [...dhondt.compute(row.slice(2), seats)];
+
   return (
     <Fragment>
-      {row.map((x, i) => (
-        <TableCell key={i}>{x}</TableCell>
-      ))}
-      {withButton ? (
-        <TableCell key={999}>
-          <Button size="small" color="primary" onClick={count}>
-            Przelicz
-          </Button>
+      {electionResults.map((x, i) => (
+        <TableCell
+          key={i}
+          className={[classes.numeric, classes.unpadded].join(' ')}
+        >
+          {x}
+          <span className={classes.unit}>{seatsLabel(x)}</span>
         </TableCell>
-      ) : (
-        <TableCell key={999} />
-      )}
+      ))}
+      <TableCell className={classes.unpadded}></TableCell>
     </Fragment>
   );
 };

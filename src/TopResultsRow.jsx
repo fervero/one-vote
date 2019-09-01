@@ -10,6 +10,7 @@ const useStyles = makeStyles({
   },
   name: { maxWidth: '12rem' },
   unit: { fontSize: '80%', opacity: '.8' },
+  borderless: { borderBottom: '0' },
 });
 
 export const TopResultsRow = ({ row, withButton, count }) => {
@@ -18,14 +19,21 @@ export const TopResultsRow = ({ row, withButton, count }) => {
   return (
     <Fragment>
       {row.map((x, i) => (
-        <TableCell key={i} className={i === 1 ? classes.name : classes.numeric}>
+        <TableCell
+          key={i}
+          rowSpan={i > 1 ? 1 : 2}
+          className={[
+            i === 1 ? classes.name : null,
+            i <= 1 ? null : classes.numeric,
+            i > 1 ? classes.borderless : null,
+          ].join(' ')}
+        >
           {x}
-
-          {i > 1 ? <span className={classes.unit}> gł.</span> : null}
+          {i > 1 ? <span className={classes.unit}>&nbsp;gł.</span> : null}
         </TableCell>
       ))}
       {withButton ? (
-        <TableCell key={999}>
+        <TableCell key={999} rowSpan="2">
           <Button size="small" color="primary" onClick={count}>
             Przelicz
           </Button>
