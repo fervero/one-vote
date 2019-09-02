@@ -9,7 +9,6 @@ const useStyles = makeStyles({
     textAlign: 'right',
   },
   name: { maxWidth: '12rem' },
-  buttonColumn: { maxWidth: '4rem' },
 });
 
 export const ResultsTableHeader = ({ row, count }) => {
@@ -22,7 +21,6 @@ export const ResultsTableHeader = ({ row, count }) => {
           {x}
         </TableCell>
       ))}
-      <TableCell className={classes.buttonColumn}></TableCell>
     </TableRow>
   );
 };

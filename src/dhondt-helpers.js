@@ -1,5 +1,9 @@
 import * as dhondt from 'dhondt';
-import { partiesShort } from './2011-kandydaci-sejm.js';
+
+const string2Number = stupidString => {
+  const saneString = ('' + stupidString).replace(' ', '');
+  return parseInt(saneString, 10);
+};
 
 // 2015, okręg z OKW w Rzeszowie - 54 głosy więcej na PSL = 1 mandat więcej na PSL
 const bisectAddingVotesOnPosition = (votes, seats, position) => {
@@ -26,12 +30,9 @@ const bisectAddingVotesOnPosition = (votes, seats, position) => {
     }
   }
 
-  const returnValue =
-    dhondt.compute(votesCopy, seats)[position] === seatsActuallyGot
-      ? upperLimit - votes[position]
-      : lowerLimit - votes[position];
-
-  return returnValue;
+  return dhondt.compute(votesCopy, seats)[position] === seatsActuallyGot
+    ? upperLimit - votes[position]
+    : lowerLimit - votes[position];
 };
 
 // 2015, okręg z OKW w Olsztynie: 128 głosów dla .N mniej = jeden mandat mniej
@@ -73,19 +74,22 @@ const bisectSubtractVotesOnPosition = (votes, seats, position) => {
     : lowerLimit - votes[position];
 };
 
-export const addVotes = (votes, seats) => {
-  console.log('Minimum votes added to change the outcome:');
-  for (let i = 0, len = votes.length; i < len; i++) {
-    console.log(partiesShort[i], bisectAddingVotesOnPosition(votes, seats, i));
-  }
-};
+export const addVotes = (votes, seats) =>
+  votes.map((x, i) => bisectAddingVotesOnPosition(votes, seats, i));
 
-export const subtractVotes = (votes, seats) => {
-  console.log('Minimum votes subtracted to change the outcome:');
-  for (let i = 0, len = votes.length; i < len; i++) {
-    console.log(
-      partiesShort[i],
-      bisectSubtractVotesOnPosition(votes, seats, i)
-    );
-  }
+export const subtractVotes = (votes, seats) =>
+  votes.map((x, i) => bisectSubtractVotesOnPosition(votes, seats, i));
+
+export const minVotesToChangeSomething = (row, seats) => {
+  const votes = row.slice(2).map(string2Number);
+  const moreVotes = addVotes(votes, seats).map(x => (x > 0 ? x : Infinity));
+
+  const lessVotes = subtractVotes(votes, seats).map(x =>
+    x < 0 ? x : -Infinity
+  );
+
+  const positiveMinimum = Math.min(...moreVotes);
+  const negativeMaximum = Math.max(...lessVotes);
+
+  return Math.min(positiveMinimum, -negativeMaximum);
 };
