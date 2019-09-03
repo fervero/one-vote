@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import { DistrictNameCell } from './DistrictNameCell.jsx';
 import { makeStyles } from '@material-ui/styles';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles({
   numeric: {
@@ -13,7 +14,11 @@ const useStyles = makeStyles({
   borderless: { borderBottom: '0' },
 });
 
-export const TopResultsRow = ({ row, minVotesToChangeSomething }) => {
+export const TopResultsRow = ({
+  row,
+  minVotesToChangeSomething,
+  onVotesChange,
+}) => {
   const classes = useStyles();
 
   return (
@@ -31,7 +36,8 @@ export const TopResultsRow = ({ row, minVotesToChangeSomething }) => {
           key={i + 2}
           className={[classes.numeric, classes.borderless].join(' ')}
         >
-          {x}
+          <TextField value={x} type="number" onChange={onVotesChange(i + 2)} />
+
           <span className={classes.unit}>&nbsp;gł.</span>
         </TableCell>
       ))}

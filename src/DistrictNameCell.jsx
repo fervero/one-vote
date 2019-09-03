@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 
 export const DistrictNameCell = ({ name, minVotesToChangeSomething }) => (

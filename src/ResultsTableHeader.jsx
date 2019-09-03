@@ -21,6 +21,7 @@ export const ResultsTableHeader = ({ row, count }) => {
           {x}
         </TableCell>
       ))}
+      <TableCell></TableCell>
     </TableRow>
   );
 };
