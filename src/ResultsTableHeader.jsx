@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/styles';
 const useStyles = makeStyles({
   numeric: {
     maxWidth: '1.25rem',
-    textAlign: 'right',
+    textAlign: 'center',
   },
   name: { maxWidth: '12rem' },
 });

@@ -4,7 +4,7 @@ import { minVotesToChangeSomething } from './dhondt-helpers';
 import { TopResultsRow } from './TopResultsRow.jsx';
 import { MiddleResultsRow } from './MiddleResultsRow.jsx';
 
-export const ResultsRow = ({ row, seats }) => {
+export const ResultsRow = ({ row, seats, districtNumber, districtName }) => {
   const [values, setValues] = useState([...row]);
 
   const onVotesChange = index => event => {
@@ -18,6 +18,8 @@ export const ResultsRow = ({ row, seats }) => {
       <TableRow>
         <TopResultsRow
           row={values}
+          districtNumber={districtNumber}
+          districtName={districtName}
           minVotesToChangeSomething={minVotes}
           onVotesChange={onVotesChange}
         ></TopResultsRow>

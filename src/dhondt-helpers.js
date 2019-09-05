@@ -88,8 +88,5 @@ export const minVotesToChangeSomething = (row, seats) => {
     x < 0 ? x : -Infinity
   );
 
-  const positiveMinimum = Math.min(...moreVotes);
-  const negativeMaximum = Math.max(...lessVotes);
-
-  return Math.min(positiveMinimum, -negativeMaximum);
+  return { moreVotes, lessVotes };
 };

@@ -33,7 +33,7 @@ const seatsLabel = n => {
 
 export const MiddleResultsRow = ({ row, seats }) => {
   const classes = useStyles();
-  const electionResults = [...dhondt.compute(row.slice(2), seats)];
+  const electionResults = [...dhondt.compute(row, seats)];
 
   return (
     <Fragment>

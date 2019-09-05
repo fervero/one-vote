@@ -7,7 +7,15 @@ import { seatsArray } from './2011-kandydaci-sejm';
 import { ResultsTableHeader } from './ResultsTableHeader.jsx';
 
 const renderTable = rows =>
-  rows.map((x, i) => <ResultsRow row={x} key={x[1]} seats={seatsArray[i]} />);
+  rows.map((x, i) => (
+    <ResultsRow
+      row={x.slice(2)}
+      districtName={x[1]}
+      districtNumber={x[0]}
+      key={x[1]}
+      seats={seatsArray[i]}
+    />
+  ));
 
 const wrapTable = rows => (
   <Table size="small">

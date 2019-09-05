@@ -3,10 +3,15 @@ import TableCell from '@material-ui/core/TableCell';
 import { DistrictNameCell } from './DistrictNameCell.jsx';
 import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles({
   numeric: {
     maxWidth: '1.25rem',
+    textAlign: 'right',
+  },
+  rite: {
     textAlign: 'right',
   },
   name: { maxWidth: '12rem' },
@@ -18,27 +23,30 @@ export const TopResultsRow = ({
   row,
   minVotesToChangeSomething,
   onVotesChange,
+  districtNumber,
+  districtName,
 }) => {
   const classes = useStyles();
 
   return (
     <Fragment>
       <TableCell rowSpan="2" className={classes.numeric}>
-        {row[0]}
+        {districtNumber}
       </TableCell>
-      <DistrictNameCell
-        name={row[1]}
-        minVotesToChangeSomething={minVotesToChangeSomething}
-      ></DistrictNameCell>
+      <DistrictNameCell name={districtName}></DistrictNameCell>
 
-      {row.slice(2).map((x, i) => (
+      {row.map((x, i) => (
         <TableCell
           key={i + 2}
           className={[classes.numeric, classes.borderless].join(' ')}
         >
-          <TextField value={x} type="number" onChange={onVotesChange(i + 2)} />
-
-          <span className={classes.unit}>&nbsp;gł.</span>
+          <Input
+            value={x}
+            type="number"
+            onChange={onVotesChange(i)}
+            className={classes.rite}
+            endAdornment={<InputAdornment position="end">gł.</InputAdornment>}
+          />
         </TableCell>
       ))}
     </Fragment>
