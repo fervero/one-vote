@@ -81,7 +81,7 @@ export const subtractVotes = (votes, seats) =>
   votes.map((x, i) => bisectSubtractVotesOnPosition(votes, seats, i));
 
 export const minVotesToChangeSomething = (row, seats) => {
-  const votes = row.slice(2).map(string2Number);
+  const votes = row.map(string2Number);
   const moreVotes = addVotes(votes, seats).map(x => (x > 0 ? x : Infinity));
 
   const lessVotes = subtractVotes(votes, seats).map(x =>

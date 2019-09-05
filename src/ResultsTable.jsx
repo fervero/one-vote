@@ -18,7 +18,7 @@ const renderTable = rows =>
   ));
 
 const wrapTable = rows => (
-  <Table size="small">
+  <Table>
     <TableHead>
       <ResultsTableHeader row={rows[0]}></ResultsTableHeader>
     </TableHead>

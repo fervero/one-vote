@@ -2,9 +2,7 @@ import React, { Fragment } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import { DistrictNameCell } from './DistrictNameCell.jsx';
 import { makeStyles } from '@material-ui/styles';
-import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles({
   numeric: {
@@ -26,6 +24,7 @@ export const TopResultsRow = ({
   districtNumber,
   districtName,
 }) => {
+  const { moreVotes, lessVotes } = minVotesToChangeSomething;
   const classes = useStyles();
 
   return (
@@ -40,12 +39,13 @@ export const TopResultsRow = ({
           key={i + 2}
           className={[classes.numeric, classes.borderless].join(' ')}
         >
+          +{moreVotes[i]}/{lessVotes[i]}
           <Input
+            variant="outlined"
             value={x}
             type="number"
-            onChange={onVotesChange(i)}
             className={classes.rite}
-            endAdornment={<InputAdornment position="end">gł.</InputAdornment>}
+            onChange={onVotesChange(i)}
           />
         </TableCell>
       ))}
