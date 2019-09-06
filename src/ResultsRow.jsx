@@ -5,13 +5,18 @@ import { TopResultsRow } from './TopResultsRow.jsx';
 import { MiddleResultsRow } from './MiddleResultsRow.jsx';
 
 export const ResultsRow = ({ row, seats, districtNumber, districtName }) => {
-  const [values, setValues] = useState([...row]);
+  const [values, updateValues] = useState([...row]);
+  const [minVotes, updateMinVotes] = useState(
+    minVotesToChangeSomething(row, seats)
+  );
 
   const onVotesChange = index => event => {
-    setValues(values.map((x, i) => (i === index ? event.target.value : x)));
+    const newValues = values.map((x, i) =>
+      i === index ? event.target.value : x
+    );
+    updateValues(newValues);
+    updateMinVotes(minVotesToChangeSomething(newValues, seats));
   };
-
-  const minVotes = minVotesToChangeSomething(row, seats);
 
   return (
     <Fragment>

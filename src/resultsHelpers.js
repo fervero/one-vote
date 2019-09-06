@@ -12,13 +12,18 @@ const pickRelevant = row => [
 
 const replaceHeader = row => [row[0], row[1], ...parties];
 
+const strings2numbers = row => {
+  return row.map((x, i) => (i > 1 ? parseInt(x.replace(/ /g, ''), 10) : x));
+};
+
 export const parse = csvString =>
   new Promise(resolve => {
     Papa.parse(csvString, {
       complete: parsed => {
         const relevant = parsed.data.map(pickRelevant);
+
         const relevantWithReplacedHead = relevant.map((row, i) =>
-          i > 0 ? row : replaceHeader(row)
+          i > 0 ? strings2numbers(row) : replaceHeader(row)
         );
 
         resolve(relevantWithReplacedHead);

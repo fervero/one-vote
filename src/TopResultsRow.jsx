@@ -2,7 +2,11 @@ import React, { Fragment } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import { DistrictNameCell } from './DistrictNameCell.jsx';
 import { makeStyles } from '@material-ui/styles';
-import Input from '@material-ui/core/Input';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
+const RED = '#D32F2F';
+const GREEN = '#4CAF50';
 
 const useStyles = makeStyles({
   numeric: {
@@ -11,10 +15,13 @@ const useStyles = makeStyles({
   },
   rite: {
     textAlign: 'right',
+    fontSize: '8px !important',
   },
   name: { maxWidth: '12rem' },
   unit: { fontSize: '80%', opacity: '.8' },
   borderless: { borderBottom: '0' },
+  add: { fontSize: '80%', color: GREEN },
+  subtract: { fontSize: '80%', color: RED },
 });
 
 export const TopResultsRow = ({
@@ -39,13 +46,19 @@ export const TopResultsRow = ({
           key={i + 2}
           className={[classes.numeric, classes.borderless].join(' ')}
         >
-          +{moreVotes[i]}/{lessVotes[i]}
-          <Input
-            variant="outlined"
+          <span className={classes.add}>+{moreVotes[i]}</span>/
+          <span className={classes.subtract}>
+            {lessVotes[i] > -Infinity ? lessVotes[i] : '-'}
+          </span>
+          <br />
+          <TextField
             value={x}
             type="number"
             className={classes.rite}
             onChange={onVotesChange(i)}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">gł.</InputAdornment>,
+            }}
           />
         </TableCell>
       ))}

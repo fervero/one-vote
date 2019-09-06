@@ -42,8 +42,9 @@ export const MiddleResultsRow = ({ row, seats }) => {
           key={i}
           className={[classes.numeric, classes.unpadded].join(' ')}
         >
-          {x}
-          <span className={classes.unit}>{seatsLabel(x)}</span>
+          <span className={classes.unit}>
+            {x} {seatsLabel(x)}
+          </span>
         </TableCell>
       ))}
       <TableCell className={classes.unpadded}></TableCell>
