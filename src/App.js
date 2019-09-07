@@ -4,7 +4,20 @@ import { ResultsTable } from './ResultsTable.jsx';
 import { elections } from './results-barrel';
 import { TopBar } from './TopBar.jsx';
 
+import { makeStyles } from '@material-ui/styles';
+
+const useStyles = makeStyles({
+  root: {
+    width: '100%',
+  },
+  tableWrapper: {
+    maxHeight: 'calc(100vh - 12rem)',
+    overflow: 'auto',
+  },
+});
+
 export const App = () => {
+  const classes = useStyles();
   const [parsedElections, setElections] = useState([]);
   const [parsedElectionResults, updateElectionResults] = useState([]);
   const [electionYears, changeElectionYears] = useState([]);
@@ -66,7 +79,11 @@ export const App = () => {
         fromPoll={fromPoll}
         activeYear={electionYear}
       ></TopBar>
-      <ResultsTable results={parsedElectionResults} />
+      <div className={classes.root}>
+        <div className={classes.tableWrapper}>
+          <ResultsTable results={parsedElectionResults} />
+        </div>
+      </div>
     </div>
   );
 };

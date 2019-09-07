@@ -21,7 +21,7 @@ export const TopBar = ({ years, selectYear, activeYear, fromPoll }) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed">
+      <AppBar position="static">
         <Toolbar>
           {years.map(year =>
             year === activeYear ? (

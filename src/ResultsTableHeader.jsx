@@ -9,12 +9,7 @@ const useStyles = makeStyles({
     textAlign: 'center',
   },
   name: { maxWidth: '12rem' },
-  sticky: {
-    position: 'sticky',
-    top: '4rem',
-    background: '#fff',
-    zIndex: 100,
-  },
+  sticky: { zIndex: 100 },
 });
 
 export const ResultsTableHeader = ({ row }) => {

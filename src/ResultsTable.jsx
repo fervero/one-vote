@@ -1,14 +1,12 @@
 import React from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableHead from '@material-ui/core/TableHead';
+import { Table, TableBody, TableHead } from '@material-ui/core';
 import { ResultsRow } from './ResultsRow.jsx';
 import { seatsArray } from './2011-kandydaci-sejm';
 import { ResultsTableHeader } from './ResultsTableHeader.jsx';
 
 export function ResultsTable(props) {
   return props && props.results && props.results.length ? (
-    <Table size="small">
+    <Table size="small" stickyHeader>
       <TableHead>
         <ResultsTableHeader row={props.results[0]}></ResultsTableHeader>
       </TableHead>
