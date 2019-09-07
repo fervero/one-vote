@@ -8,7 +8,7 @@ export const ResultsRow = ({ row, seats, districtNumber, districtName }) => {
   useEffect(() => {
     updateValues([...row]);
     updateMinVotes(minVotesToChangeSomething([...row], seats));
-  }, [row]);
+  }, [row, seats]);
 
   const [values, updateValues] = useState([...row]);
 

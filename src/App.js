@@ -37,11 +37,33 @@ export const App = () => {
     updateElectionResults(yearInArray.results);
   };
 
+  const poll = [0.434, 0.212, 0.141, 0.057, 0, 0, 0];
+
+  const fromPoll = () => {
+    setElectionYear(null);
+    const { results } = parsedElections[0];
+
+    const mappedResults = [
+      [...results[0].slice(0, 2), 'PiS', 'KO', 'Lewica', 'PSL'],
+      ...results
+        .slice(1)
+        .map(row =>
+          row
+            .slice(0, 6)
+            .map((x, i) => (i < 2 ? x : Math.round(100000 * poll[i - 2])))
+        ),
+    ];
+    console.table(parsedElections[0]);
+    console.table(mappedResults);
+    updateElectionResults(mappedResults);
+  };
+
   return (
     <div className="App">
       <TopBar
         years={electionYears}
         selectYear={selectYear}
+        fromPoll={fromPoll}
         activeYear={electionYear}
       ></TopBar>
       <ResultsTable results={parsedElectionResults} />
