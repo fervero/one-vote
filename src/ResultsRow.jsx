@@ -1,11 +1,17 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import TableRow from '@material-ui/core/TableRow';
 import { minVotesToChangeSomething } from './dhondt-helpers';
 import { TopResultsRow } from './TopResultsRow.jsx';
 import { MiddleResultsRow } from './MiddleResultsRow.jsx';
 
 export const ResultsRow = ({ row, seats, districtNumber, districtName }) => {
+  useEffect(() => {
+    updateValues([...row]);
+    updateMinVotes(minVotesToChangeSomething([...row], seats));
+  }, [row]);
+
   const [values, updateValues] = useState([...row]);
+
   const [minVotes, updateMinVotes] = useState(
     minVotesToChangeSomething(row, seats)
   );

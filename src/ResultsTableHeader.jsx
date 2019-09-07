@@ -9,10 +9,15 @@ const useStyles = makeStyles({
     textAlign: 'center',
   },
   name: { maxWidth: '12rem' },
-  sticky: { position: 'sticky', top: 0, background: '#fff', zIndex: 100 },
+  sticky: {
+    position: 'sticky',
+    top: '4rem',
+    background: '#fff',
+    zIndex: 100,
+  },
 });
 
-export const ResultsTableHeader = ({ row, count }) => {
+export const ResultsTableHeader = ({ row }) => {
   const classes = useStyles();
 
   return (
@@ -29,7 +34,7 @@ export const ResultsTableHeader = ({ row, count }) => {
           {x}
         </TableCell>
       ))}
-      <TableCell></TableCell>
+      <TableCell className={classes.sticky}></TableCell>
     </TableRow>
   );
 };

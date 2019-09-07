@@ -13,7 +13,7 @@ export function ResultsTable(props) {
         <ResultsTableHeader row={props.results[0]}></ResultsTableHeader>
       </TableHead>
       <TableBody>
-        {props.results.splice(1).map((x, i) => (
+        {props.results.slice(1).map((x, i) => (
           <ResultsRow
             row={x.slice(2)}
             districtName={x[1]}

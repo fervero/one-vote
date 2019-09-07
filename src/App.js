@@ -1,28 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { ResultsTable } from './ResultsTable.jsx';
-import { parse } from './resultsHelpers';
-import { electionResults } from './2015-gl-lis-okr';
-// import { parse } from './resultsHelpers.2011.js';
-// import { electionResults } from './2011-kandydaci-sejm';
+import { elections } from './results-barrel';
+import { TopBar } from './TopBar.jsx';
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {};
+export const App = () => {
+  const [parsedElections, setElections] = useState([]);
+  const [parsedElectionResults, updateElectionResults] = useState([]);
+  const [electionYears, changeElectionYears] = useState([]);
+  const [electionYear, setElectionYear] = useState(null);
 
-    parse(electionResults).then(parsedElectionResults => {
-      this.setState({ parsedElectionResults });
+  useEffect(() => {
+    elections.then(resultsArray => setElections(resultsArray));
+  }, []);
+
+  useEffect(() => {
+    elections.then(resultsArray => {
+      const years = resultsArray.map(({ year }) => year);
+      changeElectionYears(years);
     });
-  }
+  }, []);
 
-  render() {
-    return (
-      <div className="App">
-        <ResultsTable results={this.state.parsedElectionResults} />
-      </div>
+  useEffect(() => {
+    elections.then(resultsArray => {
+      updateElectionResults(resultsArray[0].results);
+    });
+  }, []);
+
+  const selectYear = year => () => {
+    setElectionYear(year);
+
+    const yearInArray = parsedElections.find(
+      election => election.year === year
     );
-  }
-}
+
+    updateElectionResults(yearInArray.results);
+  };
+
+  return (
+    <div className="App">
+      <TopBar
+        years={electionYears}
+        selectYear={selectYear}
+        activeYear={electionYear}
+      ></TopBar>
+      <ResultsTable results={parsedElectionResults} />
+    </div>
+  );
+};
 
 export default App;
