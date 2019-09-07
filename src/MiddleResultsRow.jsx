@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import TableCell from '@material-ui/core/TableCell';
-import * as dhondt from 'dhondt';
 
 import { makeStyles } from '@material-ui/styles';
 
@@ -31,13 +30,12 @@ const seatsLabel = n => {
   }
 };
 
-export const MiddleResultsRow = ({ row, seats }) => {
+export function MiddleResultsRow({ row, seats, electionResults }) {
   const classes = useStyles();
-  const electionResults = [...dhondt.compute(row, seats)];
 
   return (
     <Fragment>
-      {electionResults.map((x, i) => (
+      {(electionResults || []).map((x, i) => (
         <TableCell
           key={i}
           className={[classes.numeric, classes.unpadded].join(' ')}
@@ -50,4 +48,4 @@ export const MiddleResultsRow = ({ row, seats }) => {
       <TableCell className={classes.unpadded}></TableCell>
     </Fragment>
   );
-};
+}

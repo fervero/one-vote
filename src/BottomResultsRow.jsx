@@ -2,7 +2,7 @@ import React from 'react';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
-export const BottomResultsRow = ({ row, positiveMinimum, negativeMaximum }) => {
+export function BottomResultsRow({ row, positiveMinimum, negativeMaximum }) {
   return (
     <TableRow>
       <TableCell colSpan={row.length + 1}>
@@ -13,4 +13,4 @@ export const BottomResultsRow = ({ row, positiveMinimum, negativeMaximum }) => {
       </TableCell>
     </TableRow>
   );
-};
+}

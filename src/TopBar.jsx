@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const TopBar = ({ years, selectYear, activeYear, fromPoll }) => {
+export function TopBar({ years, selectYear, activeYear, fromPoll }) {
   const classes = useStyles();
 
   return (
@@ -49,4 +49,4 @@ export const TopBar = ({ years, selectYear, activeYear, fromPoll }) => {
       </AppBar>
     </div>
   );
-};
+}

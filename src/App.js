@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const App = () => {
+export function App() {
   const classes = useStyles();
   const [parsedElections, setElections] = useState([]);
   const [parsedElectionResults, updateElectionResults] = useState([]);
@@ -66,8 +66,7 @@ export const App = () => {
             .map((x, i) => (i < 2 ? x : Math.round(100000 * poll[i - 2])))
         ),
     ];
-    console.table(parsedElections[0]);
-    console.table(mappedResults);
+
     updateElectionResults(mappedResults);
   };
 
@@ -86,6 +85,6 @@ export const App = () => {
       </div>
     </div>
   );
-};
+}
 
 export default App;

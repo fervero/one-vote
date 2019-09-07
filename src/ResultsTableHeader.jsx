@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   sticky: { zIndex: 100 },
 });
 
-export const ResultsTableHeader = ({ row }) => {
+export function ResultsTableHeader({ row }) {
   const classes = useStyles();
 
   return (
@@ -32,4 +32,4 @@ export const ResultsTableHeader = ({ row }) => {
       <TableCell className={classes.sticky}></TableCell>
     </TableRow>
   );
-};
+}

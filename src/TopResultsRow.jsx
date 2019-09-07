@@ -24,13 +24,13 @@ const useStyles = makeStyles({
   subtract: { fontSize: '80%', color: RED },
 });
 
-export const TopResultsRow = ({
+export function TopResultsRow({
   row,
   minVotesToChangeSomething,
   onVotesChange,
   districtNumber,
   districtName,
-}) => {
+}) {
   const { moreVotes, lessVotes } = minVotesToChangeSomething;
   const classes = useStyles();
 
@@ -64,4 +64,4 @@ export const TopResultsRow = ({
       ))}
     </Fragment>
   );
-};
+}
