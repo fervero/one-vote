@@ -1,7 +1,11 @@
 import React, { Fragment } from 'react';
 import TableCell from '@material-ui/core/TableCell';
-
 import { makeStyles } from '@material-ui/styles';
+import { connect } from 'react-redux';
+
+const mapStateToProps = (state, { rowNumber }) => ({
+  seatsWonInDistrict: state.seatsWonInAllDistricts[rowNumber],
+});
 
 const useStyles = makeStyles({
   numeric: {
@@ -30,12 +34,12 @@ const seatsLabel = n => {
   }
 };
 
-export function MiddleResultsRow({ row, seats, electionResults }) {
+function MiddleResultsRowComponent({ seatsWonInDistrict }) {
   const classes = useStyles();
 
   return (
     <Fragment>
-      {(electionResults || []).map((x, i) => (
+      {(seatsWonInDistrict || []).map((x, i) => (
         <TableCell
           key={i}
           className={[classes.numeric, classes.unpadded].join(' ')}
@@ -49,3 +53,7 @@ export function MiddleResultsRow({ row, seats, electionResults }) {
     </Fragment>
   );
 }
+
+export const MiddleResultsRow = connect(mapStateToProps)(
+  MiddleResultsRowComponent
+);

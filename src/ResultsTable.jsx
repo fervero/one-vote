@@ -1,36 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import { Table, TableBody, TableHead } from '@material-ui/core';
 import { ResultsRow } from './ResultsRow.jsx';
-import { seatsArray } from './2011-kandydaci-sejm';
+import { seatsArray } from './results-barrel';
 import { ResultsTableHeader } from './ResultsTableHeader.jsx';
 
-export function ResultsTable(props) {
-  let electionResults = [];
+const mapStateToProps = state => ({
+  resultsInAllDistricts: state.resultsInAllDistricts,
+});
 
-  const resultsChange = rowNumber => results => {
-    electionResults[rowNumber] = results;
-    console.table(electionResults);
-  };
-
-  return props && props.results && props.results.length ? (
+const ResultsTableComponent = ({ resultsInAllDistricts }) => {
+  return resultsInAllDistricts && resultsInAllDistricts.length ? (
     <Table size="small" stickyHeader>
       <TableHead>
-        <ResultsTableHeader row={props.results[0]}></ResultsTableHeader>
+        <ResultsTableHeader></ResultsTableHeader>
       </TableHead>
       <TableBody>
-        {props.results.slice(1).map((x, i) => (
-          <ResultsRow
-            row={x.slice(2)}
-            districtName={x[1]}
-            districtNumber={x[0]}
-            key={x[1]}
-            seats={seatsArray[i]}
-            resultsChange={resultsChange(i)}
-          />
+        {resultsInAllDistricts.map((x, i) => (
+          <ResultsRow rowNumber={i} key={i} seats={seatsArray[i]} />
         ))}
       </TableBody>
     </Table>
   ) : (
     <span>no data</span>
   );
-}
+};
+
+export const ResultsTable = connect(mapStateToProps)(ResultsTableComponent);

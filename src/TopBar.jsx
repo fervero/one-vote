@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function TopBar({ years, selectYear, activeYear, fromPoll }) {
+export function TopBar({ years, selectYear, activeYear }) {
   const classes = useStyles();
 
   return (
@@ -44,7 +44,6 @@ export function TopBar({ years, selectYear, activeYear, fromPoll }) {
               </Button>
             )
           )}
-          <Button onClick={fromPoll}>Mam sondaż!</Button>
         </Toolbar>
       </AppBar>
     </div>

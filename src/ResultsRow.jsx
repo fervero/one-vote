@@ -1,63 +1,38 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import TableRow from '@material-ui/core/TableRow';
-import { minVotesToChangeSomething } from './dhondt-helpers';
+import { minVotesToChangeSomething } from './dHondtHelpers';
 import { TopResultsRow } from './TopResultsRow.jsx';
 import { MiddleResultsRow } from './MiddleResultsRow.jsx';
 import * as dhondt from 'dhondt';
 
-export function ResultsRow({
-  row,
-  seats,
-  districtNumber,
-  districtName,
-  resultsChange,
-}) {
-  const [electionResults, setElectionResults] = useState([]);
+import { connect } from 'react-redux';
 
+const mapStateToProps = (state, { rowNumber }) => ({
+  resultsInDistrict: state.resultsInAllDistricts[rowNumber],
+});
+
+function ResultsRowComponent({ seats, resultsInDistrict, rowNumber }) {
   useEffect(() => {
-    updateValues([...row]);
-    updateMinVotes(minVotesToChangeSomething([...row], seats));
-    const newResults = [...dhondt.compute(row, seats)];
-    setElectionResults(newResults);
-    resultsChange(newResults);
-  }, [row, seats, resultsChange]);
-
-  const [values, updateValues] = useState([...row]);
+    updateMinVotes(minVotesToChangeSomething([...resultsInDistrict], seats));
+  }, [resultsInDistrict, seats]);
 
   const [minVotes, updateMinVotes] = useState(
-    minVotesToChangeSomething(row, seats)
+    minVotesToChangeSomething(resultsInDistrict, seats)
   );
-
-  const onVotesChange = index => event => {
-    const newValues = values.map((x, i) =>
-      i === index ? event.target.value : x
-    );
-
-    updateValues(newValues);
-    updateMinVotes(minVotesToChangeSomething(newValues, seats));
-    const newResults = [...dhondt.compute(newValues, seats)];
-    setElectionResults(newResults);
-    resultsChange(newResults);
-  };
 
   return (
     <Fragment>
       <TableRow>
         <TopResultsRow
-          row={values}
-          districtNumber={districtNumber}
-          districtName={districtName}
+          rowNumber={rowNumber}
           minVotesToChangeSomething={minVotes}
-          onVotesChange={onVotesChange}
         ></TopResultsRow>
       </TableRow>
       <TableRow>
-        <MiddleResultsRow
-          row={values}
-          seats={seats}
-          electionResults={electionResults}
-        ></MiddleResultsRow>
+        <MiddleResultsRow rowNumber={rowNumber}></MiddleResultsRow>
       </TableRow>
     </Fragment>
   );
 }
+
+export const ResultsRow = connect(mapStateToProps)(ResultsRowComponent);

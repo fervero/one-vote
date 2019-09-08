@@ -1,5 +1,5 @@
 import { parse as parse2015 } from './resultsHelpers';
-import { electionResults as results2015 } from './2015-gl-lis-okr';
+import { electionResults as results2015, seatsArray } from './2015-gl-lis-okr';
 
 import { parse as parse2011 } from './resultsHelpers.2011.js';
 import { electionResults as results2011 } from './2011-kandydaci-sejm';
@@ -17,3 +17,5 @@ export const elections = Promise.all([
     results: parsed2015,
   },
 ]);
+
+export { seatsArray };

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import { Provider } from 'react-redux';
+import { store } from './store';
 import { ResultsTable } from './ResultsTable.jsx';
 import { elections } from './results-barrel';
 import { TopBar } from './TopBar.jsx';
-
+import { setResults, setParties, setDistricts } from './actionCreators';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles({
@@ -19,7 +21,6 @@ const useStyles = makeStyles({
 export function App() {
   const classes = useStyles();
   const [parsedElections, setElections] = useState([]);
-  const [parsedElectionResults, updateElectionResults] = useState([]);
   const [electionYears, changeElectionYears] = useState([]);
   const [electionYear, setElectionYear] = useState(null);
 
@@ -34,12 +35,6 @@ export function App() {
     });
   }, []);
 
-  useEffect(() => {
-    elections.then(resultsArray => {
-      updateElectionResults(resultsArray[0].results);
-    });
-  }, []);
-
   const selectYear = year => () => {
     setElectionYear(year);
 
@@ -47,43 +42,36 @@ export function App() {
       election => election.year === year
     );
 
-    updateElectionResults(yearInArray.results);
-  };
+    const results = yearInArray.results;
 
-  const poll = [0.434, 0.212, 0.141, 0.057, 0, 0, 0];
+    store.dispatch(
+      setDistricts(
+        results.slice(1).map(([districtNumber, districtName]) => ({
+          districtNumber,
+          districtName,
+        }))
+      )
+    );
 
-  const fromPoll = () => {
-    setElectionYear(null);
-    const { results } = parsedElections[0];
-
-    const mappedResults = [
-      [...results[0].slice(0, 2), 'PiS', 'KO', 'Lewica', 'PSL'],
-      ...results
-        .slice(1)
-        .map(row =>
-          row
-            .slice(0, 6)
-            .map((x, i) => (i < 2 ? x : Math.round(100000 * poll[i - 2])))
-        ),
-    ];
-
-    updateElectionResults(mappedResults);
+    store.dispatch(setResults(results.slice(1).map(row => row.slice(2))));
+    store.dispatch(setParties(results[0].slice(2)));
   };
 
   return (
-    <div className="App">
-      <TopBar
-        years={electionYears}
-        selectYear={selectYear}
-        fromPoll={fromPoll}
-        activeYear={electionYear}
-      ></TopBar>
-      <div className={classes.root}>
-        <div className={classes.tableWrapper}>
-          <ResultsTable results={parsedElectionResults} />
+    <Provider store={store}>
+      <div className="App">
+        <TopBar
+          years={electionYears}
+          selectYear={selectYear}
+          activeYear={electionYear}
+        ></TopBar>
+        <div className={classes.root}>
+          <div className={classes.tableWrapper}>
+            <ResultsTable />
+          </div>
         </div>
       </div>
-    </div>
+    </Provider>
   );
 }
 

@@ -4,6 +4,20 @@ import { DistrictNameCell } from './DistrictNameCell.jsx';
 import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { connect } from 'react-redux';
+import { setSingleResults } from './actionCreators';
+import { get as _get } from 'lodash';
+
+const mapStateToProps = (state, { rowNumber }) => {
+  const district = (state.votingDistricts || [])[rowNumber];
+
+  return {
+    resultsInDistrict: state.resultsInAllDistricts[rowNumber],
+    districtName: _get(district, 'districtName'),
+    districtNumber: _get(district, 'districtNumber'),
+    seats: _get(district, 'seats'),
+  };
+};
 
 const RED = '#D32F2F';
 const GREEN = '#4CAF50';
@@ -17,22 +31,31 @@ const useStyles = makeStyles({
     textAlign: 'right',
     fontSize: '8px !important',
   },
-  name: { maxWidth: '12rem' },
   unit: { fontSize: '80%', opacity: '.8' },
   borderless: { borderBottom: '0' },
   add: { fontSize: '80%', color: GREEN },
   subtract: { fontSize: '80%', color: RED },
 });
 
-export function TopResultsRow({
-  row,
+function TopResultsRowComponent({
   minVotesToChangeSomething,
-  onVotesChange,
   districtNumber,
   districtName,
+  resultsInDistrict,
+  dispatch,
 }) {
   const { moreVotes, lessVotes } = minVotesToChangeSomething;
   const classes = useStyles();
+
+  const onVotesChange = cellNumber => event => {
+    const action = setSingleResults({
+      districtNumber: districtNumber - 1,
+      cellNumber,
+      value: +event.target.value,
+    });
+
+    dispatch(action);
+  };
 
   return (
     <Fragment>
@@ -41,9 +64,9 @@ export function TopResultsRow({
       </TableCell>
       <DistrictNameCell name={districtName}></DistrictNameCell>
 
-      {row.map((x, i) => (
+      {(resultsInDistrict || []).map((x, i) => (
         <TableCell
-          key={i + 2}
+          key={i}
           className={[classes.numeric, classes.borderless].join(' ')}
         >
           <span className={classes.add}>+{moreVotes[i]}</span>/
@@ -65,3 +88,5 @@ export function TopResultsRow({
     </Fragment>
   );
 }
+
+export const TopResultsRow = connect(mapStateToProps)(TopResultsRowComponent);
