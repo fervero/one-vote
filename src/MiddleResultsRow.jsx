@@ -45,7 +45,7 @@ function MiddleResultsRowComponent({ seatsWonInDistrict }) {
           className={[classes.numeric, classes.unpadded].join(' ')}
         >
           <span className={classes.unit}>
-            {x} {seatsLabel(x)}
+            {x}&nbsp;{seatsLabel(x)}
           </span>
         </TableCell>
       ))}

@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({
-  partyNames: state.partyNames,
+  parties: state.parties,
   seatsWonInAllDistricts: state.seatsWonInAllDistricts,
 });
 
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   sticky: { zIndex: 100 },
 });
 
-function ResultsTableHeaderComponent({ partyNames, seatsWonInAllDistricts }) {
+function ResultsTableHeaderComponent({ parties, seatsWonInAllDistricts }) {
   const classes = useStyles();
 
   const sumOfSeatsByParty = seatsWonInAllDistricts.reduce((rowA, rowB) =>
@@ -33,12 +33,12 @@ function ResultsTableHeaderComponent({ partyNames, seatsWonInAllDistricts }) {
       <TableCell className={[classes.name, classes.sticky].join(' ')}>
         Siedziba OKW
       </TableCell>
-      {partyNames.map((x, i) => (
+      {parties.map(({ name }, i) => (
         <TableCell
           key={i}
           className={[classes.numeric, classes.sticky].join(' ')}
         >
-          {x} ({sumOfSeatsByParty[i]})
+          {name} ({sumOfSeatsByParty[i]})
         </TableCell>
       ))}
       <TableCell className={classes.sticky}></TableCell>

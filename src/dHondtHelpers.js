@@ -8,11 +8,16 @@ const string2Number = stupidString => {
 // 2015, okręg z OKW w Rzeszowie - 54 głosy więcej na PSL = 1 mandat więcej na PSL
 const bisectAddingVotesOnPosition = (votes, seats, position) => {
   const votesCopy = [...votes];
+
   const realOutcome = dhondt.compute(votes, seats);
   const seatsActuallyGot = realOutcome[position];
 
   while (dhondt.compute(votesCopy, seats)[position] === seatsActuallyGot) {
-    votesCopy[position] = 2 * votesCopy[position];
+    if (isNaN(votesCopy[position])) {
+      return;
+    }
+
+    votesCopy[position] = Math.max(1, 2 * votesCopy[position]);
   }
 
   let upperLimit = votesCopy[position];

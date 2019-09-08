@@ -25,13 +25,10 @@ export function App() {
   const [electionYear, setElectionYear] = useState(null);
 
   useEffect(() => {
-    elections.then(resultsArray => setElections(resultsArray));
-  }, []);
-
-  useEffect(() => {
     elections.then(resultsArray => {
       const years = resultsArray.map(({ year }) => year);
       changeElectionYears(years);
+      setElections(resultsArray);
     });
   }, []);
 
@@ -53,8 +50,8 @@ export function App() {
       )
     );
 
-    store.dispatch(setResults(results.slice(1).map(row => row.slice(2))));
     store.dispatch(setParties(results[0].slice(2)));
+    store.dispatch(setResults(results.slice(1).map(row => row.slice(2))));
   };
 
   return (

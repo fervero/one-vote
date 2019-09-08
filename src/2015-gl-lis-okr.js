@@ -130,12 +130,14 @@ export const electionResults = `Nr okręgu;Siedziba OKW;L. obw.;Liczba wyborców
 41;Szczecin;657;826 850;628 823;238 025;390 770;229;4 204;321;302;10;-;-;-;292;390 912;292;27;390 885;10 386;7 200;2 947;-;380 499;110 697;121 479;15 678;20 291;14 776;32 584;32 030;32 964;;;;;;;;;`;
 
 export const parties = [
-  'PiS',
-  'PO',
-  // 'Razem',
-  // 'KORWiN',
-  'PSL',
+  { name: 'PiS', threshhold: 5, display: true },
+  { name: 'PO', threshhold: 5, display: true },
+  // {name: 'Razem', threshhold: 5, display: true},
+  // {name: 'Korwin', threshhold: 5, display: true},
+  { name: 'PSL', threshhold: 5, display: true },
   // 'ZLew',
-  "Kukiz'15",
-  '.N',
+  // {name: 'ZLew', threshhold: 8, display: true},
+  { name: "Kukiz'15", threshhold: 5, display: true },
+  { name: '.N', threshhold: 5, display: true },
+  { name: 'MN', threshhold: 0, display: false },
 ];

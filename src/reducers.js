@@ -11,9 +11,10 @@ import {
 
 const DEFAULT_STATE = {
   votingDistricts: [],
-  partyNames: [],
+  parties: [],
   resultsInAllDistricts: [[]],
   seatsWonInAllDistricts: [[]],
+  indexesToDisplay: [],
 };
 
 function setRawResults(state, action) {
@@ -52,8 +53,15 @@ function setResultsInSingleCell(state, action) {
 }
 
 function setParties(state, action) {
+  const parties = action.value;
+
+  const indexesToDisplay = parties
+    .map(({ display }, index) => (display ? index : null))
+    .filter(x => x !== null);
+
   const newState = Object.assign({}, state, {
-    partyNames: action.value,
+    parties,
+    indexesToDisplay,
   });
 
   return newState;

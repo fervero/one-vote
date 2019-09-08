@@ -3,8 +3,6 @@ import TableRow from '@material-ui/core/TableRow';
 import { minVotesToChangeSomething } from './dHondtHelpers';
 import { TopResultsRow } from './TopResultsRow.jsx';
 import { MiddleResultsRow } from './MiddleResultsRow.jsx';
-import * as dhondt from 'dhondt';
-
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state, { rowNumber }) => ({
