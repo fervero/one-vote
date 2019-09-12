@@ -6,7 +6,9 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({
   parties: state.parties,
-  seatsWonInAllDistricts: state.seatsWonInAllDistricts,
+  seatsWonInAllDistricts: state.seatsWonInAllDistricts || [],
+  resultsInAllDistricts: state.resultsInAllDistricts || [],
+  percentageVotesByParty: state.percentageVotesByParty || [],
 });
 
 const useStyles = makeStyles({
@@ -18,8 +20,16 @@ const useStyles = makeStyles({
   sticky: { zIndex: 100 },
 });
 
-function ResultsTableHeaderComponent({ parties, seatsWonInAllDistricts }) {
+function ResultsTableHeaderComponent({
+  parties,
+  seatsWonInAllDistricts,
+  percentageVotesByParty,
+}) {
   const classes = useStyles();
+
+  const formattedPercentageVotes = percentageVotesByParty.map(x =>
+    (100 * x).toFixed(1)
+  );
 
   const sumOfSeatsByParty = seatsWonInAllDistricts.reduce((rowA, rowB) =>
     rowA.map((x, i) => x + rowB[i])
@@ -39,6 +49,8 @@ function ResultsTableHeaderComponent({ parties, seatsWonInAllDistricts }) {
           className={[classes.numeric, classes.sticky].join(' ')}
         >
           {name} ({sumOfSeatsByParty[i]})
+          <br />
+          {formattedPercentageVotes[i]}%
         </TableCell>
       ))}
       <TableCell className={classes.sticky}></TableCell>

@@ -10,13 +10,13 @@ const mapStateToProps = (state, { rowNumber }) => ({
 });
 
 function ResultsRowComponent({ seats, resultsInDistrict, rowNumber }) {
-  useEffect(() => {
-    updateMinVotes(minVotesToChangeSomething([...resultsInDistrict], seats));
-  }, [resultsInDistrict, seats]);
-
   const [minVotes, updateMinVotes] = useState(
     minVotesToChangeSomething(resultsInDistrict, seats)
   );
+
+  useEffect(() => {
+    updateMinVotes(minVotesToChangeSomething([...resultsInDistrict], seats));
+  }, [resultsInDistrict, seats]);
 
   return (
     <Fragment>

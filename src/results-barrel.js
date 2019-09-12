@@ -7,19 +7,26 @@ import { electionResults as results2011 } from './2011-kandydaci-sejm';
 const sumArray = arr => arr.reduce((x, y) => x + y, 0);
 
 const arrayToObject = ([head, ...body]) => {
-  const newHead = head.filter((x, i) => (i === 2 ? 'plankton' : x)); // 2: all valid votes
+  const newHead = head.filter((x, i) => i !== 2);
 
   const resultsByDistrict = body.map(
     ([district, name, allVotes, ...votesByParty]) => [
       district,
       name,
-      allVotes - sumArray(votesByParty),
       ...votesByParty,
     ]
   );
 
   return [newHead, ...resultsByDistrict];
 };
+
+const calculatePlanktonVotes = body =>
+  body
+    .slice(1)
+    .map(
+      ([district, name, allVotes, ...votesByParty]) =>
+        allVotes - sumArray(votesByParty)
+    );
 
 export const elections = Promise.all([
   parse2015(results2015),
@@ -32,6 +39,7 @@ export const elections = Promise.all([
   {
     year: 2015,
     results: arrayToObject(parsed2015),
+    planktonVotes: calculatePlanktonVotes(parsed2015),
   },
 ]);
 

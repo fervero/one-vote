@@ -10,6 +10,11 @@ const bisectAddingVotesOnPosition = (votes, seats, position) => {
   const votesCopy = [...votes];
 
   const realOutcome = dhondt.compute(votes, seats);
+
+  if (realOutcome[position] === seats) {
+    return Infinity;
+  }
+
   const seatsActuallyGot = realOutcome[position];
 
   while (dhondt.compute(votesCopy, seats)[position] === seatsActuallyGot) {
@@ -88,7 +93,6 @@ export const subtractVotes = (votes, seats) =>
 export const minVotesToChangeSomething = (row, seats) => {
   const votes = row.map(string2Number);
   const moreVotes = addVotes(votes, seats).map(x => (x > 0 ? x : Infinity));
-
   const lessVotes = subtractVotes(votes, seats).map(x =>
     x < 0 ? x : -Infinity
   );

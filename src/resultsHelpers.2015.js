@@ -8,7 +8,7 @@ const pickRelevant = row => [
   row[25], // PiS
   row[26], // PO
   row[29], // PSL
-  // row[30], // SLD
+  row[30], // SLD
   row[31], // Kukiz'15
   row[32], // .N
   row[40], // Mniejszość Niemiecka
@@ -17,7 +17,7 @@ const pickRelevant = row => [
 const replaceHeader = row => [
   { name: row[0] },
   { name: row[1] },
-  { name: 'plankton', threshhold: Infinity, display: false },
+  { name: row[2] },
   ...parties,
 ];
 

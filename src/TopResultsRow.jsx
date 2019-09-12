@@ -69,7 +69,10 @@ function TopResultsRowComponent({
           key={i}
           className={[classes.numeric, classes.borderless].join(' ')}
         >
-          <span className={classes.add}>+{moreVotes[i]}</span>/
+          <span className={classes.add}>
+            {moreVotes[i] < Infinity ? '+' + moreVotes[i] : '-'}
+          </span>
+          /
           <span className={classes.subtract}>
             {lessVotes[i] > -Infinity ? lessVotes[i] : '-'}
           </span>

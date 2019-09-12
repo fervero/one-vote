@@ -1,13 +1,14 @@
 import * as dhondt from 'dhondt';
 import { seatsArray } from './results-barrel';
 import { cloneDeep } from 'lodash';
-
 import {
   SET_RAW_RESULTS,
   SET_SINGLE_RESULTS,
   SET_PARTIES,
   SET_DISTRICTS,
 } from './actions';
+
+const sumArray = arr => arr.reduce((x, y) => x + y, 0);
 
 const DEFAULT_STATE = {
   votingDistricts: [],
@@ -17,16 +18,44 @@ const DEFAULT_STATE = {
   indexesToDisplay: [],
 };
 
+const calculateSumOfVotes = ({
+  resultsInAllDistricts,
+  summedPlanktonVotes,
+}) => {
+  const sumOfVotesByParty = resultsInAllDistricts.reduce((rowA, rowB) =>
+    rowA.map((x, i) => x + rowB[i])
+  );
+
+  const totalVotes =
+    sumOfVotesByParty.reduce((x, y) => x + y, 0) + summedPlanktonVotes;
+
+  const percentageVotesByParty = sumOfVotesByParty.map(x => x / totalVotes);
+
+  return {
+    sumOfVotesByParty,
+    percentageVotesByParty,
+  };
+};
+
 function setRawResults(state, action) {
-  const resultsInAllDistricts = action.value;
+  const resultsInAllDistricts = action.value.majorPartiesResults;
+
+  const summedPlanktonVotes = sumArray(action.value.planktonVotes);
+
   const seatsWonInAllDistricts = resultsInAllDistricts.map((row, i) =>
     dhondt.compute(row, seatsArray[i])
   );
 
-  const newState = Object.assign({}, state, {
-    resultsInAllDistricts,
-    seatsWonInAllDistricts,
-  });
+  const newState = Object.assign(
+    {},
+    state,
+    {
+      resultsInAllDistricts,
+      seatsWonInAllDistricts,
+      summedPlanktonVotes,
+    },
+    calculateSumOfVotes({ resultsInAllDistricts, summedPlanktonVotes })
+  );
 
   return newState;
 }
@@ -44,10 +73,20 @@ function setResultsInSingleCell(state, action) {
     seatsArray[districtNumber]
   );
 
-  const newState = Object.assign({}, state, {
+  const stateWithUpdatedResults = {
     resultsInAllDistricts: newResultsInDistricts,
     seatsWonInAllDistricts: newSeatsWonInAllDistricts,
-  });
+    summedPlanktonVotes: state.summedPlanktonVotes,
+  };
+
+  const percentageFigures = calculateSumOfVotes(stateWithUpdatedResults);
+
+  const newState = Object.assign(
+    {},
+    state,
+    stateWithUpdatedResults,
+    percentageFigures
+  );
 
   return newState;
 }
