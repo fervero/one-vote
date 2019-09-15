@@ -1,6 +1,5 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import TableRow from '@material-ui/core/TableRow';
-import { minVotesToChangeSomething } from './dHondtHelpers';
 import { TopResultsRow } from './TopResultsRow.jsx';
 import { MiddleResultsRow } from './MiddleResultsRow.jsx';
 import { connect } from 'react-redux';
@@ -9,22 +8,11 @@ const mapStateToProps = (state, { rowNumber }) => ({
   resultsInDistrict: state.resultsInAllDistricts[rowNumber],
 });
 
-function ResultsRowComponent({ seats, resultsInDistrict, rowNumber }) {
-  const [minVotes, updateMinVotes] = useState(
-    minVotesToChangeSomething(resultsInDistrict, seats)
-  );
-
-  useEffect(() => {
-    updateMinVotes(minVotesToChangeSomething([...resultsInDistrict], seats));
-  }, [resultsInDistrict, seats]);
-
+function ResultsRowComponent({ rowNumber }) {
   return (
     <Fragment>
       <TableRow>
-        <TopResultsRow
-          rowNumber={rowNumber}
-          minVotesToChangeSomething={minVotes}
-        ></TopResultsRow>
+        <TopResultsRow rowNumber={rowNumber}></TopResultsRow>
       </TableRow>
       <TableRow>
         <MiddleResultsRow rowNumber={rowNumber}></MiddleResultsRow>

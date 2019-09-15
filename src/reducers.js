@@ -1,6 +1,7 @@
-import * as dhondt from 'dhondt';
 import { seatsArray } from './results-barrel';
 import { cloneDeep } from 'lodash';
+import { sumArray } from './arrayHelpers';
+
 import {
   SET_RAW_RESULTS,
   SET_SINGLE_RESULTS,
@@ -8,85 +9,36 @@ import {
   SET_DISTRICTS,
 } from './actions';
 
-const sumArray = arr => arr.reduce((x, y) => x + y, 0);
-
 const DEFAULT_STATE = {
   votingDistricts: [],
   parties: [],
   resultsInAllDistricts: [[]],
-  seatsWonInAllDistricts: [[]],
-  indexesToDisplay: [],
-};
-
-const calculateSumOfVotes = ({
-  resultsInAllDistricts,
-  summedPlanktonVotes,
-}) => {
-  const sumOfVotesByParty = resultsInAllDistricts.reduce((rowA, rowB) =>
-    rowA.map((x, i) => x + rowB[i])
-  );
-
-  const totalVotes =
-    sumOfVotesByParty.reduce((x, y) => x + y, 0) + summedPlanktonVotes;
-
-  const percentageVotesByParty = sumOfVotesByParty.map(x => x / totalVotes);
-
-  return {
-    sumOfVotesByParty,
-    percentageVotesByParty,
-  };
 };
 
 function setRawResults(state, action) {
   const resultsInAllDistricts = action.value.majorPartiesResults;
-
   const summedPlanktonVotes = sumArray(action.value.planktonVotes);
 
-  const seatsWonInAllDistricts = resultsInAllDistricts.map((row, i) =>
-    dhondt.compute(row, seatsArray[i])
-  );
-
-  const newState = Object.assign(
-    {},
-    state,
-    {
-      resultsInAllDistricts,
-      seatsWonInAllDistricts,
-      summedPlanktonVotes,
-    },
-    calculateSumOfVotes({ resultsInAllDistricts, summedPlanktonVotes })
-  );
+  const newState = Object.assign({}, state, {
+    resultsInAllDistricts,
+    summedPlanktonVotes,
+  });
 
   return newState;
 }
 
 function setResultsInSingleCell(state, action) {
   const { districtNumber, cellNumber, value } = action.value;
-  const { resultsInAllDistricts, seatsWonInAllDistricts } = state;
+  const { resultsInAllDistricts } = state;
   const newResultsInDistricts = cloneDeep(resultsInAllDistricts);
-  const newSeatsWonInAllDistricts = cloneDeep(seatsWonInAllDistricts);
-
   newResultsInDistricts[+districtNumber][+cellNumber] = value;
-
-  newSeatsWonInAllDistricts[+districtNumber] = dhondt.compute(
-    newResultsInDistricts[districtNumber],
-    seatsArray[districtNumber]
-  );
 
   const stateWithUpdatedResults = {
     resultsInAllDistricts: newResultsInDistricts,
-    seatsWonInAllDistricts: newSeatsWonInAllDistricts,
     summedPlanktonVotes: state.summedPlanktonVotes,
   };
 
-  const percentageFigures = calculateSumOfVotes(stateWithUpdatedResults);
-
-  const newState = Object.assign(
-    {},
-    state,
-    stateWithUpdatedResults,
-    percentageFigures
-  );
+  const newState = Object.assign({}, state, stateWithUpdatedResults);
 
   return newState;
 }

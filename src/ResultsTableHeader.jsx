@@ -3,12 +3,14 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { makeStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
+import { sumOfVectors } from './arrayHelpers';
+import { selectSeatsWonInAllDistricts, selectSumOfVotes } from './selectors';
 
 const mapStateToProps = state => ({
   parties: state.parties,
-  seatsWonInAllDistricts: state.seatsWonInAllDistricts || [],
+  seatsWonInAllDistricts: selectSeatsWonInAllDistricts(state),
   resultsInAllDistricts: state.resultsInAllDistricts || [],
-  percentageVotesByParty: state.percentageVotesByParty || [],
+  percentageVotesByParty: selectSumOfVotes(state).percentageVotesByParty,
 });
 
 const useStyles = makeStyles({
@@ -31,9 +33,7 @@ function ResultsTableHeaderComponent({
     (100 * x).toFixed(1)
   );
 
-  const sumOfSeatsByParty = seatsWonInAllDistricts.reduce((rowA, rowB) =>
-    rowA.map((x, i) => x + rowB[i])
-  );
+  const sumOfSeatsByParty = seatsWonInAllDistricts.reduce(sumOfVectors);
 
   return (
     <TableRow>

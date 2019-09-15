@@ -7,12 +7,14 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { connect } from 'react-redux';
 import { setSingleResults } from './actionCreators';
 import { get as _get } from 'lodash';
+import { selectVotesRequiredToChangeSth } from './selectors';
 
 const mapStateToProps = (state, { rowNumber }) => {
   const district = (state.votingDistricts || [])[rowNumber];
 
   return {
     resultsInDistrict: state.resultsInAllDistricts[rowNumber],
+    minVotesToChangeSomething: selectVotesRequiredToChangeSth(rowNumber)(state),
     districtName: _get(district, 'districtName'),
     districtNumber: _get(district, 'districtNumber'),
     seats: _get(district, 'seats'),
@@ -70,11 +72,15 @@ function TopResultsRowComponent({
           className={[classes.numeric, classes.borderless].join(' ')}
         >
           <span className={classes.add}>
-            {moreVotes[i] < Infinity ? '+' + moreVotes[i] : '-'}
+            {moreVotes[i] !== null && moreVotes[i] < Infinity
+              ? '+' + moreVotes[i]
+              : '-'}
           </span>
           /
           <span className={classes.subtract}>
-            {lessVotes[i] > -Infinity ? lessVotes[i] : '-'}
+            {moreVotes[i] !== null && lessVotes[i] > -Infinity
+              ? lessVotes[i]
+              : '-'}
           </span>
           <br />
           <TextField
