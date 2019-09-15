@@ -31,16 +31,22 @@ const calculatePlanktonVotes = body =>
 export const elections = Promise.all([
   parse2015(results2015),
   parse2011(results2011),
-]).then(([parsed2015, parsed2011]) => [
-  {
-    year: 2011,
-    results: parsed2011,
-  },
-  {
-    year: 2015,
-    results: arrayToObject(parsed2015),
-    planktonVotes: calculatePlanktonVotes(parsed2015),
-  },
-]);
+]).then(([parsed2015, parsed2011]) => {
+  console.log(parsed2015);
+  console.log(parsed2011);
+
+  return [
+    {
+      year: 2011,
+      results: arrayToObject(parsed2011),
+      planktonVotes: calculatePlanktonVotes(parsed2011),
+    },
+    {
+      year: 2015,
+      results: arrayToObject(parsed2015),
+      planktonVotes: calculatePlanktonVotes(parsed2015),
+    },
+  ];
+});
 
 export { seatsArray };

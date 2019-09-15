@@ -9,19 +9,32 @@ export const parties = [
   //   'Komitet Wyborczy Nasz Dom Polska-Samoobrona Andrzeja Leppera',
   //   'Komitet Wyborczy Nowa Prawica - Janusza Korwin-Mikke',
   //   'Komitet Wyborczy Prawica',
+  'Komitet Wyborczy Wyborców Mniejszość Niemiecka',
 ];
 
+// export const partiesShort = [
+//   'PiS',
+//   //   'Komitet Wyborczy Polska Jest Najważniejsza',
+//   'SLD',
+//   'Ruch Palikota',
+//   'PSL',
+//   //   'Komitet Wyborczy Polska Partia Pracy - Sierpień 80',
+//   'PO',
+//   //   'Komitet Wyborczy Nasz Dom Polska-Samoobrona Andrzeja Leppera',
+//   //   'Komitet Wyborczy Nowa Prawica - Janusza Korwin-Mikke',
+//   //   'Komitet Wyborczy Prawica',
+// ];
+
 export const partiesShort = [
-  'PiS',
-  //   'Komitet Wyborczy Polska Jest Najważniejsza',
-  'SLD',
-  'Ruch Palikota',
-  'PSL',
-  //   'Komitet Wyborczy Polska Partia Pracy - Sierpień 80',
-  'PO',
-  //   'Komitet Wyborczy Nasz Dom Polska-Samoobrona Andrzeja Leppera',
-  //   'Komitet Wyborczy Nowa Prawica - Janusza Korwin-Mikke',
-  //   'Komitet Wyborczy Prawica',
+  { name: 'PiS', threshold: 5 },
+  { name: 'SLD', threshold: 5 },
+  { name: 'Ruch Palikota', threshold: 5 },
+  { name: 'PSL', threshold: 5 },
+  { name: 'PO', threshold: 5 },
+  // {name: 'Razem', threshold: 5},
+  // {name: 'Korwin', threshold: 5},
+  // { name: '.N', threshold: 5 },
+  { name: 'MN', threshold: 0 },
 ];
 
 export const seatsArray = [
