@@ -1,4 +1,6 @@
 import * as dhondt from 'dhondt';
+import { createSelector } from 'reselect';
+
 import {
   minVotesToChangeSomething,
   partyAboveThreshold,
@@ -7,10 +9,7 @@ import {
 import { seatsArray } from './results-barrel';
 import { sumOfVectors, sumArray } from './arrayHelpers';
 
-export const selectSumOfVotes = ({
-  resultsInAllDistricts,
-  summedPlanktonVotes,
-}) => {
+const selectSumOfVotes = ({ resultsInAllDistricts, summedPlanktonVotes }) => {
   const sumOfVotesByParty = resultsInAllDistricts.reduce(sumOfVectors);
   const totalVotes = sumArray(sumOfVotesByParty) + summedPlanktonVotes;
   const percentageVotesByParty = sumOfVotesByParty.map(x => x / totalVotes);
@@ -21,13 +20,23 @@ export const selectSumOfVotes = ({
   };
 };
 
-export const selectPartiesAboveThreshold = state => {
+export const reselectSumOfVotes = createSelector(
+  [selectSumOfVotes],
+  x => x
+);
+
+const selectPartiesAboveThreshold = state => {
   const { parties } = state;
   const { percentageVotesByParty } = selectSumOfVotes(state);
   return partyAboveThreshold(percentageVotesByParty, parties);
 };
 
-export const selectSeatsWonInAllDistricts = state => {
+export const reselectPartiesAboveThreshold = createSelector(
+  [selectPartiesAboveThreshold],
+  x => x
+);
+
+const selectSeatsWonInAllDistricts = state => {
   const { resultsInAllDistricts = [] } = state;
   const isPartyAboveThreshold = selectPartiesAboveThreshold(state);
 
@@ -37,7 +46,13 @@ export const selectSeatsWonInAllDistricts = state => {
     ) || []
   );
 };
-export const selectSeatsWonInADistrict = districtNumber => state => {
+
+export const reselectSeatsWonInAllDistricts = createSelector(
+  [selectSeatsWonInAllDistricts],
+  x => x
+);
+
+const selectSeatsWonInADistrict = districtNumber => state => {
   const { resultsInAllDistricts = [] } = state;
   const isPartyAboveThreshold = selectPartiesAboveThreshold(state);
 
@@ -48,7 +63,12 @@ export const selectSeatsWonInADistrict = districtNumber => state => {
   );
 };
 
-export const selectVotesRequiredToChangeSth = districtNumber => state => {
+export const reselectSeatsWonInADistrict = createSelector(
+  [selectSeatsWonInADistrict],
+  x => x
+);
+
+const selectVotesRequiredToChangeSth = districtNumber => state => {
   const isPartyAboveThreshold = selectPartiesAboveThreshold(state);
 
   return minVotesToChangeSomething(
@@ -57,3 +77,8 @@ export const selectVotesRequiredToChangeSth = districtNumber => state => {
     isPartyAboveThreshold
   );
 };
+
+export const reselectVotesRequiredToChangeSth = createSelector(
+  [selectVotesRequiredToChangeSth],
+  x => x
+);

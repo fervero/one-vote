@@ -7,14 +7,16 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { connect } from 'react-redux';
 import { setSingleResults } from './actionCreators';
 import { get as _get } from 'lodash';
-import { selectVotesRequiredToChangeSth } from './selectors';
+import { reselectVotesRequiredToChangeSth } from './selectors';
 
 const mapStateToProps = (state, { rowNumber }) => {
   const district = (state.votingDistricts || [])[rowNumber];
 
   return {
     resultsInDistrict: state.resultsInAllDistricts[rowNumber],
-    minVotesToChangeSomething: selectVotesRequiredToChangeSth(rowNumber)(state),
+    minVotesToChangeSomething: reselectVotesRequiredToChangeSth(rowNumber)(
+      state
+    ),
     districtName: _get(district, 'districtName'),
     districtNumber: _get(district, 'districtNumber'),
     seats: _get(district, 'seats'),

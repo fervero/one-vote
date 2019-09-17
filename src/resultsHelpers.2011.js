@@ -1,64 +1,55 @@
-import * as Papa from 'papaparse';
-import { parties, partiesShort } from './2011-kandydaci-sejm';
-import * as _ from 'lodash';
+const parties = [
+  { name: 'PiS', threshold: 5 },
+  { name: 'PJN', threshold: 5 },
+  { name: 'SLD', threshold: 5 },
+  { name: 'Ruch Palikota', threshold: 5 },
+  { name: 'PSL', threshold: 5 },
+  { name: 'PPP', threshold: 5 },
+  { name: 'PO', threshold: 5 },
+  { name: 'Samoobrona', threshold: 5 },
+  { name: 'Korwin', threshold: 5 },
+  { name: 'Prawica', threshold: 5 },
+  { name: 'Mniejszość Niemiecka', threshold: 0 },
+];
 
-const isColumnRelevant = (x, i) => [0, 1, 2, 3, 13].includes(i);
+const replaceHeader = headerRow => [{ name: headerRow[0] }, ...parties];
 
-const pickRelevant = columns => columns.filter(isColumnRelevant);
+const pickRelevant = row => [
+  row[0], // nr okręgu
+  row[1], // PiS
+  row[2], // PJN
+  row[3], // SLD
+  row[4], // Ruch Palikota
+  row[5], // PSL
+  // row[6], // Polska Partia Pracy
+  row[7], // PO
+  // row[8], // Samoobrona
+  // row[9], // Korwin
+  // row[10], // Prawica
+  row[11], // Mniejszość Niemiecka
+];
 
-const replaceHeader = row => [...row.slice(0, 2), ...partiesShort];
+const addValidVotesTotal = ([firstElem, ...rest], i) =>
+  i === 0
+    ? [firstElem, { name: 'Głosy ważne' }, ...rest]
+    : [firstElem, rest.reduce((a, b) => a + b, 0), ...rest];
 
-const isNonTrivial = row => row && row.length > 1;
+const addDistrictName = ([firstElem, ...rest], i) =>
+  i === 0
+    ? [firstElem, { name: 'Siedziba OKW' }, ...rest]
+    : [firstElem, firstElem, ...rest];
 
-const extractPartyResults = partiesArray =>
-  partiesArray.map(
-    ([districtNumber, districtName, listNumber, listName, numberOfVotes]) =>
-      numberOfVotes
-  );
+export const parse = resultsJs => {
+  const mappedResults = resultsJs
+    .split('\n')
+    .map(row => row.split(';').map(x => (isNaN(+x) ? x : +x)))
+    .slice(1)
+    .filter((row, rowNumber) => rowNumber % 2 === 0)
+    .slice(0, 42)
+    .map((row, i) => (i === 0 ? replaceHeader(row) : row))
+    .map(pickRelevant)
+    .map(addValidVotesTotal)
+    .map(addDistrictName);
 
-const reduceByParty = group => {
-  const header = group[0].slice(0, 4);
-  const voteCount = group.reduce((acc, curr) => acc + +curr[4], 0);
-  return [...header, voteCount];
+  return mappedResults;
 };
-
-const filterRelevantParties = ([district, city, listNumber, listName]) =>
-  parties.includes(listName);
-
-const flatten = reducedByParty => {
-  if (!reducedByParty || !reducedByParty.length) {
-    return [];
-  }
-
-  const head = reducedByParty[0].slice(0, 2);
-  const tail = extractPartyResults(reducedByParty);
-  return [...head, ...tail];
-};
-
-const groupByParty = districtArray => {
-  const filteredDistrictArray = districtArray.filter(filterRelevantParties);
-  const groupedByPartyObject = _.groupBy(filteredDistrictArray, row => row[2]);
-  const groupedByParty = Object.values(groupedByPartyObject);
-  const reducedByParty = groupedByParty.map(reduceByParty);
-  return flatten(reducedByParty);
-};
-
-const groupByDistrict = resultsArray => {
-  const groupedByDistrictObject = _.groupBy(resultsArray, row => row[0]);
-  const groupedByDistrict = Object.values(groupedByDistrictObject);
-  return groupedByDistrict.filter(isNonTrivial).map(groupByParty);
-};
-
-export const parse = csvString =>
-  new Promise(resolve => {
-    Papa.parse(csvString, {
-      complete: parsed => {
-        const relevant = parsed.data.map(pickRelevant);
-        const head = replaceHeader(relevant[0]);
-        const tail = relevant.slice(1);
-        const grouped = groupByDistrict(tail);
-
-        resolve([head, ...grouped]);
-      },
-    });
-  });

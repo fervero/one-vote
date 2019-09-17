@@ -2,10 +2,10 @@ import React, { Fragment } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import { makeStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
-import { selectSeatsWonInADistrict } from './selectors';
+import { reselectSeatsWonInADistrict } from './selectors';
 
 const mapStateToProps = (state, { rowNumber }) => ({
-  seatsWonInDistrict: selectSeatsWonInADistrict(rowNumber)(state),
+  seatsWonInDistrict: reselectSeatsWonInADistrict(rowNumber)(state),
 });
 
 const useStyles = makeStyles({
@@ -35,10 +35,7 @@ const seatsLabel = n => {
   }
 };
 
-function MiddleResultsRowComponent({
-  seatsWonInDistrict,
-  seatsWonInAllDistricts,
-}) {
+function MiddleResultsRowComponent({ seatsWonInDistrict }) {
   const classes = useStyles();
 
   return (

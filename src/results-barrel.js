@@ -2,7 +2,8 @@ import { parse as parse2015 } from './resultsHelpers.2015';
 import { electionResults as results2015, seatsArray } from './2015-gl-lis-okr';
 
 import { parse as parse2011 } from './resultsHelpers.2011.js';
-import { electionResults as results2011 } from './2011-kandydaci-sejm';
+// import { electionResults as results2011 } from './2011-kandydaci-sejm';
+import { results as results2011 } from './results2011';
 
 const sumArray = arr => arr.reduce((x, y) => x + y, 0);
 
@@ -28,12 +29,8 @@ const calculatePlanktonVotes = body =>
         allVotes - sumArray(votesByParty)
     );
 
-export const elections = Promise.all([
-  parse2015(results2015),
-  parse2011(results2011),
-]).then(([parsed2015, parsed2011]) => {
-  console.log(parsed2015);
-  console.log(parsed2011);
+export const elections = parse2015(results2015).then(parsed2015 => {
+  const parsed2011 = parse2011(results2011);
 
   return [
     {
