@@ -26,8 +26,6 @@ export function App() {
 
   useEffect(() => {
     elections.then(resultsArray => {
-      console.log(resultsArray);
-
       const years = resultsArray.map(({ year }) => year);
       changeElectionYears(years);
       setElections(resultsArray);

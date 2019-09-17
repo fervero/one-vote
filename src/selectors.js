@@ -1,59 +1,78 @@
-import * as dhondt from 'dhondt';
+import { createSelector } from 'reselect';
+
 import {
   minVotesToChangeSomething,
   partyAboveThreshold,
   computeAllowingForThresholds,
 } from './dHondtHelpers';
+
 import { seatsArray } from './results-barrel';
 import { sumOfVectors, sumArray } from './arrayHelpers';
 
-export const selectSumOfVotes = ({
+const selectResultsInAllDistricts = ({ resultsInAllDistricts }) =>
+  resultsInAllDistricts;
+
+const selectResultsInSingleDistrict = districtNumber => ({
   resultsInAllDistricts,
-  summedPlanktonVotes,
-}) => {
-  const sumOfVotesByParty = resultsInAllDistricts.reduce(sumOfVectors);
-  const totalVotes = sumArray(sumOfVotesByParty) + summedPlanktonVotes;
-  const percentageVotesByParty = sumOfVotesByParty.map(x => x / totalVotes);
+}) => resultsInAllDistricts[districtNumber];
 
-  return {
-    sumOfVotesByParty,
-    percentageVotesByParty,
-  };
-};
+const selectSummedPlanktonVotes = ({ summedPlanktonVotes }) =>
+  summedPlanktonVotes;
 
-export const selectPartiesAboveThreshold = state => {
-  const { parties } = state;
-  const { percentageVotesByParty } = selectSumOfVotes(state);
-  return partyAboveThreshold(percentageVotesByParty, parties);
-};
+const selectParties = ({ parties }) => parties;
 
-export const selectSeatsWonInAllDistricts = state => {
-  const { resultsInAllDistricts = [] } = state;
-  const isPartyAboveThreshold = selectPartiesAboveThreshold(state);
+export const selectSumOfVotes = createSelector(
+  [selectResultsInAllDistricts, selectSummedPlanktonVotes],
+  (resultsInAllDistricts, summedPlanktonVotes) => {
+    const sumOfVotesByParty = resultsInAllDistricts.reduce(sumOfVectors);
+    const totalVotes = sumArray(sumOfVotesByParty) + summedPlanktonVotes;
+    const percentageVotesByParty = sumOfVotesByParty.map(x => x / totalVotes);
 
-  return (
+    return {
+      sumOfVotesByParty,
+      percentageVotesByParty,
+    };
+  }
+);
+
+export const selectPartiesAboveThreshold = createSelector(
+  [selectParties, selectSumOfVotes],
+  (parties, { percentageVotesByParty }) =>
+    partyAboveThreshold(percentageVotesByParty, parties)
+);
+
+export const selectSeatsWonInAllDistricts = createSelector(
+  [selectResultsInAllDistricts, selectPartiesAboveThreshold],
+  (resultsInAllDistricts = [], isPartyAboveThreshold = []) =>
     resultsInAllDistricts.map((row, i) =>
       computeAllowingForThresholds(row, seatsArray[i], isPartyAboveThreshold)
     ) || []
-  );
-};
-export const selectSeatsWonInADistrict = districtNumber => state => {
-  const { resultsInAllDistricts = [] } = state;
-  const isPartyAboveThreshold = selectPartiesAboveThreshold(state);
+);
 
-  return computeAllowingForThresholds(
-    resultsInAllDistricts[districtNumber],
-    seatsArray[districtNumber],
-    isPartyAboveThreshold
+export const selectSeatsWonInADistrict = districtNumber =>
+  createSelector(
+    [
+      selectResultsInSingleDistrict(districtNumber),
+      selectPartiesAboveThreshold,
+    ],
+    (resultsInSingleDistrict, partiesAboveThreshold) =>
+      computeAllowingForThresholds(
+        resultsInSingleDistrict,
+        seatsArray[districtNumber],
+        partiesAboveThreshold
+      )
   );
-};
 
-export const selectVotesRequiredToChangeSth = districtNumber => state => {
-  const isPartyAboveThreshold = selectPartiesAboveThreshold(state);
-
-  return minVotesToChangeSomething(
-    state.resultsInAllDistricts[districtNumber],
-    seatsArray[districtNumber],
-    isPartyAboveThreshold
+export const selectVotesRequiredToChangeSth = districtNumber =>
+  createSelector(
+    [
+      selectResultsInSingleDistrict(districtNumber),
+      selectPartiesAboveThreshold,
+    ],
+    (resultsInSingleDistrict, partiesAboveThreshold) =>
+      minVotesToChangeSomething(
+        resultsInSingleDistrict,
+        seatsArray[districtNumber],
+        partiesAboveThreshold
+      )
   );
-};
