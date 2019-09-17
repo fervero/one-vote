@@ -4,16 +4,13 @@ import TableCell from '@material-ui/core/TableCell';
 import { makeStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
 import { sumOfVectors } from './arrayHelpers';
-import {
-  reselectSeatsWonInAllDistricts,
-  reselectSumOfVotes,
-} from './selectors';
+import { selectSeatsWonInAllDistricts, selectSumOfVotes } from './selectors';
 
 const mapStateToProps = state => ({
   parties: state.parties,
-  seatsWonInAllDistricts: reselectSeatsWonInAllDistricts(state),
+  seatsWonInAllDistricts: selectSeatsWonInAllDistricts(state),
   resultsInAllDistricts: state.resultsInAllDistricts || [],
-  percentageVotesByParty: reselectSumOfVotes(state).percentageVotesByParty,
+  percentageVotesByParty: selectSumOfVotes(state).percentageVotesByParty,
 });
 
 const useStyles = makeStyles({
