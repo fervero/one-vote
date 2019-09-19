@@ -1,4 +1,3 @@
-import { seatsArray } from './results-barrel';
 import { cloneDeep } from 'lodash';
 import { sumArray } from './arrayHelpers';
 
@@ -60,9 +59,7 @@ function setParties(state, action) {
 
 function setDistricts(state, action) {
   const newState = Object.assign({}, state, {
-    votingDistricts: action.value.map((district, i) =>
-      Object.assign({}, district, { seats: seatsArray[i] })
-    ),
+    votingDistricts: [...action.value],
   });
 
   return newState;

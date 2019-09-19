@@ -1,5 +1,5 @@
 import * as Papa from 'papaparse';
-import { parties } from './2015-gl-lis-okr.js';
+import { parties } from './2015-gl-lis-okr';
 
 const pickRelevant = row => [
   row[0], // nr okręgu

@@ -3,7 +3,7 @@ import './App.css';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { ResultsTable } from './ResultsTable.jsx';
-import { elections } from './results-barrel';
+import { elections } from './results/results-barrel';
 import { TopBar } from './TopBar.jsx';
 import { setResults, setParties, setDistricts } from './actionCreators';
 import { makeStyles } from '@material-ui/styles';
@@ -39,13 +39,14 @@ export function App() {
       election => election.year === year
     );
 
-    const { results, planktonVotes } = yearInArray;
+    const { results, planktonVotes, seatsArray } = yearInArray;
 
     store.dispatch(
       setDistricts(
-        results.slice(1).map(([districtNumber, districtName]) => ({
+        results.slice(1).map(([districtNumber, districtName], i) => ({
           districtNumber,
           districtName,
+          seats: seatsArray[i],
         }))
       )
     );

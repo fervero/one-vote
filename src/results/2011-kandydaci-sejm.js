@@ -1,4 +1,85 @@
-"Nr okręgu";"Siedziba OKW";"Nr listy";"Nazwa komitetu";"Typ komitetu";"Nr kandydata na liście";"Nazwisko";"Imiona";"Zawód";"Płeć";"Miejsce zamieszkania";"Partia polityczna";"Wybrany";"Liczba głosów";"% głosów w okręgu";"% głosów na listę";"Treść oświadczenia lustracyjnego"
+export const parties = [
+  'Komitet Wyborczy Prawo i Sprawiedliwość',
+  //   'Komitet Wyborczy Polska Jest Najważniejsza',
+  'Komitet Wyborczy Sojusz Lewicy Demokratycznej',
+  'Komitet Wyborczy Ruch Palikota',
+  'Komitet Wyborczy Polskie Stronnictwo Ludowe',
+  //   'Komitet Wyborczy Polska Partia Pracy - Sierpień 80',
+  'Komitet Wyborczy Platforma Obywatelska RP',
+  //   'Komitet Wyborczy Nasz Dom Polska-Samoobrona Andrzeja Leppera',
+  //   'Komitet Wyborczy Nowa Prawica - Janusza Korwin-Mikke',
+  //   'Komitet Wyborczy Prawica',
+  'Komitet Wyborczy Wyborców Mniejszość Niemiecka',
+];
+
+export const partiesInIntendedOrder = [
+  'Komitet Wyborczy Platforma Obywatelska RP',
+  'Komitet Wyborczy Prawo i Sprawiedliwość',
+  //   'Komitet Wyborczy Polska Jest Najważniejsza',
+  'Komitet Wyborczy Ruch Palikota',
+  'Komitet Wyborczy Sojusz Lewicy Demokratycznej',
+  'Komitet Wyborczy Polskie Stronnictwo Ludowe',
+  //   'Komitet Wyborczy Polska Partia Pracy - Sierpień 80',
+  //   'Komitet Wyborczy Nasz Dom Polska-Samoobrona Andrzeja Leppera',
+  //   'Komitet Wyborczy Nowa Prawica - Janusza Korwin-Mikke',
+  //   'Komitet Wyborczy Prawica',
+  'Komitet Wyborczy Wyborców Mniejszość Niemiecka',
+];
+
+export const partiesShort = [
+  { name: 'PiS', threshold: 5 },
+  { name: 'SLD', threshold: 5 },
+  { name: 'Ruch Palikota', threshold: 5 },
+  { name: 'PSL', threshold: 5 },
+  { name: 'PO', threshold: 5 },
+  { name: 'MN', threshold: 0 },
+];
+
+export const seatsArray = [
+  12,
+  8,
+  14,
+  12,
+  13,
+  15,
+  12,
+  12,
+  10,
+  9,
+  12,
+  8,
+  14,
+  10,
+  9,
+  10,
+  9,
+  12,
+  20,
+  12,
+  12,
+  11,
+  15,
+  14,
+  12,
+  14,
+  9,
+  7,
+  9,
+  9,
+  12,
+  9,
+  16,
+  8,
+  10,
+  12,
+  9,
+  9,
+  10,
+  8,
+  12,
+];
+
+export const electionResults = `"Nr okręgu";"Siedziba OKW";"Nr listy";"Nazwa komitetu";"Typ komitetu";"Nr kandydata na liście";"Nazwisko";"Imiona";"Zawód";"Płeć";"Miejsce zamieszkania";"Partia polityczna";"Wybrany";"Liczba głosów";"% głosów w okręgu";"% głosów na listę";"Treść oświadczenia lustracyjnego"
 "1";"Legnica";"1";"Komitet Wyborczy Prawo i Sprawiedliwość";"partia";"1";"Lipiński";"Adam Józef";"parlamentarzysta";"M";"Warszawa";"członek partii Prawo i Sprawiedliwość";"T";"25523";"7,42";"26,79";""
 "1";"Legnica";"1";"Komitet Wyborczy Prawo i Sprawiedliwość";"partia";"2";"Witek";"Elżbieta Barbara";"parlamentarzysta";"K";"Jawor";"członek partii Prawo i Sprawiedliwość";"T";"9381";"2,73";"9,85";""
 "1";"Legnica";"1";"Komitet Wyborczy Prawo i Sprawiedliwość";"partia";"3";"Machałek";"Marzena Anna";"parlamentarzysta";"K";"Kamienna Góra";"członek partii Prawo i Sprawiedliwość";"T";"11812";"3,43";"12,40";""
@@ -7034,3 +7115,4 @@
 "41";"Szczecin";"10";"Komitet Wyborczy Prawica";"partia";"17";"Szajko";"Wiesław";"drukarz";"M";"Stargard Szczeciński";"nie należy do partii politycznej";"N";"40";"0,01";"2,90";""
 "41";"Szczecin";"10";"Komitet Wyborczy Prawica";"partia";"18";"Grześkowiak";"Iwona Sylwia";"historyk";"K";"Szczecin";"nie należy do partii politycznej";"N";"43";"0,01";"3,12";""
 "41";"Szczecin";"10";"Komitet Wyborczy Prawica";"partia";"19";"Krzystek";"Maciej Piotr";"socjolog";"M";"Sydney";"członek partii Unia Polityki Realnej";"N";"281";"0,07";"20,38";""
+`;

@@ -1,12 +1,20 @@
 import * as Papa from 'papaparse';
-import { parties, partiesShort } from './2011-kandydaci-sejm';
+import {
+  parties,
+  partiesShort,
+  partiesInIntendedOrder,
+} from './2011-kandydaci-sejm';
 import * as _ from 'lodash';
 
 const isColumnRelevant = (x, i) => [0, 1, 2, 3, 13].includes(i);
 
 const pickRelevant = columns => columns.filter(isColumnRelevant);
 
-const replaceHeader = row => [...row.slice(0, 2), ...partiesShort];
+const replaceHeader = row => [
+  ...row.slice(0, 2),
+  'Głosy ważne',
+  ...partiesShort,
+];
 
 const isNonTrivial = row => row && row.length > 1;
 
@@ -35,12 +43,37 @@ const flatten = reducedByParty => {
   return [...head, ...tail];
 };
 
+const sumVotes = (
+  acc,
+  [districtNumber, districtName, listNumber, listName, votes]
+) => acc + votes;
+
+const addTotalToRow = (votesRow, total) => [
+  ...votesRow.slice(0, 2),
+  total,
+  ...votesRow.slice(2),
+];
+
 const groupByParty = districtArray => {
-  const filteredDistrictArray = districtArray.filter(filterRelevantParties);
+  const filteredDistrictArray = districtArray;
   const groupedByPartyObject = _.groupBy(filteredDistrictArray, row => row[2]);
   const groupedByParty = Object.values(groupedByPartyObject);
   const reducedByParty = groupedByParty.map(reduceByParty);
-  return flatten(reducedByParty);
+  const allVotes = reducedByParty.reduce(sumVotes, 0);
+
+  const reducedAndFilteredByParty = reducedByParty.filter(
+    filterRelevantParties
+  );
+
+  console.log(reducedAndFilteredByParty);
+
+  const flattened = flatten(reducedAndFilteredByParty);
+
+  const flattenedWithAddedSum = addTotalToRow(flattened, allVotes);
+
+  return flattened.length === parties.length + 2
+    ? flattenedWithAddedSum
+    : [...flattenedWithAddedSum, 0];
 };
 
 const groupByDistrict = resultsArray => {
@@ -48,6 +81,18 @@ const groupByDistrict = resultsArray => {
   const groupedByDistrict = Object.values(groupedByDistrictObject);
   return groupedByDistrict.filter(isNonTrivial).map(groupByParty);
 };
+
+const rearrange = ([
+  districtNumber,
+  districtName,
+  allVotes,
+  PiS,
+  SLD,
+  Palikot,
+  PSL,
+  PO,
+  MN,
+]) => [districtNumber, districtName, allVotes, PO, PiS, Palikot, PSL, SLD, MN];
 
 export const parse = csvString =>
   new Promise(resolve => {
@@ -58,7 +103,7 @@ export const parse = csvString =>
         const tail = relevant.slice(1);
         const grouped = groupByDistrict(tail);
 
-        resolve([head, ...grouped]);
+        resolve([rearrange(head), ...grouped.map(rearrange)]);
       },
     });
   });

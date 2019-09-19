@@ -118,7 +118,7 @@ export const minVotesToChangeSomething = (
 
 export const partyAboveThreshold = (percentageVotesByParty, parties) =>
   percentageVotesByParty.map(
-    (percentage, i) => percentage * 100 >= parties[i].threshold
+    (percentage, i) => percentage * 100 >= (parties[i] || {}).threshold
   );
 
 export const computeAllowingForThresholds = (

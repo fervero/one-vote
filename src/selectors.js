@@ -6,7 +6,6 @@ import {
   computeAllowingForThresholds,
 } from './dHondtHelpers';
 
-import { seatsArray } from './results-barrel';
 import { sumOfVectors, sumArray } from './arrayHelpers';
 
 const selectResultsInAllDistricts = ({ resultsInAllDistricts }) =>
@@ -15,6 +14,15 @@ const selectResultsInAllDistricts = ({ resultsInAllDistricts }) =>
 const selectResultsInSingleDistrict = districtNumber => ({
   resultsInAllDistricts,
 }) => resultsInAllDistricts[districtNumber];
+
+export const selectSeatsArray = ({ votingDistricts }) =>
+  votingDistricts.map(({ seats }) => seats);
+
+const selectSeatsInDistrict = districtNumber =>
+  createSelector(
+    [selectSeatsArray],
+    seatsArray => seatsArray[districtNumber]
+  );
 
 const selectSummedPlanktonVotes = ({ summedPlanktonVotes }) =>
   summedPlanktonVotes;
@@ -42,8 +50,8 @@ export const selectPartiesAboveThreshold = createSelector(
 );
 
 export const selectSeatsWonInAllDistricts = createSelector(
-  [selectResultsInAllDistricts, selectPartiesAboveThreshold],
-  (resultsInAllDistricts = [], isPartyAboveThreshold = []) =>
+  [selectResultsInAllDistricts, selectPartiesAboveThreshold, selectSeatsArray],
+  (resultsInAllDistricts = [], isPartyAboveThreshold = [], seatsArray = []) =>
     resultsInAllDistricts.map((row, i) =>
       computeAllowingForThresholds(row, seatsArray[i], isPartyAboveThreshold)
     ) || []
@@ -54,11 +62,12 @@ export const selectSeatsWonInADistrict = districtNumber =>
     [
       selectResultsInSingleDistrict(districtNumber),
       selectPartiesAboveThreshold,
+      selectSeatsInDistrict(districtNumber),
     ],
-    (resultsInSingleDistrict, partiesAboveThreshold) =>
+    (resultsInSingleDistrict, partiesAboveThreshold, seats) =>
       computeAllowingForThresholds(
         resultsInSingleDistrict,
-        seatsArray[districtNumber],
+        seats,
         partiesAboveThreshold
       )
   );
@@ -68,11 +77,12 @@ export const selectVotesRequiredToChangeSth = districtNumber =>
     [
       selectResultsInSingleDistrict(districtNumber),
       selectPartiesAboveThreshold,
+      selectSeatsInDistrict(districtNumber),
     ],
-    (resultsInSingleDistrict, partiesAboveThreshold) =>
+    (resultsInSingleDistrict, partiesAboveThreshold, seats) =>
       minVotesToChangeSomething(
         resultsInSingleDistrict,
-        seatsArray[districtNumber],
+        seats,
         partiesAboveThreshold
       )
   );
