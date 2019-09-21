@@ -5,12 +5,22 @@ import TableRow from '@material-ui/core/TableRow';
 import { ResultsTableHeader } from './ResultsTableHeader.jsx';
 import { ResultsRow } from './ResultsRow.jsx';
 
+const hasResults = resultsInAllDistricts =>
+  resultsInAllDistricts &&
+  resultsInAllDistricts.length &&
+  resultsInAllDistricts[0] &&
+  resultsInAllDistricts[0].length;
+
 const mapStateToProps = state => ({
   resultsInAllDistricts: state.resultsInAllDistricts,
 });
 
 const ResultsTableComponent = ({ resultsInAllDistricts }) => {
-  return resultsInAllDistricts && resultsInAllDistricts.length ? (
+  if (!hasResults(resultsInAllDistricts)) {
+    return <span></span>;
+  }
+
+  return (
     <Table size="small" stickyHeader>
       <TableHead>
         <ResultsTableHeader></ResultsTableHeader>
@@ -23,8 +33,6 @@ const ResultsTableComponent = ({ resultsInAllDistricts }) => {
         ))}
       </TableBody>
     </Table>
-  ) : (
-    <span>no data</span>
   );
 };
 

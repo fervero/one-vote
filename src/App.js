@@ -5,6 +5,7 @@ import { store } from './store';
 import { ResultsTable } from './ResultsTable.jsx';
 import { elections } from './results/results-barrel';
 import { TopBar } from './TopBar.jsx';
+import { BottomBar } from './BottomBar.jsx';
 import { setResults, setParties, setDistricts } from './actionCreators';
 import { makeStyles } from '@material-ui/styles';
 
@@ -13,7 +14,7 @@ const useStyles = makeStyles({
     width: '100%',
   },
   tableWrapper: {
-    maxHeight: 'calc(100vh - 12rem)',
+    maxHeight: 'calc(100vh - 10.25rem)',
     overflow: 'auto',
   },
 });
@@ -72,6 +73,7 @@ export function App() {
             <ResultsTable />
           </div>
         </div>
+        <BottomBar></BottomBar>
       </div>
     </Provider>
   );

@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
 import { sumOfVectors } from './arrayHelpers';
 import { selectSeatsWonInAllDistricts, selectSumOfVotes } from './selectors';
+import classNames from 'classnames';
 
 const mapStateToProps = state => ({
   parties: state.parties,
@@ -14,9 +15,12 @@ const mapStateToProps = state => ({
 });
 
 const useStyles = makeStyles({
-  numeric: {
+  narrow: {
     maxWidth: '1.25rem',
-    textAlign: 'center',
+    textAlign: 'right',
+  },
+  medium: {
+    width: '10rem',
   },
   name: { width: '6rem' },
   sticky: { zIndex: 100 },
@@ -37,23 +41,19 @@ function ResultsTableHeaderComponent({
 
   return (
     <TableRow>
-      <TableCell className={[classes.numeric, classes.sticky].join(' ')}>
-        Nr okręgu
-      </TableCell>
-      <TableCell className={[classes.name, classes.sticky].join(' ')}>
-        Siedziba OKW
+      <TableCell className={classNames(classes.sticky, classes.medium)}>
+        Okręg
       </TableCell>
       {parties.map(({ name }, i) => (
         <TableCell
           key={i}
-          className={[classes.numeric, classes.sticky].join(' ')}
+          className={classNames(classes.sticky, classes.narrow)}
         >
           {name} ({sumOfSeatsByParty[i]})
           <br />
           {formattedPercentageVotes[i]}%
         </TableCell>
       ))}
-      <TableCell className={classes.sticky}></TableCell>
     </TableRow>
   );
 }
