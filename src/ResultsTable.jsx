@@ -1,16 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Table, TableBody, TableHead } from '@material-ui/core';
-import { ResultsRow } from './ResultsRow.jsx';
+import TableRow from '@material-ui/core/TableRow';
 import { ResultsTableHeader } from './ResultsTableHeader.jsx';
-import { selectSeatsArray } from './selectors';
+import { ResultsRow } from './ResultsRow.jsx';
 
 const mapStateToProps = state => ({
   resultsInAllDistricts: state.resultsInAllDistricts,
-  seatsArray: selectSeatsArray(state),
 });
 
-const ResultsTableComponent = ({ resultsInAllDistricts, seatsArray }) => {
+const ResultsTableComponent = ({ resultsInAllDistricts }) => {
   return resultsInAllDistricts && resultsInAllDistricts.length ? (
     <Table size="small" stickyHeader>
       <TableHead>
@@ -18,7 +17,9 @@ const ResultsTableComponent = ({ resultsInAllDistricts, seatsArray }) => {
       </TableHead>
       <TableBody>
         {resultsInAllDistricts.map((x, i) => (
-          <ResultsRow rowNumber={i} key={i} seats={seatsArray[i]} />
+          <TableRow key={i}>
+            <ResultsRow rowNumber={i} />
+          </TableRow>
         ))}
       </TableBody>
     </Table>

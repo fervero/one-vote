@@ -5,6 +5,25 @@ const string2Number = stupidString => {
   return parseInt(saneString, 10);
 };
 
+const adjustVotesWithThresholds = (votes, seats, isPartyAboveThreshold) =>
+  votes.map((numberOfVotes, districtNumber) =>
+    isPartyAboveThreshold[districtNumber] ? numberOfVotes : 0
+  );
+
+export const computeAllowingForThresholds = (
+  votes,
+  seats,
+  isPartyAboveThreshold
+) => {
+  const adjustedVotes = adjustVotesWithThresholds(
+    votes,
+    seats,
+    isPartyAboveThreshold
+  );
+
+  return dhondt.compute(adjustedVotes, seats, isPartyAboveThreshold);
+};
+
 // 2015, okręg z OKW w Rzeszowie - 54 głosy więcej na PSL = 1 mandat więcej na PSL
 const bisectAddingVotesOnPosition = (votes, seats, position) => {
   const votesCopy = [...votes];
@@ -88,14 +107,14 @@ export const addVotes = (votes, seats, isPartyAboveThreshold) =>
   votes.map((x, i) =>
     isPartyAboveThreshold[i]
       ? bisectAddingVotesOnPosition(votes, seats, i)
-      : null
+      : +Infinity
   );
 
 export const subtractVotes = (votes, seats, isPartyAboveThreshold) =>
   votes.map((x, i) =>
     isPartyAboveThreshold[i]
       ? bisectSubtractVotesOnPosition(votes, seats, i)
-      : null
+      : -Infinity
   );
 
 export const minVotesToChangeSomething = (
@@ -105,13 +124,21 @@ export const minVotesToChangeSomething = (
 ) => {
   const votes = row.map(string2Number);
 
-  const moreVotes = addVotes(votes, seats, isPartyAboveThreshold).map(x =>
-    x === null || x > 0 ? x : Infinity
+  const adjustedVotes = adjustVotesWithThresholds(
+    votes,
+    seats,
+    isPartyAboveThreshold
   );
 
-  const lessVotes = subtractVotes(votes, seats, isPartyAboveThreshold).map(x =>
-    x === null || x < 0 ? x : -Infinity
+  const moreVotes = addVotes(adjustedVotes, seats, isPartyAboveThreshold).map(
+    x => (x === null || x > 0 ? x : Infinity)
   );
+
+  const lessVotes = subtractVotes(
+    adjustedVotes,
+    seats,
+    isPartyAboveThreshold
+  ).map(x => (x === null || x < 0 ? x : -Infinity));
 
   return { moreVotes, lessVotes };
 };
@@ -120,15 +147,3 @@ export const partyAboveThreshold = (percentageVotesByParty, parties) =>
   percentageVotesByParty.map(
     (percentage, i) => percentage * 100 >= (parties[i] || {}).threshold
   );
-
-export const computeAllowingForThresholds = (
-  votes,
-  seats,
-  isPartyAboveThreshold
-) => {
-  const adjustedVotes = votes.map((numberOfVotes, districtNumber) =>
-    isPartyAboveThreshold[districtNumber] ? numberOfVotes : 0
-  );
-
-  return dhondt.compute(adjustedVotes, seats, isPartyAboveThreshold);
-};

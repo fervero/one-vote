@@ -11,7 +11,7 @@ import { sumOfVectors, sumArray } from './arrayHelpers';
 const selectResultsInAllDistricts = ({ resultsInAllDistricts }) =>
   resultsInAllDistricts;
 
-const selectResultsInSingleDistrict = districtNumber => ({
+export const selectResultsInSingleDistrict = districtNumber => ({
   resultsInAllDistricts,
 }) => resultsInAllDistricts[districtNumber];
 

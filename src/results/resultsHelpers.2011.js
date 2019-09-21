@@ -65,8 +65,6 @@ const groupByParty = districtArray => {
     filterRelevantParties
   );
 
-  console.log(reducedAndFilteredByParty);
-
   const flattened = flatten(reducedAndFilteredByParty);
 
   const flattenedWithAddedSum = addTotalToRow(flattened, allVotes);
