@@ -1,3 +1,11 @@
+## De quoi s'agit-il ? ¿Se trata de qué? O co chodzi? What is this about?
+
+Well, have you ever heard - a thousand times, perhaps - the phrase "single vote won't change anything"? I have. Finally, I decided to test that hypothesis, in the context of Polish elections to the lower House of the Parliament, where proportional seat allocation method has been used. Basically, I wrote this thing to use as an argument in a discussion (and to write something in React for a change). Spoiler alert - while I haven't found a situation where a _single_ vote had affected the outcome, there are a few examples where two-digits difference was enough to tip the balance. _Low_ two-digits at that.
+
+Helpful remarks and pull requests welcome.
+
+And below, the rest of the original README thank to Create React App.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
