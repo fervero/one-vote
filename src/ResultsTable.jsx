@@ -21,7 +21,7 @@ const ResultsTableComponent = ({ resultsInAllDistricts }) => {
   }
 
   return (
-    <Table size="small" stickyHeader>
+    <Table size="small" stickyHeader style={{ paddingBottom: '2rem' }}>
       <TableHead>
         <ResultsTableHeader></ResultsTableHeader>
       </TableHead>
