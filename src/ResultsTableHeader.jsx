@@ -34,7 +34,7 @@ function ResultsTableHeaderComponent({
   const classes = useStyles();
 
   const formattedPercentageVotes = percentageVotesByParty.map(x =>
-    (100 * x).toFixed(1)
+    (100 * x).toFixed(2)
   );
 
   const sumOfSeatsByParty = seatsWonInAllDistricts.reduce(sumOfVectors);
@@ -44,7 +44,7 @@ function ResultsTableHeaderComponent({
       <TableCell className={classNames(classes.sticky, classes.medium)}>
         Okręg
       </TableCell>
-      {parties.map(({ name }, i) => (
+      {parties.slice(0, parties.length - 1).map(({ name }, i) => (
         <TableCell
           key={i}
           className={classNames(classes.sticky, classes.narrow)}

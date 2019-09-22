@@ -7,6 +7,8 @@ const pickRelevant = row => [
   row[24], // głosów ważnych
   row[25], // PiS
   row[26], // PO
+  row[27], // Razem
+  row[28], // Korwin
   row[29], // PSL
   row[30], // SLD
   row[31], // Kukiz'15

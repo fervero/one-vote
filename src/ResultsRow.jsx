@@ -37,6 +37,7 @@ function ResultsRowComponent({
 }) {
   const { moreVotes, lessVotes } = minVotesToChangeSomething;
   const classes = useStyles();
+  const length = (resultsInDistrict || []).length;
 
   return (
     <Fragment>
@@ -44,7 +45,7 @@ function ResultsRowComponent({
         {districtNumber}. {districtName}
       </TableCell>
 
-      {(resultsInDistrict || []).map((votes, i) => (
+      {(resultsInDistrict || []).slice(0, length - 1).map((votes, i) => (
         <ResultsCell
           key={i}
           moreVotes={moreVotes[i]}

@@ -57,7 +57,6 @@ export const PlusMinusMarkers = ({ moreVotes, lessVotes }) => {
 
   const handleClick = event => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
-    console.log(event);
   };
 
   const handleClickAway = () => {

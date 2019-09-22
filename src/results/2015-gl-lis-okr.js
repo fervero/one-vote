@@ -132,8 +132,8 @@ export const electionResults = `Nr okręgu;Siedziba OKW;L. obw.;Liczba wyborców
 export const parties = [
   { name: 'PiS', threshold: 5 },
   { name: 'PO', threshold: 5 },
-  // {name: 'Razem', threshold: 5},
-  // {name: 'Korwin', threshold: 5},
+  { name: 'Razem', threshold: 5 },
+  { name: 'Korwin', threshold: 5 },
   { name: 'PSL', threshold: 5 },
   { name: 'ZLew', threshold: 8 },
   { name: "Kukiz'15", threshold: 5 },
