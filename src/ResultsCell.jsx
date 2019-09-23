@@ -44,7 +44,7 @@ function ResultsCellComponent({
     const action = setSingleResults({
       districtNumber: districtNumber - 1,
       cellNumber,
-      value: +event.target.value,
+      value: Math.max(+event.target.value, 0),
     });
 
     dispatch(action);
@@ -66,6 +66,7 @@ function ResultsCellComponent({
       <br />
       <TextField
         value={votes}
+        min="0"
         type="number"
         className={classes.rite}
         onChange={onVotesChange}
