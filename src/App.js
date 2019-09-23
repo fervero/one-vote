@@ -55,9 +55,7 @@ export function App() {
     store.dispatch(setParties(results[0].slice(2)));
     const majorPartiesResults = results.slice(1).map(row => row.slice(2));
 
-    store.dispatch(
-      setResults({ majorPartiesResults, planktonVotes: planktonVotes.slice(1) })
-    );
+    store.dispatch(setResults({ majorPartiesResults, planktonVotes }));
   };
 
   return (

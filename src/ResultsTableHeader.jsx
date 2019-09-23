@@ -6,13 +6,18 @@ import { connect } from 'react-redux';
 import { sumOfVectors } from './arrayHelpers';
 import { selectSeatsWonInAllDistricts, selectSumOfVotes } from './selectors';
 import classNames from 'classnames';
+import { DebouncedTextField } from './DebouncedTextField';
 
-const mapStateToProps = state => ({
-  parties: state.parties,
-  seatsWonInAllDistricts: selectSeatsWonInAllDistricts(state),
-  resultsInAllDistricts: state.resultsInAllDistricts || [],
-  percentageVotesByParty: selectSumOfVotes(state).percentageVotesByParty,
-});
+const mapStateToProps = state => {
+  const { percentageVotesByParty } = selectSumOfVotes(state);
+
+  return {
+    parties: state.parties,
+    seatsWonInAllDistricts: selectSeatsWonInAllDistricts(state),
+    resultsInAllDistricts: state.resultsInAllDistricts || [],
+    percentageVotesByParty,
+  };
+};
 
 const useStyles = makeStyles({
   narrow: {
@@ -52,6 +57,8 @@ function ResultsTableHeaderComponent({
           {name} ({sumOfSeatsByParty[i]})
           <br />
           {formattedPercentageVotes[i]}%
+          <br />
+          <DebouncedTextField columnNumber={i}></DebouncedTextField>
         </TableCell>
       ))}
     </TableRow>

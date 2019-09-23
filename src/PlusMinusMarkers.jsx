@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames';
 import { SMALL_NUMBER } from './constants';
@@ -18,6 +18,7 @@ const useStyles = makeStyles({
   icon: { fontSize: '.75rem', marginLeft: '.5em' },
   popper: { padding: '1.5em 2em 1em' },
   line: { maxWidth: '20em' },
+  nowrap: { whiteSpace: 'nowrap' },
 });
 
 const plusOrNone = moreVotes =>
@@ -67,7 +68,7 @@ export const PlusMinusMarkers = ({ moreVotes, lessVotes }) => {
   const id = open ? 'simple-popper' : undefined;
 
   return (
-    <Fragment>
+    <span className={classes.nowrap}>
       <span
         className={classNames(
           classes.add,
@@ -110,6 +111,6 @@ export const PlusMinusMarkers = ({ moreVotes, lessVotes }) => {
           </ClickAwayListener>
         )}
       </Popper>
-    </Fragment>
+    </span>
   );
 };

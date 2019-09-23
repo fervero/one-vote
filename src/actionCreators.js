@@ -1,6 +1,7 @@
 import {
   SET_RAW_RESULTS,
   SET_SINGLE_RESULTS,
+  SET_RESULTS_IN_COLUMN,
   SET_PARTIES,
   SET_DISTRICTS,
 } from './actions';
@@ -9,6 +10,16 @@ export function setResults(value) {
   return {
     type: SET_RAW_RESULTS,
     value,
+  };
+}
+
+export function setResultsInColumn(columnNumber, votes) {
+  return {
+    type: SET_RESULTS_IN_COLUMN,
+    value: {
+      columnNumber,
+      votes: +votes,
+    },
   };
 }
 
