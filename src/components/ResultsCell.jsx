@@ -5,8 +5,8 @@ import { SeatsSpan } from './SeatsSpan';
 import { PlusMinusMarkers } from './PlusMinusMarkers';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { setSingleResults } from './actionCreators';
-import { SMALL_NUMBER } from './constants';
+import { setSingleResults } from '../state/actionCreators';
+import { SMALL_NUMBER } from '../constants';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 

@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import { PollButton } from './PollButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -52,6 +53,7 @@ export function TopBar({ years, selectYear, activeYear }) {
             {year}
           </Button>
         ))}
+        {activeYear ? <PollButton></PollButton> : ''}
       </div>
     </div>
   );

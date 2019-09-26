@@ -4,12 +4,15 @@ import {
   minVotesToChangeSomething,
   partyAboveThreshold,
   computeAllowingForThresholds,
-} from './dHondtHelpers';
+} from '../utilities/dHondtHelpers';
 
-import { sumOfVectors, sumArray } from './arrayHelpers';
+import { sumOfVectors, sumArray } from '../utilities/arrayHelpers';
 
 const selectResultsInAllDistricts = ({ resultsInAllDistricts }) =>
   resultsInAllDistricts;
+
+export const selectCountryWideParties = ({ parties }) =>
+  parties.slice(0, parties.length - 1);
 
 export const selectResultsInSingleDistrict = districtNumber => ({
   resultsInAllDistricts,

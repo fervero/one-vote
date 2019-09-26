@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { DEBOUNCE_TIME } from './constants';
+import { DEBOUNCE_TIME } from '../constants';
 import { connect } from 'react-redux';
-import { selectSumOfVotes } from './selectors';
+import { selectSumOfVotes } from '../state/selectors';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { setResultsInColumn } from './actionCreators';
+import { setResultsInColumn } from '../state/actionCreators';
 
 const mapStateToProps = (state, { columnNumber }) => {
   const { sumOfVotesByParty } = selectSumOfVotes(state);
@@ -26,6 +26,10 @@ class DebouncedTextFieldComponent extends Component {
     this.stream$
       .pipe(debounceTime(DEBOUNCE_TIME))
       .subscribe(value => this.dispatchChange(value));
+  }
+
+  componentWillReceiveProps({ value }) {
+    this.setState({ value });
   }
 
   onChange = e => {

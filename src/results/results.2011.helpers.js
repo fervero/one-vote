@@ -1,9 +1,5 @@
 import * as Papa from 'papaparse';
-import {
-  parties,
-  partiesShort,
-  partiesInIntendedOrder,
-} from './2011-kandydaci-sejm';
+import { parties, partiesShort, electionResults } from './results.2011';
 import * as _ from 'lodash';
 
 const isColumnRelevant = (x, i) => [0, 1, 2, 3, 13].includes(i);
@@ -105,3 +101,5 @@ export const parse = csvString =>
       },
     });
   });
+
+export const results = parse(electionResults);

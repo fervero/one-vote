@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames';
-import { SMALL_NUMBER } from './constants';
+import { SMALL_NUMBER } from '../constants';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import Popper from '@material-ui/core/Popper';
 import { ClickAwayListener } from '@material-ui/core';

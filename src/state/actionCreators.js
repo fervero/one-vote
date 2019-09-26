@@ -3,6 +3,7 @@ import {
   SET_SINGLE_RESULTS,
   SET_RESULTS_IN_COLUMN,
   SET_PARTIES,
+  SET_PERCENTAGE_VOTES,
   SET_DISTRICTS,
 } from './actions';
 
@@ -40,6 +41,13 @@ export function setDistricts(value) {
 export function setSingleResults(value) {
   return {
     type: SET_SINGLE_RESULTS,
+    value,
+  };
+}
+
+export function setPercentageVotes(value) {
+  return {
+    type: SET_PERCENTAGE_VOTES,
     value,
   };
 }

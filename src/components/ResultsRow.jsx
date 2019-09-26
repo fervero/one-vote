@@ -7,7 +7,7 @@ import { get as _get } from 'lodash';
 import {
   selectVotesRequiredToChangeSth,
   selectSeatsWonInADistrict,
-} from './selectors';
+} from '../state/selectors';
 
 const mapStateToProps = (state, { rowNumber }) => {
   const district = (state.votingDistricts || [])[rowNumber];

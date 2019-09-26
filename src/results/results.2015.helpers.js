@@ -1,5 +1,5 @@
 import * as Papa from 'papaparse';
-import { parties } from './2015-gl-lis-okr';
+import { parties, electionResults, seatsArray } from './2015-gl-lis-okr';
 
 const pickRelevant = row => [
   row[0], // nr okręgu
@@ -42,3 +42,6 @@ export const parse = csvString =>
       },
     });
   });
+
+export const results = parse(electionResults);
+export { seatsArray };

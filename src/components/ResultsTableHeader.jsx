@@ -3,16 +3,21 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { makeStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
-import { sumOfVectors } from './arrayHelpers';
-import { selectSeatsWonInAllDistricts, selectSumOfVotes } from './selectors';
+import { sumOfVectors } from '../utilities/arrayHelpers';
 import classNames from 'classnames';
 import { DebouncedTextField } from './DebouncedTextField';
+
+import {
+  selectSeatsWonInAllDistricts,
+  selectSumOfVotes,
+  selectCountryWideParties,
+} from '../state/selectors';
 
 const mapStateToProps = state => {
   const { percentageVotesByParty } = selectSumOfVotes(state);
 
   return {
-    parties: state.parties,
+    parties: selectCountryWideParties(state),
     seatsWonInAllDistricts: selectSeatsWonInAllDistricts(state),
     resultsInAllDistricts: state.resultsInAllDistricts || [],
     percentageVotesByParty,
@@ -49,9 +54,9 @@ function ResultsTableHeaderComponent({
       <TableCell className={classNames(classes.sticky, classes.medium)}>
         Okręg
       </TableCell>
-      {parties.slice(0, parties.length - 1).map(({ name }, i) => (
+      {parties.map(({ name }, i) => (
         <TableCell
-          key={i}
+          key={name}
           className={classNames(classes.sticky, classes.narrow)}
         >
           {name} ({sumOfSeatsByParty[i]})
