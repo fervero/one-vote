@@ -4,9 +4,9 @@ import {
   minVotesToChangeSomething,
   partyAboveThreshold,
   computeAllowingForThresholds,
-} from './dHondtHelpers';
+} from '../utilities/dHondtHelpers';
 
-import { sumOfVectors, sumArray } from './arrayHelpers';
+import { sumOfVectors, sumArray } from '../utilities/arrayHelpers';
 
 const selectResultsInAllDistricts = ({ resultsInAllDistricts }) =>
   resultsInAllDistricts;

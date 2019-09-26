@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Provider } from 'react-redux';
-import { store } from './store';
-import { ResultsTable } from './ResultsTable.jsx';
+import { store } from './state/store';
+import { ResultsTable } from './components/ResultsTable';
 import { elections } from './results/results-barrel';
-import { TopBar } from './TopBar.jsx';
-import { BottomBar } from './BottomBar.jsx';
-import { setResults, setParties, setDistricts } from './actionCreators';
+import { TopBar } from './components/TopBar';
+import { BottomBar } from './components/BottomBar';
+import { setResults, setParties, setDistricts } from './state/actionCreators';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles({

@@ -3,10 +3,14 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { makeStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
-import { sumOfVectors } from './arrayHelpers';
-import { selectSeatsWonInAllDistricts, selectSumOfVotes } from './selectors';
+import { sumOfVectors } from '../utilities/arrayHelpers';
 import classNames from 'classnames';
 import { DebouncedTextField } from './DebouncedTextField';
+
+import {
+  selectSeatsWonInAllDistricts,
+  selectSumOfVotes,
+} from '../state/selectors';
 
 const mapStateToProps = state => {
   const { percentageVotesByParty } = selectSumOfVotes(state);

@@ -1,9 +1,5 @@
 import { cloneDeep } from 'lodash';
-import {
-  sumArray,
-  addNumberToArray,
-  adjustArrayToDesiredSum,
-} from './arrayHelpers';
+import { sumArray, adjustArrayToDesiredSum } from '../utilities/arrayHelpers';
 
 import {
   SET_RAW_RESULTS,

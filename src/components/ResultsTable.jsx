@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Table, TableBody, TableHead } from '@material-ui/core';
 import TableRow from '@material-ui/core/TableRow';
-import { ResultsTableHeader } from './ResultsTableHeader.jsx';
-import { ResultsRow } from './ResultsRow.jsx';
+import { ResultsTableHeader } from './ResultsTableHeader';
+import { ResultsRow } from './ResultsRow';
 
 const hasResults = resultsInAllDistricts =>
   resultsInAllDistricts &&

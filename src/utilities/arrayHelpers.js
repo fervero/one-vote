@@ -2,15 +2,13 @@ export const sumOfVectors = (rowA, rowB) => rowA.map((x, i) => x + rowB[i]);
 
 export const sumArray = arr => arr.reduce((x, y) => x + y, 0);
 
-export const addNumberToArray = (arr, addition) => {
+const addNumberToArray = (arr, addition) => {
   const addEqually = Math.floor(addition / arr.length);
-  const intermediateArray = arr.map(value => value + addEqually);
   const remainder = addition - addEqually * arr.length;
 
-  const resultArray = intermediateArray.map((value, index) =>
-    index < remainder ? value + 1 : value
+  return arr.map((value, index) =>
+    index < remainder ? value + 1 + addEqually : value + addEqually
   );
-  return resultArray;
 };
 
 export const adjustArrayToDesiredSum = (arr, expectedSum) => {

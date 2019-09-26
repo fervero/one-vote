@@ -1,9 +1,5 @@
 import * as Papa from 'papaparse';
-import {
-  parties,
-  partiesShort,
-  partiesInIntendedOrder,
-} from './2011-kandydaci-sejm';
+import { parties, partiesShort } from './2011-kandydaci-sejm';
 import * as _ from 'lodash';
 
 const isColumnRelevant = (x, i) => [0, 1, 2, 3, 13].includes(i);
