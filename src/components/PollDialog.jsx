@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import List from '@material-ui/core/List';
@@ -17,6 +17,7 @@ import {
   selectSumOfVotes,
   selectCountryWideParties,
 } from '../state/selectors';
+import { sumArray } from '../utilities/arrayHelpers';
 
 const mapStateToProps = state => {
   const { percentageVotesByParty } = selectSumOfVotes(state);
@@ -49,6 +50,12 @@ function PollDialogComponent(props) {
     percentageVotesByParty
   );
 
+  useEffect(() => assignPercentageVotes(percentageVotesByParty), [
+    percentageVotesByParty,
+  ]);
+
+  const [valid, setValidity] = useState(true);
+
   const classes = useStyles();
 
   const handleClose = () => {
@@ -58,9 +65,20 @@ function PollDialogComponent(props) {
   const handleInput = rowNumber => evt => {
     const newValue = Math.max(+evt.target.value / 100, 0);
 
+    const newPercentageVotes = percentageVotes.map((value, i) =>
+      rowNumber === i ? newValue : value
+    );
+
+    setValidity(sumArray(newPercentageVotes) <= 1);
+
     assignPercentageVotes(
       percentageVotes.map((value, i) => (rowNumber === i ? newValue : value))
     );
+  };
+
+  const handleCancel = () => {
+    assignPercentageVotes(percentageVotesByParty);
+    handleClose();
   };
 
   const handleSubmit = () => {
@@ -102,10 +120,15 @@ function PollDialogComponent(props) {
         </List>
       </Paper>
       <div className={classes.buttons}>
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={!valid}
+          onClick={handleSubmit}
+        >
           Zastosuj
         </Button>
-        <Button variant="contained" onClick={handleClose}>
+        <Button variant="contained" onClick={handleCancel}>
           Albo nie, rozmyśliłem się
         </Button>
       </div>

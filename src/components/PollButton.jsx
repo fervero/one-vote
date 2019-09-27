@@ -22,8 +22,8 @@ function PollButtonComponent({ dispatch }) {
   return (
     <Fragment>
       <Button
-        variant="outlined"
-        color="primary"
+        variant="contained"
+        size="small"
         onClick={handleClickOpen}
         style={{ marginLeft: '1rem' }}
       >

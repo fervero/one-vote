@@ -18,6 +18,11 @@ export const selectResultsInSingleDistrict = districtNumber => ({
   resultsInAllDistricts,
 }) => resultsInAllDistricts[districtNumber];
 
+export const selectResultsOfSpecifiedParty = colNumber => state =>
+  selectResultsInAllDistricts(state).map(
+    resultsInDistrict => resultsInDistrict[colNumber]
+  );
+
 export const selectSeatsArray = ({ votingDistricts }) =>
   votingDistricts.map(({ seats }) => seats);
 

@@ -6,12 +6,13 @@ import {
   SET_RESULTS_IN_COLUMN,
   SET_PERCENTAGE_VOTES,
 } from './actions';
+
 import { setRawResults } from './setRawResults';
 import { setResultsInSingleCell } from './setResultsInSingleCell';
 import { setParties } from './setParties';
 import { setDistricts } from './setDistricts';
 import { setResultsInColumn } from './setResultsInColumn';
-import { sumArray } from '../utilities/arrayHelpers';
+import { setPercentageVotes } from './setPercentageVotes';
 
 const DEFAULT_STATE = {
   votingDistricts: [],
@@ -20,22 +21,6 @@ const DEFAULT_STATE = {
   originalResultsInAllDistricts: [[]],
   planktonVotesInDistricts: [],
 };
-
-function setPercentageVotes(state, action) {
-  console.log(state.resultsInAllDistricts);
-  const allVotes = sumArray(
-    state.resultsInAllDistricts.map(results => sumArray(results))
-  );
-
-  console.log(allVotes);
-  const allVotesByParty = action.value.map(factor =>
-    Math.round(allVotes * factor)
-  );
-  console.log(action.value);
-  console.log(allVotesByParty);
-
-  return state;
-}
 
 export function rootReducer(state = DEFAULT_STATE, action = {}) {
   switch (action.type) {

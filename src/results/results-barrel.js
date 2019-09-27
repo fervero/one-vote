@@ -7,10 +7,13 @@ import { results as results2011 } from './results.2011.helpers';
 
 import {
   results2005,
-  seatsArray as seatsArray20052007,
+  seatsArray as seatsArray2005,
 } from './results.2005.helpers';
 
-import { results2007, seatsArray } from './results.2007.helpers';
+import {
+  results2007,
+  seatsArray as seatsArray2007,
+} from './results.2007.helpers';
 
 const sumArray = arr => arr.reduce((x, y) => x + y, 0);
 
@@ -43,13 +46,13 @@ export const elections = Promise.all([results2015, results2011]).then(
         year: 2005,
         results: arrayToObject(results2005),
         planktonVotes: calculatePlanktonVotes(results2005),
-        seatsArray: seatsArray20052007,
+        seatsArray: seatsArray2005,
       },
       {
         year: 2007,
         results: arrayToObject(results2007),
         planktonVotes: calculatePlanktonVotes(results2007),
-        seatsArray: seatsArray20052007,
+        seatsArray: seatsArray2007,
       },
       {
         year: 2011,
