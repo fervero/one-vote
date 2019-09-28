@@ -30,11 +30,6 @@ const mapStateToProps = state => {
   };
 };
 
-const toFixedUnless0 = number => {
-  const numberString = number.toFixed(2);
-  return numberString.replace(/0*$/g, '').replace(/\.$/, '');
-};
-
 const booleanToThreshold = value => (value ? 8 : 5);
 
 const useStyles = makeStyles({
@@ -53,44 +48,53 @@ const useStyles = makeStyles({
   },
 });
 
-function PollDialogComponent(props) {
-  const { onClose, open, parties, percentageVotesByParty } = props;
+function PollDialogComponent({
+  onClose,
+  open,
+  parties,
+  percentageVotesByParty,
+}) {
+  const classes = useStyles();
 
   const [percentageVotes, setPercentageVotes] = useState(
-    percentageVotesByParty
+    percentageVotesByParty.map(x => (x * 100).toFixed(2))
   );
 
   const [thresholds, setThresholds] = useState(
     parties.map(({ threshold }) => threshold)
   );
 
-  useEffect(() => setPercentageVotes(percentageVotesByParty), [
-    percentageVotesByParty,
-  ]);
+  const [valid, setValidity] = useState(true);
+
+  useEffect(
+    () =>
+      setPercentageVotes(percentageVotesByParty.map(x => (x * 100).toFixed(2))),
+    [percentageVotesByParty]
+  );
 
   useEffect(() => setThresholds(parties.map(({ threshold }) => threshold)), [
     parties,
   ]);
-
-  const [valid, setValidity] = useState(true);
-
-  const classes = useStyles();
 
   const handleClose = () => {
     onClose(null);
   };
 
   const handleInput = rowNumber => evt => {
-    const newValue = Math.max(+evt.target.value / 100, 0);
+    const { value } = evt.target;
 
-    const newPercentageVotes = percentageVotes.map((value, i) =>
-      rowNumber === i ? newValue : value
+    if (isNaN(parseFloat(value))) {
+      return;
+    }
+
+    const newPercentageVotes = percentageVotes.map((oldValue, i) =>
+      rowNumber === i ? value : oldValue
     );
 
-    setValidity(sumArray(newPercentageVotes) <= 1);
+    setValidity(sumArray(newPercentageVotes.map(parseFloat)) <= 100);
 
     setPercentageVotes(
-      percentageVotes.map((value, i) => (rowNumber === i ? newValue : value))
+      percentageVotes.map((oldValue, i) => (rowNumber === i ? value : oldValue))
     );
   };
 
@@ -101,13 +105,19 @@ function PollDialogComponent(props) {
   };
 
   const handleSubmit = () => {
-    onClose({ percentageVotes, thresholds });
+    onClose({
+      percentageVotes: percentageVotes.map(x => parseFloat(x) / 100),
+      thresholds,
+    });
   };
 
   const handleThresholdChange = event => {
-    const updatedThresholds = [...thresholds];
-    const { value, checked } = event.target;
-    updatedThresholds[+value] = booleanToThreshold(checked);
+    const index = +event.target.value;
+    const newValue = booleanToThreshold(event.target.checked);
+
+    const updatedThresholds = thresholds.map((x, i) =>
+      i === index ? newValue : x
+    );
 
     setThresholds(updatedThresholds);
   };
@@ -138,7 +148,7 @@ function PollDialogComponent(props) {
                 </Grid>
                 <Grid item xs={5}>
                   <TextField
-                    value={toFixedUnless0(percentageVotes[i] * 100)}
+                    value={percentageVotes[i]}
                     min="0"
                     type="number"
                     step="0.01"

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { DEBOUNCE_TIME } from '../constants';
@@ -16,44 +16,44 @@ const mapStateToProps = (state, { columnNumber }) => {
   };
 };
 
-class DebouncedTextFieldComponent extends Component {
-  stream$ = new Subject();
+function DebouncedTextFieldComponent(props) {
+  const { dispatch, columnNumber, value } = props;
+  const [currentValue, setCurrentValue] = useState(value);
+  const [stream$] = useState(new Subject());
 
-  constructor(props) {
-    super(props);
-    const { value } = props;
-    this.state = { value };
-    this.stream$
-      .pipe(debounceTime(DEBOUNCE_TIME))
-      .subscribe(value => this.dispatchChange(value));
-  }
+  useEffect(() => {
+    stream$.pipe(debounceTime(DEBOUNCE_TIME)).subscribe(value => {
+      dispatch(setResultsInColumn(columnNumber, value));
+    });
+  });
 
-  componentWillReceiveProps({ value }) {
-    this.setState({ value });
-  }
+  useEffect(() => {
+    setCurrentValue(value);
+  }, [value]);
 
-  onChange = e => {
-    this.setState({ value: +e.target.value });
-    this.stream$.next(+e.target.value);
+  const handleChange = event => {
+    const newValue = parseInt(event.target.value, 10);
+
+    if (isNaN(newValue)) {
+      return;
+    }
+
+    const value = Math.max(newValue, 0);
+    setCurrentValue(value);
+    stream$.next(value);
   };
 
-  dispatchChange = value => {
-    this.props.dispatch(setResultsInColumn(this.props.columnNumber, value));
-  };
-
-  render() {
-    return (
-      <TextField
-        value={this.state.value}
-        min="0"
-        type="number"
-        onChange={this.onChange}
-        InputProps={{
-          endAdornment: <InputAdornment position="end">gł.</InputAdornment>,
-        }}
-      />
-    );
-  }
+  return (
+    <TextField
+      value={currentValue}
+      min="0"
+      type="number"
+      onChange={handleChange}
+      InputProps={{
+        endAdornment: <InputAdornment position="end">gł.</InputAdornment>,
+      }}
+    />
+  );
 }
 
 export const DebouncedTextField = connect(mapStateToProps)(
