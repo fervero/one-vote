@@ -13,7 +13,7 @@ const getSumOfAllVotes = state => {
   return majorVotesSum + planktonVotesSum;
 };
 
-export function setPercentageVotes(state, action) {
+export function percentageVotesReducer(state, action) {
   const bigSum = getSumOfAllVotes(state);
   const percentages = action.value;
   const desiredSums = percentages.map(value => Math.floor(bigSum * value));

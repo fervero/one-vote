@@ -5,6 +5,7 @@ import {
   SET_PARTIES,
   SET_PERCENTAGE_VOTES,
   SET_DISTRICTS,
+  SET_THRESHOLDS,
 } from './actions';
 
 export function setResults(value) {
@@ -27,6 +28,13 @@ export function setResultsInColumn(columnNumber, votes) {
 export function setParties(value) {
   return {
     type: SET_PARTIES,
+    value,
+  };
+}
+
+export function setThresholds(value) {
+  return {
+    type: SET_THRESHOLDS,
     value,
   };
 }

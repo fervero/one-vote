@@ -1,6 +1,6 @@
 import { adjustArrayToDesiredSum } from '../utilities/arrayHelpers';
 
-export function setResultsInColumn(state, action) {
+export function resultsInColumnReducer(state, action) {
   const { votes, columnNumber } = action.value;
 
   const relevantColumn = state.originalResultsInAllDistricts.map(

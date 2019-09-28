@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import Button from '@material-ui/core/Button';
 import { PollDialog } from './PollDialog';
 import { connect } from 'react-redux';
-import { setPercentageVotes } from '../state/actionCreators';
+import { setPercentageVotes, setThresholds } from '../state/actionCreators';
 
 function PollButtonComponent({ dispatch }) {
   const [open, setOpen] = React.useState(false);
@@ -15,7 +15,8 @@ function PollButtonComponent({ dispatch }) {
     setOpen(false);
 
     if (value) {
-      dispatch(setPercentageVotes(value));
+      dispatch(setPercentageVotes(value.percentageVotes));
+      dispatch(setThresholds(value.thresholds));
     }
   };
 

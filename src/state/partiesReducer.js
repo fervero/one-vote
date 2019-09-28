@@ -1,4 +1,4 @@
-export function setParties(state, action) {
+export function partiesReducer(state, action) {
   const parties = action.value;
 
   const indexesToDisplay = parties
