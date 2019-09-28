@@ -48,6 +48,8 @@ const useStyles = makeStyles({
   },
 });
 
+const to2Fixed = x => (x * 100).toFixed(2);
+
 function PollDialogComponent({
   onClose,
   open,
@@ -57,7 +59,7 @@ function PollDialogComponent({
   const classes = useStyles();
 
   const [percentageVotes, setPercentageVotes] = useState(
-    percentageVotesByParty.map(x => (x * 100).toFixed(2))
+    percentageVotesByParty.map(to2Fixed)
   );
 
   const [thresholds, setThresholds] = useState(
@@ -66,11 +68,9 @@ function PollDialogComponent({
 
   const [valid, setValidity] = useState(true);
 
-  useEffect(
-    () =>
-      setPercentageVotes(percentageVotesByParty.map(x => (x * 100).toFixed(2))),
-    [percentageVotesByParty]
-  );
+  useEffect(() => setPercentageVotes(percentageVotesByParty.map(to2Fixed)), [
+    percentageVotesByParty,
+  ]);
 
   useEffect(() => setThresholds(parties.map(({ threshold }) => threshold)), [
     parties,
@@ -83,23 +83,22 @@ function PollDialogComponent({
   const handleInput = rowNumber => evt => {
     const { value } = evt.target;
 
-    if (isNaN(parseFloat(value))) {
+    if (value && isNaN(parseFloat(value))) {
       return;
     }
 
     const newPercentageVotes = percentageVotes.map((oldValue, i) =>
-      rowNumber === i ? value : oldValue
+      rowNumber === i ? value || '0' : oldValue
     );
 
+    console.log(newPercentageVotes);
     setValidity(sumArray(newPercentageVotes.map(parseFloat)) <= 100);
 
-    setPercentageVotes(
-      percentageVotes.map((oldValue, i) => (rowNumber === i ? value : oldValue))
-    );
+    setPercentageVotes(newPercentageVotes);
   };
 
   const handleCancel = () => {
-    setPercentageVotes(percentageVotesByParty);
+    setPercentageVotes(percentageVotesByParty.map(to2Fixed));
     setThresholds(parties.map(({ threshold }) => threshold));
     handleClose();
   };

@@ -34,11 +34,11 @@ function DebouncedTextFieldComponent(props) {
   const handleChange = event => {
     const newValue = parseInt(event.target.value, 10);
 
-    if (isNaN(newValue)) {
+    if (!!event.target.value && isNaN(newValue)) {
       return;
     }
 
-    const value = Math.max(newValue, 0);
+    const value = newValue ? Math.max(newValue, 0) : 0;
     setCurrentValue(value);
     stream$.next(value);
   };
