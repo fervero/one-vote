@@ -3,24 +3,24 @@ import { makeStyles } from '@material-ui/styles';
 import TableCell from '@material-ui/core/TableCell';
 import { ResultsCell } from './ResultsCell';
 import { connect } from 'react-redux';
-import { get as _get } from 'lodash';
+
 import {
   selectVotesRequiredToChangeSth,
   selectSeatsWonInADistrict,
+  selectDistrictName,
+  selectDistrictNumber,
+  selectDistrictSeats,
+  selectResultsInSingleDistrict,
 } from '../state/selectors';
 
-const mapStateToProps = (state, { rowNumber }) => {
-  const district = (state.votingDistricts || [])[rowNumber];
-
-  return {
-    resultsInDistrict: state.resultsInAllDistricts[rowNumber],
-    minVotesToChangeSomething: selectVotesRequiredToChangeSth(rowNumber)(state),
-    districtName: _get(district, 'districtName'),
-    districtNumber: _get(district, 'districtNumber'),
-    seats: _get(district, 'seats'),
-    seatsWonInDistrict: selectSeatsWonInADistrict(rowNumber)(state),
-  };
-};
+const mapStateToProps = (state, { rowNumber }) => ({
+  resultsInDistrict: selectResultsInSingleDistrict(rowNumber)(state),
+  minVotesToChangeSomething: selectVotesRequiredToChangeSth(rowNumber)(state),
+  districtName: selectDistrictName(rowNumber)(state),
+  districtNumber: selectDistrictNumber(rowNumber)(state),
+  seats: selectDistrictSeats(rowNumber)(state),
+  seatsWonInDistrict: selectSeatsWonInADistrict(rowNumber)(state),
+});
 
 const useStyles = makeStyles({
   medium: {

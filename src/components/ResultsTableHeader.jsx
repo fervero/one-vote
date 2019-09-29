@@ -13,6 +13,7 @@ import {
   selectSeatsWonInAllDistricts,
   selectSumOfVotes,
   selectCountryWideParties,
+  selectResultsInAllDistricts,
 } from '../state/selectors';
 
 const mapStateToProps = state => {
@@ -21,7 +22,7 @@ const mapStateToProps = state => {
   return {
     parties: selectCountryWideParties(state),
     seatsWonInAllDistricts: selectSeatsWonInAllDistricts(state),
-    resultsInAllDistricts: state.resultsInAllDistricts || [],
+    resultsInAllDistricts: selectResultsInAllDistricts(state),
     percentageVotesByParty,
   };
 };
@@ -36,7 +37,10 @@ const useStyles = makeStyles({
   },
   name: { width: '6rem' },
   sticky: { zIndex: 100 },
-  small: { transform: 0.8 },
+  small: { transform: 'scale(0.8) translateY(.3em)' },
+  nowrap: {
+    whiteSpace: 'nowrap',
+  },
 });
 
 function ResultsTableHeaderComponent({
@@ -62,15 +66,17 @@ function ResultsTableHeaderComponent({
           key={name}
           className={classNames(classes.sticky, classes.narrow)}
         >
-          {name} ({sumOfSeatsByParty[i]})
-          {threshold === 8 ? (
-            <Tooltip title="8-procentowy próg wyborczy">
-              <Filter8Icon
-                fontSize="small"
-                className={classes.small}
-              ></Filter8Icon>
-            </Tooltip>
-          ) : null}
+          <span className={classes.nowrap}>
+            {name} ({sumOfSeatsByParty[i]})
+            {threshold === 8 ? (
+              <Tooltip title="8-procentowy próg wyborczy">
+                <Filter8Icon
+                  fontSize="small"
+                  className={classes.small}
+                ></Filter8Icon>
+              </Tooltip>
+            ) : null}
+          </span>
           <br />
           {formattedPercentageVotes[i]}%
           <br />

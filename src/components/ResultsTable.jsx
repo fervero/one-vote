@@ -4,6 +4,7 @@ import { Table, TableBody, TableHead } from '@material-ui/core';
 import TableRow from '@material-ui/core/TableRow';
 import { ResultsTableHeader } from './ResultsTableHeader';
 import { ResultsRow } from './ResultsRow';
+import { selectResultsInAllDistricts } from '../state/selectors';
 
 const hasResults = resultsInAllDistricts =>
   resultsInAllDistricts &&
@@ -12,7 +13,7 @@ const hasResults = resultsInAllDistricts =>
   resultsInAllDistricts[0].length;
 
 const mapStateToProps = state => ({
-  resultsInAllDistricts: state.resultsInAllDistricts,
+  resultsInAllDistricts: selectResultsInAllDistricts(state),
 });
 
 const ResultsTableComponent = ({ resultsInAllDistricts }) => {
