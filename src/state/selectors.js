@@ -19,6 +19,7 @@ import {
   selectDistrictName,
   selectDistrictNumber,
   selectDistrictSeats,
+  selectElectionYears,
 } from './reselectors';
 
 export {
@@ -39,4 +40,5 @@ export {
   selectDistrictName,
   selectDistrictNumber,
   selectDistrictSeats,
+  selectElectionYears,
 };

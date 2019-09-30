@@ -28,14 +28,13 @@ const mapStateToProps = state => {
 };
 
 const useStyles = makeStyles({
-  narrow: {
-    maxWidth: '1.25rem',
+  colData: {
+    minWidth: '5.5rem',
     textAlign: 'right',
   },
-  medium: {
+  colName: {
     width: '10rem',
   },
-  name: { width: '6rem' },
   sticky: { zIndex: 100 },
   small: { transform: 'scale(0.8) translateY(.3em)' },
   nowrap: {
@@ -58,13 +57,13 @@ function ResultsTableHeaderComponent({
 
   return (
     <TableRow>
-      <TableCell className={classNames(classes.sticky, classes.medium)}>
+      <TableCell className={classNames(classes.sticky, classes.colName)}>
         Okręg
       </TableCell>
       {parties.map(({ name, threshold }, i) => (
         <TableCell
           key={name}
-          className={classNames(classes.sticky, classes.narrow)}
+          className={classNames(classes.sticky, classes.colData)}
         >
           <span className={classes.nowrap}>
             {name} ({sumOfSeatsByParty[i]})

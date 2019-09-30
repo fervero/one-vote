@@ -15,7 +15,7 @@ const getSumOfAllVotes = state => {
 
 export function percentageVotesReducer(state, action) {
   const bigSum = getSumOfAllVotes(state);
-  const percentages = action.value;
+  const percentages = action.payload;
   const desiredSums = percentages.map(value => Math.floor(bigSum * value));
   const transposedVotes = unzip(state.resultsInAllDistricts);
 

@@ -2,14 +2,14 @@ import { cloneDeep } from 'lodash';
 import { sumArray } from '../utilities/arrayHelpers';
 
 export function rawResultsReducer(state, action) {
-  const resultsInAllDistricts = action.value.majorPartiesResults;
-  const summedPlanktonVotes = sumArray(action.value.planktonVotes);
+  const resultsInAllDistricts = action.payload.majorPartiesResults;
+  const summedPlanktonVotes = sumArray(action.payload.planktonVotes);
   const originalResultsInAllDistricts = cloneDeep(resultsInAllDistricts);
 
   const newState = Object.assign({}, state, {
     resultsInAllDistricts,
     summedPlanktonVotes,
-    planktonVotesInDistricts: action.value.planktonVotes,
+    planktonVotesInDistricts: action.payload.planktonVotes,
     originalResultsInAllDistricts,
   });
 

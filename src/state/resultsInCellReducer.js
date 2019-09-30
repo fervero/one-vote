@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash';
 
 export function resultsInCellReducer(state, action) {
-  const { districtNumber, cellNumber, value } = action.value;
+  const { districtNumber, cellNumber, value } = action.payload;
   const { resultsInAllDistricts } = state;
   const newResultsInDistricts = cloneDeep(resultsInAllDistricts);
   newResultsInDistricts[+districtNumber][+cellNumber] = value;

@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
-import { Provider } from 'react-redux';
-import { store } from './state/store';
+import { connect } from 'react-redux';
 import { ResultsTable } from './components/ResultsTable';
-import { elections } from './results/results-barrel';
 import { TopBar } from './components/TopBar';
 import { BottomBar } from './components/BottomBar';
-import { setResults, setParties, setDistricts } from './state/actionCreators';
+import { setRawResults } from './state/actionCreators';
 import { makeStyles } from '@material-ui/styles';
-import { cloneDeep } from 'lodash';
+import { ThemeProvider } from '@material-ui/styles';
+import { theme } from './theme';
+import { results } from './results/results-synthetic';
+
+const mapStateToProps = () => ({});
 
 const useStyles = makeStyles({
   root: {
@@ -20,53 +22,17 @@ const useStyles = makeStyles({
   },
 });
 
-export function App() {
+export function App({ dispatch }) {
   const classes = useStyles();
-  const [parsedElections, setElections] = useState([]);
-  const [electionYears, changeElectionYears] = useState([]);
-  const [electionYear, setElectionYear] = useState(null);
 
   useEffect(() => {
-    elections.then(resultsArray => {
-      const years = resultsArray.map(({ year }) => year);
-      changeElectionYears(years);
-      setElections(resultsArray);
-    });
-  }, []);
-
-  const selectYear = year => () => {
-    setElectionYear(year);
-
-    const yearInArray = parsedElections.find(
-      election => election.year === year
-    );
-
-    const { results, planktonVotes, seatsArray } = cloneDeep(yearInArray);
-
-    store.dispatch(
-      setDistricts(
-        results.slice(1).map(([districtNumber, districtName], i) => ({
-          districtNumber,
-          districtName,
-          seats: seatsArray[i],
-        }))
-      )
-    );
-
-    store.dispatch(setParties(results[0].slice(2)));
-    const majorPartiesResults = results.slice(1).map(row => row.slice(2));
-
-    store.dispatch(setResults({ majorPartiesResults, planktonVotes }));
-  };
+    dispatch(setRawResults(results));
+  }, [dispatch]);
 
   return (
-    <Provider store={store}>
+    <ThemeProvider theme={theme}>
       <div className="App">
-        <TopBar
-          years={electionYears}
-          selectYear={selectYear}
-          activeYear={electionYear}
-        ></TopBar>
+        <TopBar></TopBar>
         <div className={classes.root}>
           <div className={classes.tableWrapper}>
             <ResultsTable />
@@ -74,8 +40,8 @@ export function App() {
         </div>
         <BottomBar></BottomBar>
       </div>
-    </Provider>
+    </ThemeProvider>
   );
 }
 
-export default App;
+export default connect(mapStateToProps)(App);

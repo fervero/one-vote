@@ -1,7 +1,7 @@
 import { adjustArrayToDesiredSum } from '../utilities/arrayHelpers';
 
 export function resultsInColumnReducer(state, action) {
-  const { votes, columnNumber } = action.value;
+  const { votes, columnNumber } = action.payload;
 
   const relevantColumn = state.originalResultsInAllDistricts.map(
     row => row[columnNumber]

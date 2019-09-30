@@ -1,61 +1,53 @@
 import {
-  SET_RAW_RESULTS,
   SET_SINGLE_RESULTS,
   SET_RESULTS_IN_COLUMN,
-  SET_PARTIES,
   SET_PERCENTAGE_VOTES,
-  SET_DISTRICTS,
   SET_THRESHOLDS,
+  SET_RAW_RESULTS,
+  SET_YEAR,
 } from './actions';
 
-export function setResults(value) {
+export function setRawResults(payload) {
   return {
     type: SET_RAW_RESULTS,
-    value,
+    payload,
+  };
+}
+
+export function setYear(payload) {
+  return {
+    type: SET_YEAR,
+    payload,
   };
 }
 
 export function setResultsInColumn(columnNumber, votes) {
   return {
     type: SET_RESULTS_IN_COLUMN,
-    value: {
+    payload: {
       columnNumber,
       votes: +votes,
     },
   };
 }
 
-export function setParties(value) {
-  return {
-    type: SET_PARTIES,
-    value,
-  };
-}
-
-export function setThresholds(value) {
+export function setThresholds(payload) {
   return {
     type: SET_THRESHOLDS,
-    value,
+    payload,
   };
 }
 
-export function setDistricts(value) {
-  return {
-    type: SET_DISTRICTS,
-    value,
-  };
-}
-
-export function setSingleResults(value) {
+export function setSingleResults(payload) {
   return {
     type: SET_SINGLE_RESULTS,
-    value,
+    payload,
   };
 }
 
-export function setPercentageVotes(value) {
+export function setPercentageVotes(payload) {
   return {
     type: SET_PERCENTAGE_VOTES,
-    value,
+    payload,
   };
 }

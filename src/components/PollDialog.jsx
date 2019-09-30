@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/styles';
 import Switch from '@material-ui/core/Switch';
-
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { connect } from 'react-redux';
+import { useTheme } from '@material-ui/core/styles';
 
 import {
   selectSeatsWonInAllDistricts,
@@ -34,7 +34,10 @@ const booleanToThreshold = value => (value ? 8 : 5);
 
 const useStyles = makeStyles({
   padded: {
-    padding: '2rem 4rem 2rem 2rem',
+    padding: '1rem 2rem 1rem 1rem',
+  },
+  paddedMore: {
+    padding: '2.5rem 6rem 2.5rem 2.5rem',
   },
   buttons: {
     padding: '1rem 1rem 1.25rem',
@@ -45,6 +48,12 @@ const useStyles = makeStyles({
   },
   switchLabel: {
     fontSize: '.8em',
+  },
+  header: {
+    marginBottom: '1rem',
+  },
+  centered: {
+    textAlign: 'center',
   },
 });
 
@@ -57,6 +66,8 @@ function PollDialogComponent({
   percentageVotesByParty,
 }) {
   const classes = useStyles();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [percentageVotes, setPercentageVotes] = useState(
     percentageVotesByParty.map(to2Fixed)
@@ -91,7 +102,6 @@ function PollDialogComponent({
       rowNumber === i ? value || '0' : oldValue
     );
 
-    console.log(newPercentageVotes);
     setValidity(sumArray(newPercentageVotes.map(parseFloat)) <= 100);
 
     setPercentageVotes(newPercentageVotes);
@@ -126,22 +136,25 @@ function PollDialogComponent({
       onClose={handleClose}
       aria-labelledby="simple-dialog-title"
       open={open}
+      fullScreen={fullScreen}
     >
-      <Paper className={classes.padded}>
-        <DialogTitle id="simple-dialog-title">Sondaż</DialogTitle>
-        <List>
-          <ListItem>
-            <Grid container spacing={3}>
-              <Grid item xs={5}></Grid>
-              <Grid item xs={5}></Grid>
-              <Grid item xs={2}>
-                Próg
-              </Grid>
+      <DialogTitle id="simple-dialog-title">Sondaż</DialogTitle>
+      <DialogContent>
+        <div className={fullScreen ? classes.padded : classes.paddedMore}>
+          <Grid
+            container
+            spacing={fullScreen ? 1 : 3}
+            className={classes.header}
+          >
+            <Grid item xs={5}></Grid>
+            <Grid item xs={5}></Grid>
+            <Grid item xs={2} className={classes.centered}>
+              Próg
             </Grid>
-          </ListItem>
+          </Grid>
           {parties.map((party, i) => (
-            <ListItem key={party.name}>
-              <Grid container spacing={3}>
+            <div key={party.name}>
+              <Grid container spacing={2}>
                 <Grid item xs={5}>
                   {party.name}:
                 </Grid>
@@ -173,11 +186,12 @@ function PollDialogComponent({
                   </div>
                 </Grid>
               </Grid>
-            </ListItem>
+            </div>
           ))}
-        </List>
-      </Paper>
-      <div className={classes.buttons}>
+        </div>
+      </DialogContent>
+
+      <DialogActions>
         <Button
           variant="contained"
           color="primary"
@@ -189,7 +203,7 @@ function PollDialogComponent({
         <Button variant="contained" onClick={handleCancel}>
           Albo nie, rozmyśliłem się
         </Button>
-      </div>
+      </DialogActions>
     </Dialog>
   );
 }

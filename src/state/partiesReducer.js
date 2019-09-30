@@ -1,5 +1,5 @@
 export function partiesReducer(state, action) {
-  const parties = action.value;
+  const parties = action.payload;
 
   const indexesToDisplay = parties
     .map(({ display }, index) => (display ? index : null))

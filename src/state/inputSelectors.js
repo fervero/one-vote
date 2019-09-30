@@ -23,6 +23,10 @@ const selectParties = ({ parties }) => parties;
 
 const selectvotingDistricts = ({ votingDistricts }) => votingDistricts;
 
+const selectOriginalResultsForAllElections = ({
+  originalResultsForAllElections,
+}) => originalResultsForAllElections;
+
 export {
   selectCountryWideParties,
   selectResultsInAllDistricts,
@@ -32,4 +36,5 @@ export {
   selectSummedPlanktonVotes,
   selectParties,
   selectvotingDistricts,
+  selectOriginalResultsForAllElections,
 };

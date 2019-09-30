@@ -15,6 +15,7 @@ import {
   selectSummedPlanktonVotes,
   selectParties,
   selectvotingDistricts,
+  selectOriginalResultsForAllElections,
 } from './inputSelectors';
 
 const selectSeatsInDistrict = districtNumber =>
@@ -105,6 +106,11 @@ const selectDistrictSeats = districtNumber =>
     district => _get(district, 'seats')
   );
 
+const selectElectionYears = createSelector(
+  [selectOriginalResultsForAllElections],
+  results => results.map(({ year }) => year)
+);
+
 export {
   selectSumOfVotes,
   selectPartiesAboveThreshold,
@@ -115,4 +121,5 @@ export {
   selectDistrictName,
   selectDistrictNumber,
   selectDistrictSeats,
+  selectElectionYears,
 };
