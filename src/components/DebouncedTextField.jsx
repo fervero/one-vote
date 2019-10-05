@@ -4,9 +4,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { DEBOUNCE_TIME } from '../constants';
 import { connect } from 'react-redux';
 import { selectSumOfVotes } from '../state/selectors';
-import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 import { setResultsInColumn } from '../state/actionCreators';
+import { useDebounce } from '../utilities/useDebounce';
 
 const mapStateToProps = (state, { columnNumber }) => {
   const { sumOfVotesByParty } = selectSumOfVotes(state);
@@ -19,13 +18,11 @@ const mapStateToProps = (state, { columnNumber }) => {
 function DebouncedTextFieldComponent(props) {
   const { dispatch, columnNumber, value } = props;
   const [currentValue, setCurrentValue] = useState(value);
-  const [stream$] = useState(new Subject());
+  const foo = useDebounce(currentValue, DEBOUNCE_TIME);
 
   useEffect(() => {
-    stream$.pipe(debounceTime(DEBOUNCE_TIME)).subscribe(value => {
-      dispatch(setResultsInColumn(columnNumber, value));
-    });
-  });
+    dispatch(setResultsInColumn(columnNumber, foo));
+  }, [foo]);
 
   useEffect(() => {
     setCurrentValue(value);
@@ -40,7 +37,6 @@ function DebouncedTextFieldComponent(props) {
 
     const value = newValue ? Math.max(newValue, 0) : 0;
     setCurrentValue(value);
-    stream$.next(value);
   };
 
   return (
