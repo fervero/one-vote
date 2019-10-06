@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
 import { sumOfVectors } from '../utilities/arrayHelpers';
 import classNames from 'classnames';
-import { DebouncedTextField } from './DebouncedTextField';
+import { HeaderTextInput } from './HeaderTextInput';
 
 import {
   selectSeatsWonInAllDistricts,
@@ -79,7 +79,7 @@ function ResultsTableHeaderComponent({
           <br />
           {formattedPercentageVotes[i]}%
           <br />
-          <DebouncedTextField columnNumber={i}></DebouncedTextField>
+          <HeaderTextInput columnNumber={i}></HeaderTextInput>
         </TableCell>
       ))}
     </TableRow>

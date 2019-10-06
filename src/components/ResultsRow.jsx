@@ -26,6 +26,9 @@ const useStyles = makeStyles({
   medium: {
     width: '10rem',
   },
+  seats: {
+    fontWeight: 500,
+  },
 });
 
 function ResultsRowComponent({
@@ -34,6 +37,7 @@ function ResultsRowComponent({
   districtName,
   resultsInDistrict,
   seatsWonInDistrict,
+  seats,
 }) {
   const { moreVotes, lessVotes } = minVotesToChangeSomething;
   const classes = useStyles();
@@ -42,7 +46,8 @@ function ResultsRowComponent({
   return (
     <Fragment>
       <TableCell className={classes.medium}>
-        {districtNumber}. {districtName}
+        {districtNumber}. {districtName}{' '}
+        <span className={classes.seats}>({seats})</span>
       </TableCell>
 
       {(resultsInDistrict || []).slice(0, length - 1).map((votes, i) => (

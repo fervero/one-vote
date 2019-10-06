@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { DEBOUNCE_TIME } from '../constants';
 import { connect } from 'react-redux';
 import { selectSumOfVotes } from '../state/selectors';
 import { setResultsInColumn } from '../state/actionCreators';
-import { useDebounce } from '../utilities/useDebounce';
 
 const mapStateToProps = (state, { columnNumber }) => {
   const { sumOfVotesByParty } = selectSumOfVotes(state);
@@ -15,14 +13,9 @@ const mapStateToProps = (state, { columnNumber }) => {
   };
 };
 
-function DebouncedTextFieldComponent(props) {
+function HeaderTextInputComponent(props) {
   const { dispatch, columnNumber, value } = props;
   const [currentValue, setCurrentValue] = useState(value);
-  const foo = useDebounce(currentValue, DEBOUNCE_TIME);
-
-  useEffect(() => {
-    dispatch(setResultsInColumn(columnNumber, foo));
-  }, [foo]);
 
   useEffect(() => {
     setCurrentValue(value);
@@ -37,6 +30,7 @@ function DebouncedTextFieldComponent(props) {
 
     const value = newValue ? Math.max(newValue, 0) : 0;
     setCurrentValue(value);
+    dispatch(setResultsInColumn(columnNumber, value));
   };
 
   return (
@@ -52,6 +46,6 @@ function DebouncedTextFieldComponent(props) {
   );
 }
 
-export const DebouncedTextField = connect(mapStateToProps)(
-  DebouncedTextFieldComponent
+export const HeaderTextInput = connect(mapStateToProps)(
+  HeaderTextInputComponent
 );
