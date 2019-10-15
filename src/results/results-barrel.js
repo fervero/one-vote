@@ -1,7 +1,11 @@
 import {
   results as results2015,
-  seatsArray as seatsArray20112015,
 } from './results.2015.helpers';
+
+import {
+  results as results2019,
+  seatsArray as seatsArray20112019,
+} from './results.2019.helpers';
 
 import { results as results2011 } from './results.2011.helpers';
 
@@ -39,8 +43,8 @@ const calculatePlanktonVotes = body =>
         allVotes - sumArray(votesByParty)
     );
 
-export const elections = Promise.all([results2015, results2011]).then(
-  ([results2015, results2011]) => {
+export const elections = Promise.all([results2019, results2015, results2011]).then(
+  ([results2019, results2015, results2011]) => {
     return [
       {
         year: 2005,
@@ -58,13 +62,19 @@ export const elections = Promise.all([results2015, results2011]).then(
         year: 2011,
         results: arrayToObject(results2011),
         planktonVotes: calculatePlanktonVotes(results2011),
-        seatsArray: seatsArray20112015,
+        seatsArray: seatsArray20112019,
       },
       {
         year: 2015,
         results: arrayToObject(results2015),
         planktonVotes: calculatePlanktonVotes(results2015),
-        seatsArray: seatsArray20112015,
+        seatsArray: seatsArray20112019,
+      },
+      {
+        year: 2019,
+        results: arrayToObject(results2019),
+        planktonVotes: calculatePlanktonVotes(results2019),
+        seatsArray: seatsArray20112019,
       },
     ];
   }

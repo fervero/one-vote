@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { theme } from './theme';
 import { results } from './results/results-synthetic';
+import { elections } from './results/results-barrel';
 
 const mapStateToProps = () => ({});
 
@@ -25,9 +26,14 @@ const useStyles = makeStyles({
 export function App({ dispatch }) {
   const classes = useStyles();
 
+  const fetchResults = () => {
+    elections.then(results => dispatch(setRawResults(results)));
+  }
+
   useEffect(() => {
-    dispatch(setRawResults(results));
-  }, [dispatch]);
+    fetchResults();
+    // dispatch(setRawResults(results));
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
