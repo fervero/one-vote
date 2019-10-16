@@ -58,6 +58,7 @@ function CoalitionDialogComponent({ onClose, open, parties }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [checked, setChecked] = useState(parties.map(() => false));
+  const [valid, setValidity] = useState(false);
 
   useEffect(() => setChecked(parties.map(() => false)), [parties]);
 
@@ -67,19 +68,24 @@ function CoalitionDialogComponent({ onClose, open, parties }) {
 
   const handleInput = rowNumber => evt => {
     const newValue = evt.target.checked;
-
-    setChecked(
-      checked.map((oldValue, i) => (i === rowNumber ? newValue : oldValue))
+    const newChecked = checked.map((oldValue, i) =>
+      i === rowNumber ? newValue : oldValue
     );
+    const checkedCount = newChecked.filter(val => val).length;
+
+    setChecked(newChecked);
+    setValidity(checkedCount > 1 && checkedCount < parties.length);
   };
 
   const handleCancel = () => {
     setChecked(parties.map(() => false));
+    setValidity(false);
     handleClose();
   };
 
   const handleSubmit = () => {
     onClose(checked);
+    setValidity(false);
     setChecked(parties.map(() => false));
   };
 
@@ -108,7 +114,12 @@ function CoalitionDialogComponent({ onClose, open, parties }) {
       </DialogContent>
 
       <DialogActions>
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSubmit}
+          disabled={!valid}
+        >
           Zastosuj
         </Button>
         <Button variant="contained" onClick={handleCancel}>
