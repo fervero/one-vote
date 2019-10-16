@@ -22,14 +22,15 @@ const replaceHeader = row => [
 
 const string2number = x => parseInt(x.replace(/ /g, ''), 10) || 0;
 
-const strings2numbers = row => row.map((x, i) => (i > 1 ? string2number(x) : x));
-
+const strings2numbers = row =>
+  row.map((x, i) => (i > 1 ? string2number(x) : x));
 
 export const parse = csvString =>
   new Promise(resolve => {
     Papa.parse(csvString, {
       complete: parsed => {
         const relevant = parsed.data.map(pickRelevant);
+
         const relevantWithReplacedHead = relevant.map((row, i) =>
           i > 0 ? strings2numbers(row) : replaceHeader(row)
         );

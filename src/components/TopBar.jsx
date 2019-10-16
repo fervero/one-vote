@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { PollButton } from './PollButton';
+import { CoalitionButton } from './CoalitionButton';
 import { YearSelect } from './YearSelect';
 import { setYear } from '../state/actionCreators';
 import { connect } from 'react-redux';
@@ -70,6 +71,7 @@ function TopBarComponent({ years, activeYear, dispatch }) {
           activeYear={activeYear}
         ></YearSelect>
         {activeYear ? <PollButton></PollButton> : ''}
+        {activeYear ? <CoalitionButton></CoalitionButton> : ''}
         {activeYear ? (
           <Button
             variant="contained"

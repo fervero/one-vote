@@ -1,18 +1,19 @@
 import {
-  SET_SINGLE_RESULTS,
-  SET_THRESHOLDS,
-  SET_RESULTS_IN_COLUMN,
+  CREATE_COALITION,
   SET_PERCENTAGE_VOTES,
   SET_RAW_RESULTS,
+  SET_RESULTS_IN_COLUMN,
+  SET_SINGLE_RESULTS,
+  SET_THRESHOLDS,
   SET_YEAR,
 } from './actions';
-
+import { percentageVotesReducer } from './percentageVotesReducer';
+import { rawResultsForAllYearsReducer } from './rawResultsForAllYearsReducer';
 import { resultsInCellReducer } from './resultsInCellReducer';
 import { resultsInColumnReducer } from './resultsInColumnReducer';
-import { percentageVotesReducer } from './percentageVotesReducer';
 import { thresholdsReducer } from './thresholdsReducer';
-import { rawResultsForAllYearsReducer } from './rawResultsForAllYearsReducer';
 import { yearReducer } from './yearReducer';
+import { coalitionReducer } from './coalitionReducer';
 
 const DEFAULT_STATE = {
   votingDistricts: [],
@@ -43,6 +44,9 @@ export function rootReducer(state = DEFAULT_STATE, action = {}) {
     }
     case SET_YEAR: {
       return yearReducer(state, action);
+    }
+    case CREATE_COALITION: {
+      return coalitionReducer(state, action);
     }
     default: {
       return state;

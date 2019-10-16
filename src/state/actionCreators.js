@@ -5,6 +5,7 @@ import {
   SET_THRESHOLDS,
   SET_RAW_RESULTS,
   SET_YEAR,
+  CREATE_COALITION,
 } from './actions';
 
 export function setRawResults(payload) {
@@ -48,6 +49,13 @@ export function setSingleResults(payload) {
 export function setPercentageVotes(payload) {
   return {
     type: SET_PERCENTAGE_VOTES,
+    payload,
+  };
+}
+
+export function createCoalition(payload) {
+  return {
+    type: CREATE_COALITION,
     payload,
   };
 }
