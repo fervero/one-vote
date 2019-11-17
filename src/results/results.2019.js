@@ -130,10 +130,10 @@ export const electionResults = `"Numer okręgu";"Nazwa";"Komisja otrzymała kart
 41;"Szczecin";732615;802417;256060;476544;533;6380;51;50;5;1;0;1;44;476444;44;127;476317;5788;3698;2090;0;470529;168022;"";30744;34807;"";165200;"";71756;"";""`;
 
 export const parties = [
-  { name: 'KO', threshold: 8 },
-  { name: 'Konfederacja', threshold: 5 },
-  { name: 'PSL', threshold: 5 },
   { name: 'PiS', threshold: 5 },
+  { name: 'KO', threshold: 8 },
   { name: 'Lewica', threshold: 5 },
+  { name: 'PSL', threshold: 5 },
+  { name: 'Konfederacja', threshold: 5 },
   { name: 'MN', threshold: 0 },
 ];

@@ -5,11 +5,11 @@ const pickRelevant = row => [
   row[0], // nr okręgu
   row[1], // nazwa okręgu
   row[23], // głosów ważnych
-  row[24], // KO
-  row[26], // Konfederacja
-  row[27], // PSL
   row[29], // PiS
+  row[24], // KO
   row[31], // Lewica
+  row[27], // PSL
+  row[26], // Konfederacja
   row[33], // Mniejszość Niemiecka
 ];
 
