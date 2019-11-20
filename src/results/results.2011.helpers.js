@@ -1,6 +1,6 @@
 import * as Papa from 'papaparse';
 import { parties, partiesShort, electionResults } from './results.2011';
-import * as _ from 'lodash';
+import { groupBy } from 'lodash';
 
 const isColumnRelevant = (x, i) => [0, 1, 2, 3, 13].includes(i);
 
@@ -52,7 +52,7 @@ const addTotalToRow = (votesRow, total) => [
 
 const groupByParty = districtArray => {
   const filteredDistrictArray = districtArray;
-  const groupedByPartyObject = _.groupBy(filteredDistrictArray, row => row[2]);
+  const groupedByPartyObject = groupBy(filteredDistrictArray, row => row[2]);
   const groupedByParty = Object.values(groupedByPartyObject);
   const reducedByParty = groupedByParty.map(reduceByParty);
   const allVotes = reducedByParty.reduce(sumVotes, 0);
@@ -71,7 +71,7 @@ const groupByParty = districtArray => {
 };
 
 const groupByDistrict = resultsArray => {
-  const groupedByDistrictObject = _.groupBy(resultsArray, row => row[0]);
+  const groupedByDistrictObject = groupBy(resultsArray, row => row[0]);
   const groupedByDistrict = Object.values(groupedByDistrictObject);
   return groupedByDistrict.filter(isNonTrivial).map(groupByParty);
 };

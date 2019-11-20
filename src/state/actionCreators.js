@@ -6,6 +6,7 @@ import {
   SET_RAW_RESULTS,
   SET_YEAR,
   CREATE_COALITION,
+  SET_METHOD,
 } from './actions';
 
 export function setRawResults(payload) {
@@ -18,6 +19,13 @@ export function setRawResults(payload) {
 export function setYear(payload) {
   return {
     type: SET_YEAR,
+    payload,
+  };
+}
+
+export function setMethod(payload) {
+  return {
+    type: SET_METHOD,
     payload,
   };
 }

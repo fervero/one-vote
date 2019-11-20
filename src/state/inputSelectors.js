@@ -27,6 +27,8 @@ const selectOriginalResultsForAllElections = ({
   originalResultsForAllElections,
 }) => originalResultsForAllElections;
 
+const selectCountingMethod = ({ countingMethod }) => countingMethod;
+
 export {
   selectCountryWideParties,
   selectResultsInAllDistricts,
@@ -37,4 +39,5 @@ export {
   selectParties,
   selectvotingDistricts,
   selectOriginalResultsForAllElections,
+  selectCountingMethod,
 };

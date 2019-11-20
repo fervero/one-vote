@@ -1,5 +1,6 @@
 import { sumArray } from '../utilities/arrayHelpers';
 import { cloneDeep } from 'lodash';
+import { DHONDT } from '../constants';
 
 export function yearReducer(state, { payload }) {
   const yearInArray = state.originalResultsForAllElections.find(
@@ -28,6 +29,7 @@ export function yearReducer(state, { payload }) {
     votingDistricts,
     parties,
     year: payload,
+    countingMethod: DHONDT,
   });
 
   return newState;

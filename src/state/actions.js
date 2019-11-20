@@ -5,3 +5,4 @@ export const SET_THRESHOLDS = 'SET_THRESHOLDS';
 export const SET_PERCENTAGE_VOTES = 'SET_PERCENTAGE_VOTES';
 export const SET_YEAR = 'SET_YEAR';
 export const CREATE_COALITION = 'CREATE_COALITION';
+export const SET_METHOD = 'SET_METHOD';

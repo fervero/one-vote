@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import { selectElectionYears } from '../state/selectors';
-import { setYear } from '../state/actionCreators';
+import { selectCountingMethod } from '../state/selectors';
+import { COUNTING_METHODS } from '../constants';
+import { setMethod } from '../state/actionCreators';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,31 +21,28 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const mapStateToProps = state => ({
-  activeYear: state.year,
-  years: selectElectionYears(state),
+  countingMethod: selectCountingMethod(state),
 });
 
-function YearSelectComponent({ years, activeYear, dispatch }) {
+function MethodSelectComponent({ countingMethod, dispatch }) {
   const classes = useStyles();
 
-  const selectYear = event => {
-    dispatch(setYear(+event.target.value));
-  };
+  const selectMethod = event => dispatch(new setMethod(event.target.value));
 
   return (
     <div className={classes.root}>
       <FormControl className={classes.formControl}>
         <NativeSelect
-          value={activeYear || ''}
-          onChange={selectYear}
+          value={countingMethod || ''}
+          onChange={selectMethod}
           name="year"
           className={classes.selectEmpty}
-          inputProps={{ 'aria-label': 'year' }}
+          inputProps={{ 'aria-label': 'method' }}
         >
           <option value="" disabled="disabled"></option>
-          {years.map(year => (
-            <option key={year} value={year}>
-              {year}
+          {COUNTING_METHODS.map(method => (
+            <option key={method} value={method}>
+              {method}
             </option>
           ))}
         </NativeSelect>
@@ -53,4 +51,4 @@ function YearSelectComponent({ years, activeYear, dispatch }) {
   );
 }
 
-export const YearSelect = connect(mapStateToProps)(YearSelectComponent);
+export const MethodSelect = connect(mapStateToProps)(MethodSelectComponent);

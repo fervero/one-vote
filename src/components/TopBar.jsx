@@ -6,10 +6,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { PollButton } from './PollButton';
 import { CoalitionButton } from './CoalitionButton';
 import { YearSelect } from './YearSelect';
-import { setYear } from '../state/actionCreators';
 import { connect } from 'react-redux';
-import { selectElectionYears } from '../state/selectors';
-import Button from '@material-ui/core/Button';
+import { MethodSelect } from './MethodSelect';
+import { ResetButton } from './ResetButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,21 +32,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const mapStateToProps = state => ({
-  activeYear: state.year,
-  years: selectElectionYears(state),
-});
+const mapStateToProps = ({ year }) => ({ activeYear: year });
 
-function TopBarComponent({ years, activeYear, dispatch }) {
+function TopBarComponent({ activeYear }) {
   const classes = useStyles();
-
-  const selectYear = event => {
-    dispatch(setYear(+event.target.value));
-  };
-
-  const reset = () => {
-    dispatch(setYear(activeYear));
-  };
 
   return (
     <div className={classes.root}>
@@ -65,25 +53,12 @@ function TopBarComponent({ years, activeYear, dispatch }) {
       </AppBar>
       <div className={classes.buttons}>
         <span className={classes.label}>Wyniki wyborów z roku:</span>
-        <YearSelect
-          years={years}
-          selectYear={selectYear}
-          activeYear={activeYear}
-        ></YearSelect>
+        <YearSelect></YearSelect>
+        <span className={classes.label}>Metoda:</span>
+        <MethodSelect></MethodSelect>
         {activeYear ? <PollButton></PollButton> : ''}
         {activeYear ? <CoalitionButton></CoalitionButton> : ''}
-        {activeYear ? (
-          <Button
-            variant="contained"
-            size="small"
-            style={{ marginLeft: '1rem' }}
-            onClick={reset}
-          >
-            Resetuj
-          </Button>
-        ) : (
-          ''
-        )}
+        <ResetButton />
       </div>
     </div>
   );

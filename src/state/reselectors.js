@@ -1,12 +1,18 @@
 import { get as _get } from 'lodash';
 import { createSelector } from 'reselect';
 import { sumOfVectors, sumArray } from '../utilities/arrayHelpers';
+import { DHONDT, HARE } from '../constants';
 
 import {
   minVotesToChangeSomething,
   partyAboveThreshold,
   computeAllowingForThresholds,
 } from '../utilities/dHondtHelpers';
+
+import {
+  minVotesToChangeSomething as minVotesToChangeSomethingHN,
+  computeAllowingForThresholds as computeAllowingForThresholdsHN,
+} from '../utilities/hareNiemeyerHelpers';
 
 import {
   selectResultsInAllDistricts,
@@ -16,6 +22,7 @@ import {
   selectParties,
   selectvotingDistricts,
   selectOriginalResultsForAllElections,
+  selectCountingMethod,
 } from './inputSelectors';
 
 const selectSeatsInDistrict = districtNumber =>
@@ -42,11 +49,29 @@ const selectPartiesAboveThreshold = createSelector(
 );
 
 const selectSeatsWonInAllDistricts = createSelector(
-  [selectResultsInAllDistricts, selectPartiesAboveThreshold, selectSeatsArray],
-  (resultsInAllDistricts = [], isPartyAboveThreshold = [], seatsArray = []) =>
-    resultsInAllDistricts.map((row, i) =>
-      computeAllowingForThresholds(row, seatsArray[i], isPartyAboveThreshold)
-    ) || []
+  [
+    selectResultsInAllDistricts,
+    selectPartiesAboveThreshold,
+    selectSeatsArray,
+    selectCountingMethod,
+  ],
+  (
+    resultsInAllDistricts = [],
+    isPartyAboveThreshold = [],
+    seatsArray = [],
+    method
+  ) => {
+    const computeFn =
+      method === DHONDT
+        ? computeAllowingForThresholds
+        : computeAllowingForThresholdsHN;
+
+    return (
+      resultsInAllDistricts.map((row, i) =>
+        computeFn(row, seatsArray[i], isPartyAboveThreshold)
+      ) || []
+    );
+  }
 );
 
 const selectSeatsWonInADistrict = districtNumber =>
@@ -55,13 +80,16 @@ const selectSeatsWonInADistrict = districtNumber =>
       selectResultsInSingleDistrict(districtNumber),
       selectPartiesAboveThreshold,
       selectSeatsInDistrict(districtNumber),
+      selectCountingMethod,
     ],
-    (resultsInSingleDistrict, partiesAboveThreshold, seats) =>
-      computeAllowingForThresholds(
-        resultsInSingleDistrict,
-        seats,
-        partiesAboveThreshold
-      )
+    (resultsInSingleDistrict, partiesAboveThreshold, seats, method) => {
+      const computeFn =
+        method === DHONDT
+          ? computeAllowingForThresholds
+          : computeAllowingForThresholdsHN;
+
+      return computeFn(resultsInSingleDistrict, seats, partiesAboveThreshold);
+    }
   );
 
 const selectVotesRequiredToChangeSth = districtNumber =>
@@ -70,13 +98,16 @@ const selectVotesRequiredToChangeSth = districtNumber =>
       selectResultsInSingleDistrict(districtNumber),
       selectPartiesAboveThreshold,
       selectSeatsInDistrict(districtNumber),
+      selectCountingMethod,
     ],
-    (resultsInSingleDistrict, partiesAboveThreshold, seats) =>
-      minVotesToChangeSomething(
-        resultsInSingleDistrict,
-        seats,
-        partiesAboveThreshold
-      )
+    (resultsInSingleDistrict, partiesAboveThreshold, seats, method) => {
+      const minVotesFn =
+        method === DHONDT
+          ? minVotesToChangeSomething
+          : minVotesToChangeSomethingHN;
+
+      return minVotesFn(resultsInSingleDistrict, seats, partiesAboveThreshold);
+    }
   );
 
 const selectDistrict = districtNumber =>

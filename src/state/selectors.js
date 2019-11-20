@@ -7,6 +7,7 @@ import {
   selectSummedPlanktonVotes,
   selectParties,
   selectvotingDistricts,
+  selectCountingMethod,
 } from './inputSelectors';
 
 import {
@@ -41,4 +42,5 @@ export {
   selectDistrictNumber,
   selectDistrictSeats,
   selectElectionYears,
+  selectCountingMethod,
 };
