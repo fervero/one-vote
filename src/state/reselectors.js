@@ -19,10 +19,7 @@ import {
 } from './inputSelectors';
 
 const selectSeatsInDistrict = districtNumber =>
-  createSelector(
-    [selectSeatsArray],
-    seatsArray => seatsArray[districtNumber]
-  );
+  createSelector([selectSeatsArray], seatsArray => seatsArray[districtNumber]);
 
 const selectSumOfVotes = createSelector(
   [selectResultsInAllDistricts, selectSummedPlanktonVotes],
@@ -89,26 +86,23 @@ const selectDistrict = districtNumber =>
   );
 
 const selectDistrictName = districtNumber =>
-  createSelector(
-    [selectDistrict(districtNumber)],
-    district => _get(district, 'districtName')
+  createSelector([selectDistrict(districtNumber)], district =>
+    _get(district, 'districtName')
   );
 
 const selectDistrictNumber = districtNumber =>
-  createSelector(
-    [selectDistrict(districtNumber)],
-    district => _get(district, 'districtNumber')
+  createSelector([selectDistrict(districtNumber)], district =>
+    _get(district, 'districtNumber')
   );
 
 const selectDistrictSeats = districtNumber =>
-  createSelector(
-    [selectDistrict(districtNumber)],
-    district => _get(district, 'seats')
+  createSelector([selectDistrict(districtNumber)], district =>
+    _get(district, 'seats')
   );
 
 const selectElectionYears = createSelector(
   [selectOriginalResultsForAllElections],
-  results => results.map(({ year }) => year)
+  results => results.map(({ year }) => year).sort((x, y) => y - x)
 );
 
 export {

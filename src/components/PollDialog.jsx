@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import { NumberInput } from './NumberInput';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -18,6 +17,7 @@ import {
   selectSumOfVotes,
   selectCountryWideParties,
 } from '../state/selectors';
+
 import { sumArray } from '../utilities/arrayHelpers';
 
 const mapStateToProps = state => {
@@ -55,6 +55,18 @@ const useStyles = makeStyles({
   centered: {
     textAlign: 'center',
   },
+  summary: {
+    fontSize: '80%',
+    textTransform: 'uppercase',
+    fontWeight: 600,
+  },
+  sumOfVotes: {
+    textAlign: 'right',
+    paddingRight: '1rem !important',
+  },
+  error: {
+    color: '#f44336',
+  },
 });
 
 const to2Fixed = x => (x * 100).toFixed(2);
@@ -73,11 +85,15 @@ function PollDialogComponent({
     percentageVotesByParty.map(to2Fixed)
   );
 
+  const [inputsValidity, setInputsValidity] = useState(
+    percentageVotesByParty.map(() => true)
+  );
+
   const [thresholds, setThresholds] = useState(
     parties.map(({ threshold }) => threshold)
   );
 
-  const [valid, setValidity] = useState(true);
+  const [formValidity, setFormValidity] = useState(true);
 
   useEffect(() => setPercentageVotes(percentageVotesByParty.map(to2Fixed)), [
     percentageVotesByParty,
@@ -91,18 +107,21 @@ function PollDialogComponent({
     onClose(null);
   };
 
-  const handleInput = rowNumber => evt => {
-    const { value } = evt.target;
-
-    if (value && isNaN(parseFloat(value))) {
-      return;
-    }
-
+  const handleInput = rowNumber => ({ value, validity }) => {
     const newPercentageVotes = percentageVotes.map((oldValue, i) =>
-      rowNumber === i ? value || '0' : oldValue
+      rowNumber === i ? value : oldValue
     );
 
-    setValidity(sumArray(newPercentageVotes.map(parseFloat)) <= 100);
+    const newInputsValidity = inputsValidity.map((oldValue, i) =>
+      rowNumber === i ? validity : oldValue
+    );
+
+    setInputsValidity(newInputsValidity);
+
+    setFormValidity(
+      sumArray(newPercentageVotes.map(parseFloat)) <= 100 &&
+        newInputsValidity.every(valid => valid)
+    );
 
     setPercentageVotes(newPercentageVotes);
   };
@@ -159,17 +178,11 @@ function PollDialogComponent({
                   {party.name}:
                 </Grid>
                 <Grid item xs={5}>
-                  <TextField
+                  <NumberInput
+                    min={0}
+                    max={100}
                     value={percentageVotes[i]}
-                    min="0"
-                    type="number"
-                    step="0.01"
                     onChange={handleInput(i)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">%</InputAdornment>
-                      ),
-                    }}
                   />
                 </Grid>
                 <Grid item xs={2}>
@@ -188,6 +201,25 @@ function PollDialogComponent({
               </Grid>
             </div>
           ))}
+          <hr />
+          <div className={classes.summary}>
+            <Grid
+              container
+              spacing={2}
+              className={
+                sumArray(percentageVotes.map(parseFloat)) > 100
+                  ? classes.error
+                  : ''
+              }
+            >
+              <Grid item xs={5}>
+                łącznie:
+              </Grid>
+              <Grid item xs={5} className={classes.sumOfVotes}>
+                {sumArray(percentageVotes.map(parseFloat)).toFixed(2)}
+              </Grid>
+            </Grid>
+          </div>
         </div>
       </DialogContent>
 
@@ -195,7 +227,7 @@ function PollDialogComponent({
         <Button
           variant="contained"
           color="primary"
-          disabled={!valid}
+          disabled={!formValidity}
           onClick={handleSubmit}
         >
           Zastosuj
