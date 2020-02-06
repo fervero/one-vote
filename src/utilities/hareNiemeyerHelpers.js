@@ -1,4 +1,19 @@
-import { computeSeatsByHareNiemeyer as computeSeats } from './seatsAssignAlgorithmFacade';
+import * as hareNiemeyer from 'hare-niemeyer';
+
+const computeSeats = (votes, seats) => {
+  const votesObject = votes.reduce(
+    (acc, value, index) => Object.assign({}, acc, { [`_${index}`]: value }),
+    {}
+  );
+
+  const computedResults = hareNiemeyer(votesObject, seats, true);
+
+  const resultsArray = Object.keys(computedResults)
+    .sort()
+    .map(key => computedResults[key]);
+
+  return resultsArray;
+};
 
 const string2Number = stupidString => {
   const saneString = ('' + stupidString).replace(' ', '');

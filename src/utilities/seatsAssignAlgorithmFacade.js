@@ -1,20 +1,43 @@
-import * as hareNiemeyer from 'hare-niemeyer';
-import * as dhondt from 'dhondt';
+import { DHONDT, HARE, SAINTE_LAGUE } from '../constants';
+import {
+  computeAllowingForThresholds as computeHare,
+  minVotesToChangeSomething as minVotesHare,
+} from './hareNiemeyerHelpers';
+import {
+  computeAllowingForThresholds as computeDhondt,
+  minVotesToChangeSomething as minVotesDhondt,
+} from './dHondtHelpers';
+import {
+  computeAllowingForThresholds as computeSainte,
+  minVotesToChangeSomething as minVotesSainte,
+} from './sainteLagueHelpers';
 
-export const computeSeatsByHareNiemeyer = (votes, seats) => {
-  const votesObject = votes.reduce(
-    (acc, value, index) => Object.assign({}, acc, { [`_${index}`]: value }),
-    {}
-  );
-
-  const computedResults = hareNiemeyer(votesObject, seats, true);
-
-  const resultsArray = Object.keys(computedResults)
-    .sort()
-    .map(key => computedResults[key]);
-
-  return resultsArray;
+export const computeAllowingForThresholds = method => {
+  switch (method) {
+    case HARE: {
+      return computeHare;
+    }
+    case SAINTE_LAGUE: {
+      return computeSainte;
+    }
+    case DHONDT:
+    default: {
+      return computeDhondt;
+    }
+  }
 };
 
-export const computeSeatsByDHondt = (votes, seats) =>
-  dhondt.compute(votes, seats);
+export const minVotesToChangeSomething = method => {
+  switch (method) {
+    case HARE: {
+      return minVotesHare;
+    }
+    case SAINTE_LAGUE: {
+      return minVotesSainte;
+    }
+    case DHONDT:
+    default: {
+      return minVotesDhondt;
+    }
+  }
+};

@@ -5,4 +5,4 @@ export const DHONDT = "D'Hondta";
 export const HARE = "Hare'a-Niemeyera";
 export const SAINTE_LAGUE = 'Sainte-Laguë';
 
-export const COUNTING_METHODS = [DHONDT, HARE];
+export const COUNTING_METHODS = [DHONDT, SAINTE_LAGUE, HARE];

@@ -1,18 +1,13 @@
 import { get as _get } from 'lodash';
 import { createSelector } from 'reselect';
 import { sumOfVectors, sumArray } from '../utilities/arrayHelpers';
-import { DHONDT, HARE } from '../constants';
-
 import {
-  minVotesToChangeSomething,
-  partyAboveThreshold,
   computeAllowingForThresholds,
-} from '../utilities/dHondtHelpers';
+  minVotesToChangeSomething,
+} from '../utilities/seatsAssignAlgorithmFacade';
+import { DHONDT } from '../constants';
 
-import {
-  minVotesToChangeSomething as minVotesToChangeSomethingHN,
-  computeAllowingForThresholds as computeAllowingForThresholdsHN,
-} from '../utilities/hareNiemeyerHelpers';
+import { partyAboveThreshold } from '../utilities/dHondtHelpers';
 
 import {
   selectResultsInAllDistricts,
@@ -61,10 +56,7 @@ const selectSeatsWonInAllDistricts = createSelector(
     seatsArray = [],
     method
   ) => {
-    const computeFn =
-      method === DHONDT
-        ? computeAllowingForThresholds
-        : computeAllowingForThresholdsHN;
+    const computeFn = computeAllowingForThresholds(method);
 
     return (
       resultsInAllDistricts.map((row, i) =>
@@ -83,10 +75,7 @@ const selectSeatsWonInADistrict = districtNumber =>
       selectCountingMethod,
     ],
     (resultsInSingleDistrict, partiesAboveThreshold, seats, method) => {
-      const computeFn =
-        method === DHONDT
-          ? computeAllowingForThresholds
-          : computeAllowingForThresholdsHN;
+      const computeFn = computeAllowingForThresholds(method);
 
       return computeFn(resultsInSingleDistrict, seats, partiesAboveThreshold);
     }
@@ -101,11 +90,7 @@ const selectVotesRequiredToChangeSth = districtNumber =>
       selectCountingMethod,
     ],
     (resultsInSingleDistrict, partiesAboveThreshold, seats, method) => {
-      const minVotesFn =
-        method === DHONDT
-          ? minVotesToChangeSomething
-          : minVotesToChangeSomethingHN;
-
+      const minVotesFn = minVotesToChangeSomething(method);
       return minVotesFn(resultsInSingleDistrict, seats, partiesAboveThreshold);
     }
   );

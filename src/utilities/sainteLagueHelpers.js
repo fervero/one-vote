@@ -1,6 +1,19 @@
-import * as dhondt from 'dhondt';
+import * as sainte from 'sainte-lague';
 
-const computeVotes = (votes, seats) => dhondt.compute(votes, seats);
+const computeSeats = (votes, seats) => {
+  const votesObject = votes.reduce(
+    (acc, value, index) => Object.assign({}, acc, { [`_${index}`]: value }),
+    {}
+  );
+
+  const computedResults = sainte(votesObject, seats, { draw: true });
+
+  const resultsArray = Object.keys(computedResults)
+    .sort()
+    .map(key => computedResults[key]);
+
+  return resultsArray;
+};
 
 const string2Number = stupidString => {
   const saneString = ('' + stupidString).replace(' ', '');
@@ -23,14 +36,14 @@ export const computeAllowingForThresholds = (
     isPartyAboveThreshold
   );
 
-  return computeVotes(adjustedVotes, seats, isPartyAboveThreshold);
+  return computeSeats(adjustedVotes, seats, isPartyAboveThreshold);
 };
 
 // 2015, okręg z OKW w Rzeszowie - 54 głosy więcej na PSL = 1 mandat więcej na PSL
 const bisectAddingVotesOnPosition = (votes, seats, position) => {
   const votesCopy = [...votes];
 
-  const realOutcome = computeVotes(votes, seats);
+  const realOutcome = computeSeats(votes, seats);
 
   if (realOutcome[position] === seats) {
     return Infinity;
@@ -38,7 +51,7 @@ const bisectAddingVotesOnPosition = (votes, seats, position) => {
 
   const seatsActuallyGot = realOutcome[position];
 
-  while (computeVotes(votesCopy, seats)[position] === seatsActuallyGot) {
+  while (computeSeats(votesCopy, seats)[position] === seatsActuallyGot) {
     if (isNaN(votesCopy[position])) {
       return;
     }
@@ -50,7 +63,7 @@ const bisectAddingVotesOnPosition = (votes, seats, position) => {
   let lowerLimit = votes[position];
 
   while (upperLimit > lowerLimit + 1) {
-    let newOutcome = computeVotes(votesCopy, seats);
+    let newOutcome = computeSeats(votesCopy, seats);
 
     if (newOutcome[position] > seatsActuallyGot) {
       upperLimit = votesCopy[position];
@@ -61,25 +74,21 @@ const bisectAddingVotesOnPosition = (votes, seats, position) => {
     }
   }
 
-  return computeVotes(votesCopy, seats)[position] === seatsActuallyGot
+  return computeSeats(votesCopy, seats)[position] === seatsActuallyGot
     ? upperLimit - votes[position]
     : lowerLimit - votes[position];
 };
 
-// 2015, okręg z OKW w Olsztynie: 128 głosów dla .N mniej = jeden mandat mniej
-// tenże rok, .N, Konin - 210 głosów
-// 2011, Siedlce, Ruch Palikota - 169
-
 const bisectSubtractVotesOnPosition = (votes, seats, position) => {
   const votesCopy = [...votes];
-  const realOutcome = computeVotes(votes, seats);
+  const realOutcome = computeSeats(votes, seats);
   const seatsActuallyGot = realOutcome[position];
 
   if (seatsActuallyGot === 0) {
     return 0;
   }
 
-  while (computeVotes(votesCopy, seats)[position] === seatsActuallyGot) {
+  while (computeSeats(votesCopy, seats)[position] === seatsActuallyGot) {
     votesCopy[position] = Math.floor(votesCopy[position] / 2);
   }
 
@@ -87,7 +96,7 @@ const bisectSubtractVotesOnPosition = (votes, seats, position) => {
   let upperLimit = votes[position];
 
   while (upperLimit > lowerLimit + 1) {
-    let newOutcome = computeVotes(votesCopy, seats);
+    let newOutcome = computeSeats(votesCopy, seats);
 
     if (newOutcome[position] < seatsActuallyGot) {
       lowerLimit = votesCopy[position];
@@ -100,7 +109,7 @@ const bisectSubtractVotesOnPosition = (votes, seats, position) => {
 
   votesCopy[position] = lowerLimit;
 
-  return computeVotes(votesCopy, seats)[position] === seatsActuallyGot
+  return computeSeats(votesCopy, seats)[position] === seatsActuallyGot
     ? upperLimit - votes[position]
     : lowerLimit - votes[position];
 };
