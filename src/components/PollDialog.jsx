@@ -18,7 +18,7 @@ import {
   selectCountryWideParties,
 } from '../state/selectors';
 
-import { sumArray } from '../utilities/arrayHelpers';
+import { sumArrayWithoutLast } from '../utilities/arrayHelpers';
 
 const mapStateToProps = state => {
   const { percentageVotesByParty } = selectSumOfVotes(state);
@@ -59,6 +59,11 @@ const useStyles = makeStyles({
     fontSize: '80%',
     textTransform: 'uppercase',
     fontWeight: 600,
+  },
+  disclaimer: {
+    fontWeight: 'initial',
+    textTransform: 'initial',
+    marginTop: '1rem'
   },
   sumOfVotes: {
     textAlign: 'right',
@@ -119,7 +124,7 @@ function PollDialogComponent({
     setInputsValidity(newInputsValidity);
 
     setFormValidity(
-      sumArray(newPercentageVotes.map(parseFloat)) <= 100 &&
+      sumArrayWithoutLast(newPercentageVotes.map(parseFloat)) <= 100 &&
         newInputsValidity.every(valid => valid)
     );
 
@@ -207,7 +212,7 @@ function PollDialogComponent({
               container
               spacing={2}
               className={
-                sumArray(percentageVotes.map(parseFloat)) > 100
+                sumArrayWithoutLast(percentageVotes.map(parseFloat)) > 100
                   ? classes.error
                   : ''
               }
@@ -216,7 +221,7 @@ function PollDialogComponent({
                 łącznie:
               </Grid>
               <Grid item xs={5} className={classes.sumOfVotes}>
-                {sumArray(percentageVotes.map(parseFloat)).toFixed(2)}
+                {sumArrayWithoutLast(percentageVotes.map(parseFloat)).toFixed(2)}
               </Grid>
             </Grid>
           </div>

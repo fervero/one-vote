@@ -2,6 +2,8 @@ export const sumOfVectors = (rowA, rowB) => rowA.map((x, i) => x + rowB[i]);
 
 export const sumArray = arr => arr.reduce((x, y) => x + y, 0);
 
+export const sumArrayWithoutLast = arr => sumArray(arr.slice(0, arr.length - 1));
+
 const addNumberToArray = (arr, addition) => {
   const addEqually = Math.floor(addition / arr.length);
   const remainder = addition - addEqually * arr.length;
