@@ -13,7 +13,7 @@ const pickRelevant = row => [
   row[37], // Mniejszość Niemiecka
 ];
 
-const nameDistrict = ([index, name, ...rest], i) => [index, districtsArray[i], ...rest];
+const nameDistrict = ([index, name, ...rest], i) => [index, districtsArray[i-1], ...rest];
 
 const replaceHeader = row => [
   { name: row[0] },
