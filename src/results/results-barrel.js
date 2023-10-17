@@ -2,6 +2,8 @@ import {
   results as results2015,
 } from './results.2015.helpers';
 
+import { results as results2023 } from "./results.2023.helpers";
+
 import {
   results as results2019,
   seatsArray as seatsArray20112019,
@@ -43,8 +45,8 @@ const calculatePlanktonVotes = body =>
         allVotes - sumArray(votesByParty)
     );
 
-export const elections = Promise.all([results2019, results2015, results2011]).then(
-  ([results2019, results2015, results2011]) => {
+export const elections = Promise.all([results2023, results2019, results2015, results2011]).then(
+  ([results2023, results2019, results2015, results2011]) => {
     return [
       {
         year: 2005,
@@ -74,6 +76,12 @@ export const elections = Promise.all([results2019, results2015, results2011]).th
         year: 2019,
         results: arrayToObject(results2019),
         planktonVotes: calculatePlanktonVotes(results2019),
+        seatsArray: seatsArray20112019,
+      },
+      {
+        year: 2023,
+        results: arrayToObject(results2023),
+        planktonVotes: calculatePlanktonVotes(results2023),
         seatsArray: seatsArray20112019,
       },
     ];

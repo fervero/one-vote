@@ -32,5 +32,7 @@ export function yearReducer(state, { payload }) {
     countingMethod: DHONDT,
   });
 
+  console.log(newState);
+
   return newState;
 }

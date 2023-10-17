@@ -32,7 +32,7 @@ export function App({ dispatch }) {
   useEffect(() => {
     fetchResults();
     // dispatch(setRawResults(results));
-  }, []);
+  }, [fetchResults]);
 
   return (
     <ThemeProvider theme={theme}>
